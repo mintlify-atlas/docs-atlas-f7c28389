@@ -1,0 +1,97 @@
+{
+  "projectType": "data-platform",
+  "projectName": "TrackersList",
+  "projectDescription": "Automatically updated collection of public BitTorrent trackers with protocol-specific filtering and IP-based alternatives",
+  "theme": "aspen",
+  "primaryColor": "#2E7D32",
+  "lightColor": "#66BB6A",
+  "darkColor": "#1B5E20",
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "introduction",
+              "quickstart"
+            ]
+          },
+          {
+            "group": "Tracker Lists",
+            "pages": [
+              "lists/overview",
+              "lists/best-trackers",
+              "lists/all-trackers",
+              "lists/protocol-specific",
+              "lists/ip-addresses"
+            ]
+          },
+          {
+            "group": "Integration Guides",
+            "pages": [
+              "guides/torrent-clients",
+              "guides/qbittorrent",
+              "guides/transmission",
+              "guides/deluge",
+              "guides/aria2",
+              "guides/torrent-files"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "advanced/i2p-trackers",
+              "advanced/yggdrasil-trackers",
+              "advanced/webtorrent",
+              "advanced/blacklist"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "groups": [
+          {
+            "group": "List Endpoints",
+            "pages": [
+              "api/endpoints",
+              "api/mirrors"
+            ]
+          },
+          {
+            "group": "Community",
+            "pages": [
+              "api/contributing",
+              "api/third-party-tools"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Daily automated tracker validation and updates",
+    "Protocol-specific lists (UDP, HTTP, HTTPS, WebSocket, I2P, Yggdrasil)",
+    "IP address alternatives for DNS-blocked environments",
+    "Curated best trackers list based on popularity and latency",
+    "Duplicate and malicious tracker filtering",
+    "Multiple CDN mirrors for high availability",
+    "Extensive third-party integration ecosystem"
+  ],
+  "publicApiSurface": [
+    "trackers_best.txt - Top 20 working trackers",
+    "trackers_all.txt - All 112 working trackers",
+    "trackers_all_udp.txt - UDP protocol only",
+    "trackers_all_http.txt - HTTP protocol only",
+    "trackers_all_https.txt - HTTPS protocol only",
+    "trackers_all_ws.txt - WebSocket protocol only",
+    "trackers_all_i2p.txt - I2P network trackers",
+    "trackers_all_yggdrasil.txt - Yggdrasil network trackers",
+    "trackers_best_ip.txt - Best trackers with IP addresses",
+    "trackers_all_ip.txt - All trackers with IP addresses",
+    "trackers_all_yggdrasil_ip.txt - Yggdrasil trackers with IP addresses",
+    "blacklist.txt - Blocked/malicious trackers"
+  ]
+}
