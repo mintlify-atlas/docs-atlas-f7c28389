@@ -1,0 +1,452 @@
+---
+title: 'aria2 Integration'
+description: 'Add TrackersList to aria2 using Go or Bash scripts for automatic tracker updates'
+keywords: ['aria2', 'integration', 'go', 'bash', 'script', 'automation', 'download']
+icon: 'a'
+---
+
+Integrate TrackersList with aria2 using community-maintained scripts that automatically update your aria2 configuration with the latest trackers.
+
+## Overview
+
+aria2 integration scripts update the `bt-tracker` configuration option in your `aria2.conf` file, ensuring all BitTorrent downloads use the latest high-performance trackers from TrackersList.
+
+## Prerequisites
+
+<Info>
+Before you begin, ensure you have:
+- aria2 installed and configured
+- Go or Bash environment
+- Write access to your aria2 configuration file
+- `curl` or `wget` for downloading tracker lists
+</Info>
+
+## Available Scripts
+
+Multiple community tools are available for aria2 integration:
+
+<CardGroup cols={2}>
+  <Card title="Go Script" icon="golang" href="https://github.com/rocket049/aria2-trackers">
+    Feature-rich Go implementation by rocket049
+  </Card>
+  <Card title="Bash Script 1" icon="terminal" href="https://gist.github.com/HaleTom/fe873dc2f3c5bd14f7418efefc2b91a8">
+    Lightweight bash script by HaleTom (Gist)
+  </Card>
+  <Card title="Bash Script 2" icon="terminal" href="https://github.com/wuyuansushen/aria2c_TrackersList">
+    Alternative bash implementation by wuyuansushen
+  </Card>
+</CardGroup>
+
+## Go Script Installation
+
+The Go script provides automatic updates and advanced features.
+
+<Steps>
+  <Step title="Install Go">
+    Ensure Go is installed on your system:
+    
+    ```bash
+    go version
+    ```
+    
+    If not installed, download from [golang.org](https://golang.org/dl/).
+  </Step>
+  
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/rocket049/aria2-trackers.git
+    cd aria2-trackers
+    ```
+  </Step>
+  
+  <Step title="Build the tool">
+    ```bash
+    go build
+    ```
+    
+    This creates an `aria2-trackers` executable.
+  </Step>
+  
+  <Step title="Configure aria2 path">
+    The script needs to know where your `aria2.conf` is located. Common paths:
+    - `~/.config/aria2/aria2.conf` (Linux)
+    - `~/.aria2/aria2.conf` (Alternative Linux)
+    - `/etc/aria2/aria2.conf` (System-wide)
+  </Step>
+  
+  <Step title="Run the script">
+    Execute the script to update trackers:
+    
+    ```bash
+    ./aria2-trackers -c ~/.config/aria2/aria2.conf
+    ```
+    
+    The script will:
+    - Download the latest TrackersList
+    - Update the `bt-tracker` line in your config
+    - Preserve other configuration options
+  </Step>
+</Steps>
+
+## Bash Script Installation
+
+For a lightweight solution without Go dependencies, use one of the bash scripts.
+
+### Using HaleTom's Gist Script
+
+<Steps>
+  <Step title="Download the script">
+    ```bash
+    wget https://gist.githubusercontent.com/HaleTom/fe873dc2f3c5bd14f7418efefc2b91a8/raw/aria2-update-trackers.sh
+    chmod +x aria2-update-trackers.sh
+    ```
+  </Step>
+  
+  <Step title="Edit configuration">
+    Open the script and configure:
+    
+    ```bash
+    nano aria2-update-trackers.sh
+    ```
+    
+    Set:
+    - Path to your `aria2.conf` file
+    - TrackersList URL (default is usually fine)
+    - Optional: RPC settings if you want to reload aria2 automatically
+  </Step>
+  
+  <Step title="Run the script">
+    ```bash
+    ./aria2-update-trackers.sh
+    ```
+  </Step>
+</Steps>
+
+### Using wuyuansushen's Script
+
+<Steps>
+  <Step title="Clone the repository">
+    ```bash
+    git clone https://github.com/wuyuansushen/aria2c_TrackersList.git
+    cd aria2c_TrackersList
+    chmod +x aria2c_TrackersList.sh
+    ```
+  </Step>
+  
+  <Step title="Configure the script">
+    Edit the script to set your aria2 configuration path:
+    
+    ```bash
+    nano aria2c_TrackersList.sh
+    ```
+  </Step>
+  
+  <Step title="Execute">
+    ```bash
+    ./aria2c_TrackersList.sh
+    ```
+  </Step>
+</Steps>
+
+## Configuration File Format
+
+The scripts modify the `bt-tracker` option in your `aria2.conf` file. After running a script, your config will contain:
+
+```ini
+bt-tracker=udp://tracker1.example.com:80/announce,udp://tracker2.example.com:80/announce,http://tracker3.example.com/announce
+```
+
+<Note>
+Trackers are comma-separated on a single line. The scripts handle formatting automatically.
+</Note>
+
+## Automation
+
+Set up automatic tracker updates using cron or systemd timers.
+
+### Cron Setup
+
+<Steps>
+  <Step title="Create wrapper script">
+    Create a script to update trackers and reload aria2:
+    
+    ```bash
+    cat > /usr/local/bin/update-aria2-trackers.sh << 'EOF'
+#!/bin/bash
+
+# Update trackers
+/path/to/aria2-trackers -c ~/.config/aria2/aria2.conf
+
+# Reload aria2 configuration (if using RPC)
+aria2p call --secret="your-rpc-secret" aria2.changeGlobalOption bt-tracker="$(grep bt-tracker ~/.config/aria2/aria2.conf | cut -d'=' -f2)"
+EOF
+    
+    chmod +x /usr/local/bin/update-aria2-trackers.sh
+    ```
+  </Step>
+  
+  <Step title="Add cron job">
+    ```bash
+    crontab -e
+    ```
+    
+    Add entry to run weekly on Sundays at 3 AM:
+    
+    ```cron
+    0 3 * * 0 /usr/local/bin/update-aria2-trackers.sh >> /var/log/aria2-trackers.log 2>&1
+    ```
+  </Step>
+</Steps>
+
+### Systemd Timer
+
+<Steps>
+  <Step title="Create service file">
+    Create `/etc/systemd/system/aria2-trackers.service`:
+    
+    ```ini
+    [Unit]
+    Description=Update aria2 Trackers
+    After=aria2.service
+    
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/local/bin/update-aria2-trackers.sh
+    User=your-username
+    ```
+  </Step>
+  
+  <Step title="Create timer file">
+    Create `/etc/systemd/system/aria2-trackers.timer`:
+    
+    ```ini
+    [Unit]
+    Description=Update aria2 Trackers Weekly
+    
+    [Timer]
+    OnCalendar=weekly
+    Persistent=true
+    
+    [Install]
+    WantedBy=timers.target
+    ```
+  </Step>
+  
+  <Step title="Enable timer">
+    ```bash
+    systemctl daemon-reload
+    systemctl enable aria2-trackers.timer
+    systemctl start aria2-trackers.timer
+    systemctl status aria2-trackers.timer
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+Weekly updates are sufficient for most users. Daily updates may be excessive and put unnecessary load on TrackersList servers.
+</Tip>
+
+## Tracker List Selection
+
+Configure which TrackersList to use in your script:
+
+<CodeGroup>
+
+```bash trackers_best (Recommended)
+# Top 20 performing trackers
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+```
+
+```bash trackers_all
+# All 112 available trackers
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt"
+```
+
+```bash trackers_all_udp
+# UDP trackers only (51 trackers)
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt"
+```
+
+```bash trackers_all_ip
+# IP-based trackers (DNS-free, 61 trackers)
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt"
+```
+
+</CodeGroup>
+
+## Manual Configuration
+
+To manually update trackers without scripts:
+
+<Steps>
+  <Step title="Download tracker list">
+    ```bash
+    curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt -o trackers.txt
+    ```
+  </Step>
+  
+  <Step title="Format for aria2">
+    Convert the list to comma-separated format:
+    
+    ```bash
+    trackers=$(cat trackers.txt | grep -v '^$' | tr '\n' ',')
+    echo "bt-tracker=$trackers" > tracker-line.txt
+    ```
+  </Step>
+  
+  <Step title="Update aria2.conf">
+    Edit your `aria2.conf` file:
+    
+    ```bash
+    nano ~/.config/aria2/aria2.conf
+    ```
+    
+    Replace or add the `bt-tracker` line with the content from `tracker-line.txt`.
+  </Step>
+  
+  <Step title="Restart aria2">
+    ```bash
+    # If using systemd
+    systemctl restart aria2
+    
+    # Or kill and restart manually
+    killall aria2c
+    aria2c --conf-path=~/.config/aria2/aria2.conf -D
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+Manual updates require repeating this process periodically to maintain optimal tracker performance. Automated scripts are strongly recommended.
+</Warning>
+
+## Reloading aria2 Configuration
+
+After updating trackers, you can reload aria2 without restarting:
+
+### Using RPC
+
+If you have aria2 RPC enabled:
+
+```bash
+# Install aria2p (Python tool)
+pip install aria2p
+
+# Reload configuration
+aria2p call --secret="your-rpc-secret" aria2.reload
+```
+
+### Using aria2c RPC directly
+
+```bash
+# Using curl
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":"1","method":"aria2.changeGlobalOption","params":["token:YOUR_SECRET",{"bt-tracker":"tracker1,tracker2,tracker3"}]}' \
+  http://localhost:6800/jsonrpc
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Script can't find aria2.conf">
+    - Verify the config file path in the script
+    - Common locations:
+      - `~/.config/aria2/aria2.conf`
+      - `~/.aria2/aria2.conf`
+      - `/etc/aria2/aria2.conf`
+    - Check file permissions: `ls -la ~/.config/aria2/aria2.conf`
+  </Accordion>
+  
+  <Accordion title="Trackers not being used">
+    - Verify the `bt-tracker` line was updated: `grep bt-tracker ~/.config/aria2/aria2.conf`
+    - Restart aria2 to apply changes
+    - Check aria2 logs for tracker connection attempts
+    - Ensure BitTorrent is enabled in aria2: `enable-dht=true` and `enable-peer-exchange=true`
+  </Accordion>
+  
+  <Accordion title="Script fails to download tracker list">
+    - Test URL accessibility: `curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt`
+    - Check internet connectivity
+    - Try using a mirror URL from TrackersList
+    - Verify proxy settings if behind a proxy
+  </Accordion>
+  
+  <Accordion title="Go script build fails">
+    Ensure Go is properly installed:
+    
+    ```bash
+    go version
+    go env
+    ```
+    
+    If issues persist, try:
+    ```bash
+    go clean
+    go mod tidy
+    go build
+    ```
+  </Accordion>
+  
+  <Accordion title="Permission denied errors">
+    The script may not have write access to `aria2.conf`:
+    
+    ```bash
+    # Check permissions
+    ls -la ~/.config/aria2/aria2.conf
+    
+    # Fix permissions if needed
+    chmod 644 ~/.config/aria2/aria2.conf
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Advanced Configuration
+
+### Using Multiple Tracker Lists
+
+Combine multiple TrackersList sources for maximum coverage:
+
+```bash
+#!/bin/bash
+
+# Download multiple lists
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt > trackers1.txt
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt > trackers2.txt
+
+# Combine and deduplicate
+cat trackers1.txt trackers2.txt | sort -u | grep -v '^$' > combined.txt
+
+# Format for aria2
+trackers=$(cat combined.txt | tr '\n' ',')
+echo "bt-tracker=$trackers"
+```
+
+### Custom Filtering
+
+Filter trackers by protocol or domain:
+
+```bash
+# Only HTTPS trackers
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt | grep '^https://' > https-only.txt
+
+# Exclude specific domains
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt | grep -v 'example.com' > filtered.txt
+```
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="aria2 Documentation" icon="book" href="https://github.com/aria2/aria2">
+    Official aria2 repository and documentation
+  </Card>
+  <Card title="aria2 Manual" icon="file-text" href="https://aria2.github.io/manual/en/html/">
+    Complete aria2 configuration reference
+  </Card>
+  <Card title="TrackersList Repository" icon="github" href="https://github.com/ngosang/trackerslist">
+    View all available tracker lists
+  </Card>
+  <Card title="aria2p Tool" icon="python" href="https://github.com/pawamoy/aria2p">
+    Python library and CLI for aria2 RPC
+  </Card>
+</CardGroup>

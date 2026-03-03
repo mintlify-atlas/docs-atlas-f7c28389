@@ -1,0 +1,544 @@
+---
+title: 'Contributing'
+description: 'Help improve TrackersList by reporting new trackers or identifying non-working ones'
+icon: 'hands-helping'
+---
+
+## Overview
+
+TrackersList is maintained through community contributions. Whether you've discovered a new public tracker or noticed one that's no longer working, your feedback helps keep the lists accurate and up-to-date.
+
+<Info>
+  The project is maintained by **ngosang** and updated daily by an automated bot that validates all trackers.
+</Info>
+
+---
+
+## How to Contribute
+
+<CardGroup cols={2}>
+  <Card title="Report New Trackers" icon="plus" href="#reporting-new-trackers">
+    Know a public tracker not on the list? Let us know!
+  </Card>
+  <Card title="Report Dead Trackers" icon="triangle-exclamation" href="#reporting-non-working-trackers">
+    Found a tracker that's down? Help us remove it
+  </Card>
+  <Card title="Submit Issues" icon="github" href="#issue-submission-process">
+    Learn the proper way to submit reports
+  </Card>
+  <Card title="Contact Maintainer" icon="envelope" href="#contact-information">
+    Need to reach out directly?
+  </Card>
+</CardGroup>
+
+---
+
+## Reporting New Trackers
+
+### What Qualifies as a Public Tracker?
+
+Before submitting a new tracker, ensure it meets these criteria:
+
+<AccordionGroup>
+  <Accordion title="Publicly Accessible" icon="globe">
+    The tracker must be open to the public without requiring:
+    - Registration or accounts
+    - Invitations or access codes
+    - Payment or subscriptions
+    - VPN or special network access (except I2P/Yggdrasil categories)
+  </Accordion>
+  
+  <Accordion title="Currently Active" icon="circle-check">
+    The tracker should be:
+    - Responding to announce requests
+    - Returning peer information
+    - Stable and not experiencing extended downtime
+  </Accordion>
+  
+  <Accordion title="BitTorrent Protocol Compliant" icon="code">
+    Must follow standard BitTorrent tracker protocols:
+    - HTTP/HTTPS trackers: BEP 3 (BitTorrent Protocol)
+    - UDP trackers: BEP 15 (UDP Tracker Protocol)
+    - WebSocket trackers: WebTorrent protocol
+  </Accordion>
+  
+  <Accordion title="Not a Duplicate" icon="copy">
+    The tracker should not:
+    - Use the same domain as an existing tracker
+    - Point to the same IP address as a listed tracker
+    - Be a simple port variation of an existing entry
+  </Accordion>
+</AccordionGroup>
+
+### Submission Process
+
+<Steps>
+  <Step title="Verify the Tracker Works">
+    Test the tracker yourself before submitting:
+    
+    ```bash Test with curl (HTTP/HTTPS)
+    curl "http://tracker.example.com:8080/announce?info_hash=%00%01%02%03%04%05%06%07%08%09%0a%0b%0c%0d%0e%0f%10%11%12%13&peer_id=-TR3000-abcdefghijkl&port=51413&uploaded=0&downloaded=0&left=0&event=started"
+    ```
+    
+    ```bash Test with aria2 (UDP)
+    aria2c --bt-tracker="udp://tracker.example.com:6969/announce" --seed-time=0 test.torrent
+    ```
+    
+    <Note>
+      The tracker should return a valid response (200 OK for HTTP/HTTPS, peer list for UDP)
+    </Note>
+  </Step>
+  
+  <Step title="Open a GitHub Issue">
+    Go to the [TrackersList repository](https://github.com/ngosang/trackerslist) and click **"New Issue"**
+    
+    <Card title="Create Issue" icon="github" href="https://github.com/ngosang/trackerslist/issues/new">
+      Open a new issue on GitHub
+    </Card>
+  </Step>
+  
+  <Step title="Provide Complete Information">
+    Use this template for your issue:
+    
+    ```markdown Issue Template
+    ## New Public Tracker
+    
+    **Tracker URL:**
+    udp://tracker.example.com:6969/announce
+    
+    **Protocol:**
+    UDP / HTTP / HTTPS / WebSocket / I2P / Yggdrasil
+    
+    **Status:**
+    Currently active and responding
+    
+    **Test Results:**
+    - Tested with: qBittorrent 4.5.0
+    - Successfully returned peer list
+    - Response time: ~50ms
+    
+    **Additional Notes:**
+    (Any other relevant information)
+    ```
+  </Step>
+  
+  <Step title="Wait for Validation">
+    The automated bot will:
+    - Validate the tracker is working
+    - Check for duplicates
+    - Measure latency and performance
+    - Add it to the appropriate lists if it passes
+    
+    <Info>
+      The bot runs daily, so your submission will be processed within 24 hours
+    </Info>
+  </Step>
+</Steps>
+
+### What Happens Next?
+
+After you submit a new tracker:
+
+1. **Automated Testing** - The bot validates the tracker during its next run
+2. **Duplicate Check** - Ensures it's not already listed under a different URL
+3. **Performance Measurement** - Tests latency and reliability
+4. **List Addition** - If valid, added to:
+   - `trackers_all.txt` (always)
+   - Protocol-specific list (e.g., `trackers_all_udp.txt`)
+   - `trackers_best.txt` (if performance is high enough)
+
+<Tip>
+  High-quality trackers with low latency and high uptime may be promoted to the `trackers_best.txt` list!
+</Tip>
+
+---
+
+## Reporting Non-Working Trackers
+
+### When to Report a Tracker
+
+Report a tracker if it exhibits any of these issues:
+
+<CardGroup cols={2}>
+  <Card title="Timeout" icon="clock">
+    No response after multiple attempts
+  </Card>
+  <Card title="Connection Refused" icon="ban">
+    Actively rejecting connections
+  </Card>
+  <Card title="Invalid Responses" icon="circle-xmark">
+    Returning malformed or error responses
+  </Card>
+  <Card title="DNS Failure" icon="circle-exclamation">
+    Domain no longer resolves
+  </Card>
+  <Card title="Permanent Redirect" icon="arrow-right">
+    Redirecting to a different tracker
+  </Card>
+  <Card title="Maintenance Mode" icon="wrench">
+    Extended downtime (7+ days)
+  </Card>
+</CardGroup>
+
+### Before Reporting
+
+<Warning>
+  **Don't report temporary issues!** Trackers may have brief downtime. The automated bot already monitors for extended outages.
+</Warning>
+
+<Steps>
+  <Step title="Verify It's Actually Down">
+    Test from multiple locations/networks if possible:
+    
+    - Try from a different network
+    - Check if DNS resolves: `nslookup tracker.example.com`
+    - Test with multiple clients
+    - Wait a few hours and try again
+  </Step>
+  
+  <Step title="Check if It's Already Known">
+    Search existing [GitHub Issues](https://github.com/ngosang/trackerslist/issues) to see if someone already reported it
+  </Step>
+  
+  <Step title="Document the Problem">
+    Gather information about the failure:
+    
+    ```bash Diagnostic Commands
+    # DNS resolution
+    nslookup tracker.example.com
+    
+    # Connection test
+    nc -zv tracker.example.com 6969
+    
+    # HTTP/HTTPS test
+    curl -v "http://tracker.example.com:8080/announce"
+    
+    # Traceroute
+    traceroute tracker.example.com
+    ```
+  </Step>
+</Steps>
+
+### Submission Process
+
+<Steps>
+  <Step title="Open a GitHub Issue">
+    <Card title="Report Issue" icon="github" href="https://github.com/ngosang/trackerslist/issues/new">
+      Open a new issue on GitHub
+    </Card>
+  </Step>
+  
+  <Step title="Provide Detailed Information">
+    Use this template:
+    
+    ```markdown Issue Template
+    ## Non-Working Tracker Report
+    
+    **Tracker URL:**
+    udp://tracker.example.com:6969/announce
+    
+    **Current List:**
+    trackers_all.txt, trackers_all_udp.txt
+    
+    **Problem:**
+    Connection timeout - no response after 30 seconds
+    
+    **Testing Details:**
+    - Tested from: US-East, Europe (multiple locations)
+    - DNS resolution: Failed (NXDOMAIN)
+    - Last working: Unknown (first noticed today)
+    - Error message: "Connection timed out"
+    
+    **Diagnostic Output:**
+    ```
+    $ nslookup tracker.example.com
+    Server: 8.8.8.8
+    Address: 8.8.8.8#53
+    
+    ** server can't find tracker.example.com: NXDOMAIN
+    ```
+    
+    **Additional Context:**
+    Domain appears to have expired
+    ```
+  </Step>
+  
+  <Step title="Await Confirmation">
+    The maintainer or bot will:
+    - Verify the issue
+    - Monitor for extended downtime
+    - Remove if down for 7+ consecutive days
+  </Step>
+</Steps>
+
+---
+
+## Issue Submission Process
+
+### GitHub Issue Guidelines
+
+<Tabs>
+  <Tab title="Best Practices">
+    **DO:**
+    - Use clear, descriptive titles
+    - Provide complete tracker URLs
+    - Include test results and error messages
+    - Be specific about protocols and versions
+    - Add relevant logs or diagnostic output
+    - Update the issue if the situation changes
+    
+    **DON'T:**
+    - Submit duplicate issues
+    - Report temporary downtime (< 24 hours)
+    - Use vague descriptions
+    - Submit private/semi-private trackers
+    - Include malicious or spam trackers
+  </Tab>
+  
+  <Tab title="Title Formats">
+    Use clear, standardized titles:
+    
+    **New Tracker:**
+    ```
+    [New] UDP tracker: tracker.example.com:6969
+    [New] HTTP tracker: tracker.example.com:8080
+    ```
+    
+    **Dead Tracker:**
+    ```
+    [Dead] tracker.example.com:6969 - Connection timeout
+    [Dead] tracker.example.com:8080 - Domain expired
+    ```
+    
+    **General Question:**
+    ```
+    [Question] About I2P tracker requirements
+    [Suggestion] Add blacklist entry for X
+    ```
+  </Tab>
+  
+  <Tab title="Required Information">
+    Every issue should include:
+    
+    <ParamField path="Tracker URL" type="string" required>
+      Complete announce URL including protocol and port
+    </ParamField>
+    
+    <ParamField path="Protocol" type="enum" required>
+      UDP, HTTP, HTTPS, WebSocket, I2P, or Yggdrasil
+    </ParamField>
+    
+    <ParamField path="Test Results" type="object" required>
+      What you observed when testing the tracker
+    </ParamField>
+    
+    <ParamField path="Context" type="string">
+      Any additional relevant information
+    </ParamField>
+  </Tab>
+  
+  <Tab title="Example Issues">
+    **Good Issue Example:**
+    ```markdown
+    Title: [New] UDP tracker: tracker.awesome.net:6969
+    
+    ## New Public Tracker Submission
+    
+    **Tracker URL:** udp://tracker.awesome.net:6969/announce
+    **Protocol:** UDP
+    **Status:** Active and responding
+    
+    **Test Results:**
+    - Client: qBittorrent 4.5.2
+    - Successfully connected and received peers
+    - Average response time: 35ms
+    - Tested from: US-East and Europe
+    
+    **Additional Information:**
+    This is a well-established tracker that's been running for 2+ years.
+    Currently not listed in any major tracker lists.
+    ```
+    
+    **Bad Issue Example:**
+    ```markdown
+    Title: tracker not working
+    
+    tracker.something.com doesn't work for me.
+    can you fix it?
+    ```
+  </Tab>
+</Tabs>
+
+### Response Times
+
+<Info>
+  **Typical Response Times:**
+  - Automated bot validation: Within 24 hours
+  - Maintainer review: 1-7 days
+  - List updates: Next daily update cycle (3 AM UTC)
+</Info>
+
+---
+
+## Contact Information
+
+### Primary Contact
+
+<Card title="Email" icon="envelope">
+  **Maintainer:** ngosang  
+  **Email:** ngosang [@] hotmail [.es]
+  
+  <Note>
+    Replace [@] with @ and [.es] with .es when composing the email
+  </Note>
+</Card>
+
+### When to Contact Directly
+
+Use email for:
+- Security concerns
+- Urgent issues affecting many users
+- Private discussions
+- General questions not suitable for GitHub
+
+<Warning>
+  **For tracker submissions and reports, always use GitHub Issues** to maintain public records and allow community input.
+</Warning>
+
+### GitHub
+
+<CardGroup cols={2}>
+  <Card title="Repository" icon="github" href="https://github.com/ngosang/trackerslist">
+    Main TrackersList repository
+  </Card>
+  <Card title="Issues" icon="circle-exclamation" href="https://github.com/ngosang/trackerslist/issues">
+    Submit tracker reports
+  </Card>
+  <Card title="Pull Requests" icon="code-pull-request" href="https://github.com/ngosang/trackerslist/pulls">
+    View pending changes
+  </Card>
+  <Card title="Discussions" icon="comments" href="https://github.com/ngosang/trackerslist/discussions">
+    Community discussions
+  </Card>
+</CardGroup>
+
+---
+
+## Support the Project
+
+TrackersList is maintained by volunteers. If you find it useful, consider supporting:
+
+<Card title="Support on Ko-fi" icon="heart" href="https://ko-fi.com/ngosang">
+  Buy ngosang a coffee to support continued development
+</Card>
+
+**Other Ways to Help:**
+
+<CardGroup cols={3}>
+  <Card title="Star the Repo" icon="star">
+    Show your appreciation on GitHub
+  </Card>
+  <Card title="Spread the Word" icon="bullhorn">
+    Share with others who might benefit
+  </Card>
+  <Card title="Report Issues" icon="bug">
+    Help improve list accuracy
+  </Card>
+</CardGroup>
+
+---
+
+## Community Guidelines
+
+### Code of Conduct
+
+When contributing, please:
+
+<Steps>
+  <Step title="Be Respectful">
+    Treat maintainers and other contributors with respect
+  </Step>
+  <Step title="Be Patient">
+    Remember this is a volunteer project
+  </Step>
+  <Step title="Be Constructive">
+    Provide helpful feedback and context
+  </Step>
+  <Step title="Be Honest">
+    Don't submit fake or malicious trackers
+  </Step>
+</Steps>
+
+### What Happens to Submissions
+
+<Accordion title="Accepted Submissions">
+  If your tracker submission is accepted:
+  - Added to appropriate lists within 24 hours
+  - Monitored daily for uptime and performance
+  - May be promoted to `trackers_best.txt` if performance is excellent
+  - Your GitHub username may be credited in commit messages
+</Accordion>
+
+<Accordion title="Rejected Submissions">
+  Submissions may be rejected if:
+  - Tracker is not public
+  - Already exists (duplicate domain/IP)
+  - Not responding during validation
+  - Violates BitTorrent protocol standards
+  - Requires special access or authentication
+  
+  You'll receive feedback explaining why it was rejected
+</Accordion>
+
+---
+
+## Frequently Asked Questions
+
+<AccordionGroup>
+  <Accordion title="How long before my tracker appears in the lists?">
+    If validated successfully, your tracker will appear in the next daily update cycle (3 AM UTC). GitHub Raw updates immediately, but mirror CDNs may take up to 60 minutes to propagate.
+  </Accordion>
+  
+  <Accordion title="Can I submit multiple trackers at once?">
+    Yes! Create a single issue with all tracker URLs if they're related, or separate issues if they're from different sources.
+  </Accordion>
+  
+  <Accordion title="My tracker was removed. Why?">
+    Trackers are automatically removed after being unresponsive for 7+ consecutive days. If it's back online, submit it again as a new tracker.
+  </Accordion>
+  
+  <Accordion title="Can I submit a private tracker?">
+    No. TrackersList only includes public trackers that don't require registration, invitations, or payment.
+  </Accordion>
+  
+  <Accordion title="How can I check if a tracker is already listed?">
+    Search the [trackers_all.txt file](https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt) or use grep:
+    
+    ```bash
+    curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt | grep "tracker.example.com"
+    ```
+  </Accordion>
+  
+  <Accordion title="What if I found a tracker on the blacklist?">
+    The [blacklist](https://github.com/ngosang/trackerslist/blob/master/blacklist.txt) contains trackers that are duplicates or have been intentionally excluded. If you believe a blacklisted tracker should be reconsidered, open an issue with justification.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="API Documentation" icon="book" href="/api/endpoints">
+    Learn how to use the tracker lists
+  </Card>
+  <Card title="Integration Guide" icon="code" href="/guides/torrent-clients">
+    Add trackers to your BitTorrent client
+  </Card>
+  <Card title="Third-Party Tools" icon="wrench" href="/api/third-party-tools">
+    Tools built by the community
+  </Card>
+  <Card title="FAQ" icon="circle-question" href="/api/contributing">
+    Common questions and answers
+  </Card>
+</CardGroup>

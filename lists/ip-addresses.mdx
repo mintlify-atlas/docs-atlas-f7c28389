@@ -1,0 +1,529 @@
+---
+title: IP Address Tracker Lists
+description: BitTorrent tracker lists using IP addresses instead of domain names for DNS-blocked environments
+icon: router
+---
+
+IP address tracker lists provide direct IP access to trackers, bypassing DNS resolution. These are essential for environments where DNS is blocked, censored, or unreliable.
+
+## Why IP Address Lists?
+
+<Warning>
+  **DNS Issues?** If your DNS is blocked, poisoned, or unavailable, domain-based tracker URLs won't work. IP address lists solve this problem.
+</Warning>
+
+### Common DNS Problems
+
+- ISP-level DNS blocking of torrent trackers
+- Government-mandated DNS censorship
+- DNS poisoning attacks
+- Restricted network environments (corporate, school)
+- VPN or proxy DNS leaks
+- Slow or unreliable DNS resolvers
+
+## Available IP Lists
+
+<CardGroup cols={2}>
+  <Card title="Best Trackers (IP)" icon="star">
+    **20 trackers** with IP addresses
+    
+    `trackers_best_ip.txt`
+  </Card>
+  <Card title="All Trackers (IP)" icon="database">
+    **61 trackers** with IP addresses
+    
+    `trackers_all_ip.txt`
+  </Card>
+</CardGroup>
+
+<Note>
+  IP lists contain fewer trackers than domain-based lists because Cloudflare-protected trackers cannot be reliably converted to static IP addresses.
+</Note>
+
+---
+
+## Best Trackers (IP)
+
+<Info>
+  **20 trackers** - `trackers_best_ip.txt`
+</Info>
+
+The same top 20 trackers from `trackers_best.txt`, but with IP addresses instead of domain names.
+
+### Download URLs
+
+<CodeGroup>
+```bash GitHub Raw
+curl -O https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt
+```
+
+```bash GitHub Pages Mirror
+curl -O https://ngosang.github.io/trackerslist/trackers_best_ip.txt
+```
+
+```bash jsDelivr CDN
+curl -O https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best_ip.txt
+```
+</CodeGroup>
+
+### Direct Links
+
+<CardGroup cols={3}>
+  <Card title="GitHub Raw" icon="github" href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt">
+    Primary source
+  </Card>
+  <Card title="Mirror" icon="clone" href="https://ngosang.github.io/trackerslist/trackers_best_ip.txt">
+    GitHub Pages
+  </Card>
+  <Card title="CDN" icon="bolt" href="https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best_ip.txt">
+    jsDelivr (fastest)
+  </Card>
+</CardGroup>
+
+### Example Trackers
+
+```text
+udp://93.158.213.92:1337/announce
+udp://185.121.168.96:1337/announce
+udp://185.243.218.213:80/announce
+udp://89.234.156.205:451/announce
+udp://209.141.59.16:6969/announce
+udp://91.186.213.204:6969/announce
+udp://52.58.128.163:6969/announce
+udp://211.75.210.221:6969/announce
+udp://34.66.57.33:80/announce
+udp://109.201.134.183:80/announce
+... and 10 more
+```
+
+<Warning>
+  IP addresses can change. Download the latest list regularly to ensure you have current IP addresses.
+</Warning>
+
+### When to Use
+
+<Check>
+  **Ideal for:**
+  - DNS-blocked networks
+  - Countries with DNS censorship
+  - VPN configurations with DNS leaks
+  - Networks without DNS servers
+  - Testing if DNS is causing tracker issues
+  - Maximum reliability (no DNS lookup delays)
+</Check>
+
+---
+
+## All Trackers (IP)
+
+<Info>
+  **61 trackers** - `trackers_all_ip.txt`
+</Info>
+
+Comprehensive list of public trackers using IP addresses. Contains 61 out of the 112 trackers from `trackers_all.txt`.
+
+### Download URLs
+
+<CodeGroup>
+```bash GitHub Raw
+curl -O https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt
+```
+
+```bash GitHub Pages Mirror
+curl -O https://ngosang.github.io/trackerslist/trackers_all_ip.txt
+```
+
+```bash jsDelivr CDN
+curl -O https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_ip.txt
+```
+</CodeGroup>
+
+### Direct Links
+
+<CardGroup cols={3}>
+  <Card title="GitHub Raw" icon="github" href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt">
+    Primary source
+  </Card>
+  <Card title="Mirror" icon="clone" href="https://ngosang.github.io/trackerslist/trackers_all_ip.txt">
+    GitHub Pages
+  </Card>
+  <Card title="CDN" icon="bolt" href="https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_ip.txt">
+    jsDelivr (fastest)
+  </Card>
+</CardGroup>
+
+### Example Trackers
+
+```text
+udp://93.158.213.92:1337/announce
+http://93.158.213.92:1337/announce
+udp://185.121.168.96:1337/announce
+udp://185.243.218.213:80/announce
+udp://89.234.156.205:451/announce
+udp://209.141.59.16:6969/announce
+udp://91.186.213.204:6969/announce
+udp://52.58.128.163:6969/announce
+udp://211.75.210.221:6969/announce
+udp://34.66.57.33:80/announce
+http://34.66.57.33:2710/announce
+http://34.66.57.33:11450/announce
+http://211.75.205.188:80/announce
+... and 48 more
+```
+
+### Why Only 61 Trackers?
+
+The IP list is shorter because:
+
+<AccordionGroup>
+  <Accordion title="Cloudflare Protection" icon="shield">
+    Cloudflare-protected trackers hide their real IP addresses behind Cloudflare's network. These cannot be included in IP lists because:
+    - Cloudflare IPs change frequently
+    - Multiple sites share same Cloudflare IPs
+    - Direct IP access is blocked by Cloudflare
+  </Accordion>
+  
+  <Accordion title="Dynamic IP Addresses" icon="rotate">
+    Some trackers use dynamic IP addresses that change too frequently to maintain in a daily-updated list.
+  </Accordion>
+  
+  <Accordion title="Load Balancers" icon="server">
+    Trackers behind load balancers with multiple IPs or DNS-based load balancing cannot be reduced to a single IP address.
+  </Accordion>
+  
+  <Accordion title="HTTP/3 and QUIC" icon="network-wired">
+    Some modern trackers require domain names for protocol features and certificate validation.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Comparison: Domain vs IP Lists
+
+### Feature Comparison
+
+| Feature | Domain Lists | IP Lists |
+|---------|-------------|----------|
+| Tracker Count | 112 (all) / 20 (best) | 61 (all) / 20 (best) |
+| DNS Required | Yes | No |
+| Bypass DNS Blocking | No | Yes |
+| Works with Censorship | Sometimes | Usually |
+| Certificate Validation | Works | May fail on HTTPS |
+| IP Changes | No impact | Requires updates |
+| Cloudflare Trackers | Included | Excluded |
+
+### Performance Impact
+
+<Tabs>
+  <Tab title="Domain-Based">
+    **trackers_all.txt** (112 trackers)
+    
+    ```text
+    1. DNS lookup (5-50ms per tracker)
+    2. Connect to resolved IP
+    3. Announce to tracker
+    ```
+    
+    Total overhead: ~560-5600ms for initial DNS lookups
+  </Tab>
+  
+  <Tab title="IP-Based">
+    **trackers_all_ip.txt** (61 trackers)
+    
+    ```text
+    1. Connect directly to IP
+    2. Announce to tracker
+    ```
+    
+    Total overhead: 0ms (no DNS lookups)
+    
+    <Check>
+      IP lists can be 5-50ms faster per tracker by eliminating DNS lookups.
+    </Check>
+  </Tab>
+</Tabs>
+
+## Integration Examples
+
+<Tabs>
+  <Tab title="qBittorrent">
+    ```bash
+    # Download IP-based tracker list
+    curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt \
+      -o ~/trackers_ip.txt
+    
+    # Open qBittorrent
+    # Go to Tools → Options → BitTorrent
+    # Check "Automatically add these trackers to new downloads"
+    # Paste the contents of trackers_ip.txt
+    ```
+    
+    <Tip>
+      You can combine domain and IP lists for maximum reliability.
+    </Tip>
+  </Tab>
+  
+  <Tab title="Transmission">
+    ```bash
+    #!/bin/bash
+    # Add IP-based trackers to all torrents
+    
+    # Download and format trackers
+    trackers=$(curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt | \
+      grep -v '^$' | tr '\n' ',')
+    
+    # Add to each torrent
+    for torrent in $(transmission-remote -l | grep -v Sum | awk '{print $1}'); do
+      transmission-remote -t $torrent -td "$trackers"
+    done
+    
+    echo "Added $(echo $trackers | tr ',' '\n' | wc -l) IP-based trackers"
+    ```
+  </Tab>
+  
+  <Tab title="Deluge">
+    ```python
+    # deluge_add_ip_trackers.py
+    from deluge_client import DelugeRPCClient
+    import requests
+    
+    # Connect to Deluge
+    client = DelugeRPCClient('127.0.0.1', 58846, 'admin', 'password')
+    client.connect()
+    
+    # Download IP-based trackers
+    url = 'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt'
+    response = requests.get(url)
+    trackers = [t.strip() for t in response.text.split('\n') if t.strip()]
+    
+    # Add to all torrents
+    for torrent_id in client.core.get_torrents_status({}, []):
+        for tracker in trackers:
+            client.core.add_tracker_to_torrent(torrent_id, tracker)
+    
+    print(f"Added {len(trackers)} IP-based trackers")
+    ```
+  </Tab>
+  
+  <Tab title="Command Line">
+    ```bash
+    # Test if DNS is the problem
+    
+    # Try domain-based tracker
+    curl -I "http://tracker.opentrackr.org:1337/announce"
+    
+    # Try IP-based tracker (same tracker)
+    curl -I "http://93.158.213.92:1337/announce"
+    
+    # If IP works but domain doesn't = DNS issue
+    ```
+  </Tab>
+</Tabs>
+
+## DNS Testing
+
+Determine if you need IP-based lists:
+
+<Steps>
+  <Step title="Test DNS Resolution">
+    ```bash
+    # Test if tracker domains resolve
+    nslookup tracker.opentrackr.org
+    dig tracker.opentrackr.org
+    ```
+    
+    If this fails or returns wrong IPs, you have DNS problems.
+  </Step>
+  
+  <Step title="Test Direct IP Connection">
+    ```bash
+    # Connect using IP address
+    curl -I "http://93.158.213.92:1337/announce" --max-time 5
+    ```
+    
+    If this works, IP lists will solve your problem.
+  </Step>
+  
+  <Step title="Compare Response Times">
+    ```bash
+    # Domain-based (includes DNS lookup)
+    time curl -I "http://tracker.opentrackr.org:1337/announce"
+    
+    # IP-based (no DNS lookup)
+    time curl -I "http://93.158.213.92:1337/announce"
+    ```
+    
+    If IP is significantly faster, use IP lists.
+  </Step>
+</Steps>
+
+## Limitations and Considerations
+
+<Warning>
+  **Important Limitations:**
+</Warning>
+
+### IP Address Changes
+
+IP addresses can change without notice:
+- Server migrations
+- Network changes
+- ISP modifications
+- DDoS mitigation
+
+<Tip>
+  Update IP lists weekly to maintain current addresses. The list is updated daily to track IP changes.
+</Tip>
+
+### HTTPS Certificate Issues
+
+HTTPS trackers with IP addresses may fail certificate validation:
+
+```text
+Certificate Error: tracker.example.com
+Connecting to: https://93.158.213.92:443/announce
+Error: Certificate domain mismatch
+```
+
+**Solution:** Use HTTP or UDP protocols with IP lists:
+```bash
+# Filter for non-HTTPS trackers
+grep -v "https://" trackers_all_ip.txt > trackers_ip_no_https.txt
+```
+
+### Geographic Routing
+
+Some trackers use GeoDNS to route users to nearest servers. IP lists bypass this optimization.
+
+### Missing Trackers
+
+51 trackers from `trackers_all.txt` are not available in `trackers_all_ip.txt` due to Cloudflare and dynamic IPs.
+
+## Update Frequency
+
+<Info>
+  IP lists are updated daily to track IP address changes. Update your local copy regularly.
+</Info>
+
+### Automation
+
+```bash
+#!/bin/bash
+# update-ip-trackers.sh
+
+# Download latest IP-based trackers
+curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt \
+  -o /tmp/trackers_best_ip.txt
+
+# Check if file changed
+if ! cmp -s /tmp/trackers_best_ip.txt ~/.config/trackers_best_ip.txt; then
+  cp /tmp/trackers_best_ip.txt ~/.config/trackers_best_ip.txt
+  echo "Tracker IPs updated: $(date)"
+  
+  # Reload torrent client configuration
+  # (client-specific commands)
+else
+  echo "No changes in tracker IPs"
+fi
+```
+
+Add to crontab:
+```bash
+# Update IP trackers twice daily
+0 3,15 * * * /path/to/update-ip-trackers.sh
+```
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="IP trackers not working" icon="triangle-exclamation">
+    **Possible causes:**
+    - IP addresses have changed (download latest list)
+    - Firewall blocking direct IP connections
+    - ISP blocking tracker IPs specifically
+    - Tracker server moved/offline
+    
+    **Solutions:**
+    1. Download latest IP list
+    2. Test with single tracker: `curl http://IP:PORT/announce`
+    3. Check firewall rules
+    4. Try VPN to bypass IP-based blocking
+  </Accordion>
+  
+  <Accordion title="Certificate errors with HTTPS" icon="lock">
+    HTTPS trackers require domain names for certificate validation.
+    
+    **Solutions:**
+    1. Use only UDP and HTTP from IP lists
+    2. Use domain-based lists for HTTPS trackers
+    3. Disable certificate verification (not recommended)
+    
+    ```bash
+    # Extract only UDP and HTTP trackers
+    grep -E "^(udp|http)://" trackers_all_ip.txt > trackers_ip_safe.txt
+    ```
+  </Accordion>
+  
+  <Accordion title="How often do tracker IPs change?" icon="clock">
+    **Frequency varies:**
+    - Stable trackers: Monthly or never
+    - Dynamic infrastructure: Weekly
+    - Under attack: Daily
+    
+    **Recommendation:**
+    - Update IP lists **weekly** minimum
+    - Daily updates for critical applications
+    - Monitor tracker success rates in your client
+    
+    The list is regenerated daily to catch IP changes immediately.
+  </Accordion>
+  
+  <Accordion title="Combining domain and IP lists" icon="merge">
+    Yes, you can use both:
+    
+    ```bash
+    # Combine best trackers (domain and IP)
+    cat trackers_best.txt trackers_best_ip.txt > trackers_combined.txt
+    ```
+    
+    **Benefits:**
+    - Redundancy (if DNS fails, IP works)
+    - Performance (faster without DNS on some trackers)
+    - Maximum reliability
+    
+    **Drawbacks:**
+    - Duplicate trackers (same tracker via domain and IP)
+    - More tracker overhead
+    - Client may show duplicate warnings
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Check>
+  **Recommendations for IP Lists:**
+</Check>
+
+1. **Update regularly** - Weekly minimum, daily for best results
+2. **Monitor logs** - Check which trackers are actually working
+3. **Combine protocols** - Use UDP and HTTP, avoid HTTPS with IPs
+4. **Test connectivity** - Verify IP trackers work before relying on them
+5. **Keep backups** - Save domain-based lists as fallback
+6. **Check client compatibility** - Some clients handle IP trackers differently
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Best Trackers" icon="star" href="/lists/best-trackers">
+    Domain-based version of top 20 trackers
+  </Card>
+  <Card title="All Trackers" icon="database" href="/lists/all-trackers">
+    Complete list with domain names (112 trackers)
+  </Card>
+  <Card title="Protocol-Specific" icon="network-wired" href="/lists/protocol-specific">
+    Filter by UDP, HTTP, HTTPS, WebSocket
+  </Card>
+  <Card title="Integration Guide" icon="code" href="/guides/torrent-clients">
+    Add trackers to your torrent client
+  </Card>
+</CardGroup>

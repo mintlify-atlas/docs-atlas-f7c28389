@@ -1,0 +1,292 @@
+---
+title: Best Trackers List
+description: Top 20 most reliable BitTorrent trackers, automatically selected based on popularity and latency
+icon: star
+---
+
+The **trackers_best.txt** list contains the 20 most reliable and fastest public BitTorrent trackers. This curated list is perfect for general use and provides optimal performance without overwhelming your torrent client.
+
+## Overview
+
+<Info>
+  **20 trackers** - Updated daily - Sorted by popularity and latency
+</Info>
+
+This list is automatically generated daily by testing all available public trackers and selecting the top 20 performers based on:
+- Response time (latency)
+- Availability (uptime)
+- Number of peers tracked
+- Overall reliability
+
+## Download URLs
+
+<CodeGroup>
+```bash GitHub Raw
+curl -O https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+```
+
+```bash GitHub Pages Mirror
+curl -O https://ngosang.github.io/trackerslist/trackers_best.txt
+```
+
+```bash jsDelivr CDN
+curl -O https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt
+```
+</CodeGroup>
+
+### Direct Download Links
+
+<CardGroup cols={3}>
+  <Card title="GitHub Raw" icon="github" href="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt">
+    Primary source
+  </Card>
+  <Card title="Mirror" icon="clone" href="https://ngosang.github.io/trackerslist/trackers_best.txt">
+    GitHub Pages
+  </Card>
+  <Card title="CDN" icon="bolt" href="https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt">
+    jsDelivr (fastest)
+  </Card>
+</CardGroup>
+
+## Example Trackers
+
+Here are some trackers currently in the best list:
+
+<AccordionGroup>
+  <Accordion title="UDP Trackers" icon="network-wired">
+    ```text
+    udp://tracker.opentrackr.org:1337/announce
+    udp://open.demonii.com:1337/announce
+    udp://open.stealth.si:80/announce
+    udp://exodus.desync.com:6969/announce
+    udp://tracker1.myporn.club:9337/announce
+    udp://tracker.torrent.eu.org:451/announce
+    udp://tracker.theoks.net:6969/announce
+    udp://tracker.srv00.com:6969/announce
+    udp://tracker.filemail.com:6969/announce
+    udp://tracker.dler.org:6969/announce
+    ```
+  </Accordion>
+  
+  <Accordion title="HTTPS Trackers" icon="lock">
+    ```text
+    https://torrent.tracker.durukanbal.com:443/announce
+    ```
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  Tracker URLs change frequently as performance fluctuates. Always download the latest version of the list rather than copying these examples.
+</Warning>
+
+## When to Use This List
+
+<Check>
+  **Recommended for:**
+  - General torrenting needs
+  - Users who want optimal performance
+  - Clients that perform poorly with many trackers
+  - Mobile devices with limited resources
+  - Private trackers supplementation
+</Check>
+
+<Check>
+  **Best suited for:**
+  - **qBittorrent** - Handles 20 trackers efficiently
+  - **Transmission** - Lightweight and fast with this list
+  - **Deluge** - Optimal performance with moderate tracker count
+  - **rTorrent** - Perfect for headless servers
+  - **Aria2** - Excellent for download managers
+</Check>
+
+## File Format
+
+The list uses a simple newline-separated format:
+
+```text
+udp://tracker.opentrackr.org:1337/announce
+
+udp://open.demonii.com:1337/announce
+
+udp://open.stealth.si:80/announce
+
+https://torrent.tracker.durukanbal.com:443/announce
+
+...
+```
+
+<Info>
+  Each tracker URL is followed by a blank line. This format is universally compatible with all major BitTorrent clients.
+</Info>
+
+## Protocol Distribution
+
+The best trackers list typically includes:
+
+<CardGroup cols={3}>
+  <Card title="UDP" icon="signal">
+    ~19 trackers
+    
+    Fastest protocol with lowest overhead
+  </Card>
+  <Card title="HTTPS" icon="lock">
+    ~1 tracker
+    
+    Encrypted and firewall-friendly
+  </Card>
+  <Card title="HTTP" icon="globe">
+    May vary
+    
+    Universal compatibility
+  </Card>
+</CardGroup>
+
+<Note>
+  UDP trackers dominate the best list because they typically offer the lowest latency and best performance for peer discovery.
+</Note>
+
+## Performance Comparison
+
+| Metric | trackers_best.txt | trackers_all.txt |
+|--------|-------------------|------------------|
+| Tracker Count | 20 | 112 |
+| Average Latency | Lowest | Varies |
+| Client Overhead | Minimal | Moderate-High |
+| Peer Discovery | Excellent | Maximum |
+| Recommended | Yes | For power users |
+
+## Integration Examples
+
+<Tabs>
+  <Tab title="qBittorrent">
+    Add to qBittorrent:
+    
+    1. Download the list
+    2. Go to **Tools** → **Options** → **BitTorrent**
+    3. Check "Automatically add these trackers to new downloads"
+    4. Paste the entire list content
+    
+    Or use automation:
+    ```bash
+    # Download and add to qBittorrent config
+    curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt \
+      >> ~/.config/qBittorrent/qBittorrent.conf
+    ```
+  </Tab>
+  
+  <Tab title="Transmission">
+    ```bash
+    # Download trackers
+    trackers=$(curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt | \
+      grep -v '^$' | tr '\n' ',')
+    
+    # Add to all active torrents
+    for torrent in $(transmission-remote -l | grep -v Sum | awk '{print $1}'); do
+      transmission-remote -t $torrent -td "$trackers"
+    done
+    ```
+  </Tab>
+  
+  <Tab title="Deluge">
+    Install the default trackers plugin:
+    ```bash
+    # Clone the plugin
+    git clone https://github.com/stefantalpalaru/deluge-default-trackers
+    
+    # Configure to use trackers_best.txt
+    echo "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt" \
+      > ~/.config/deluge/trackers_list.txt
+    ```
+  </Tab>
+  
+  <Tab title="Aria2">
+    ```bash
+    # Download and format for aria2
+    curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt | \
+      grep -v '^$' | tr '\n' ',' > trackers.txt
+    
+    # Add to aria2.conf
+    echo "bt-tracker=$(cat trackers.txt)" >> ~/.aria2/aria2.conf
+    ```
+  </Tab>
+</Tabs>
+
+## Alternative: IP Address Version
+
+If you're experiencing DNS issues or operating in DNS-blocked environments:
+
+<Card title="trackers_best_ip.txt" icon="router" href="/lists/ip-addresses">
+  Same 20 trackers but with IP addresses instead of domain names
+  
+  [View IP Address Lists →](/lists/ip-addresses)
+</Card>
+
+## Automation
+
+Automate daily updates with cron:
+
+```bash
+#!/bin/bash
+# update-trackers.sh
+
+# Download latest list
+curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt \
+  -o /tmp/trackers_best.txt
+
+# Import to your torrent client
+# (client-specific commands here)
+
+echo "Trackers updated: $(date)"
+```
+
+Add to crontab:
+```bash
+# Update trackers daily at 3 AM
+0 3 * * * /path/to/update-trackers.sh
+```
+
+<Tip>
+  Lists are updated daily around midnight UTC. Schedule your automation to run a few hours after to ensure you get the latest version.
+</Tip>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Trackers showing as offline" icon="triangle-exclamation">
+    - Verify your firewall allows UDP port 6969 (common tracker port)
+    - Check if your ISP blocks BitTorrent traffic
+    - Try the HTTPS-only trackers from the list
+    - Download the latest version (trackers change daily)
+  </Accordion>
+  
+  <Accordion title="Slow peer discovery" icon="clock">
+    - Ensure you're using the latest list
+    - Check that DHT (Distributed Hash Table) is enabled in your client
+    - Try combining with `trackers_all.txt` for more sources
+    - Verify port forwarding is configured correctly
+  </Accordion>
+  
+  <Accordion title="Too many tracker errors" icon="xmark">
+    - Some trackers may be temporarily down
+    - Your network may block certain protocols
+    - Try the IP address version to bypass DNS issues
+    - Consider using only protocol-specific lists (e.g., UDP-only)
+  </Accordion>
+</AccordionGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="All Trackers" icon="database" href="/lists/all-trackers">
+    View the complete list of 112 trackers
+  </Card>
+  <Card title="Integration Guide" icon="code" href="/guides/torrent-clients">
+    Detailed setup for your torrent client
+  </Card>
+  <Card title="Protocol-Specific" icon="network-wired" href="/lists/protocol-specific">
+    Filter by protocol (UDP, HTTP, HTTPS)
+  </Card>
+  <Card title="API Access" icon="terminal" href="/api/endpoints">
+    Programmatic access to tracker lists
+  </Card>
+</CardGroup>

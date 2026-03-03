@@ -1,0 +1,217 @@
+---
+title: 'qBittorrent Integration'
+description: 'Add TrackersList to qBittorrent using automated bash scripts'
+keywords: ['qbittorrent', 'integration', 'bash', 'script', 'automation']
+icon: 'q'
+---
+
+Integrate TrackersList with qBittorrent using community-maintained bash scripts that automatically update trackers for all your torrents.
+
+## Overview
+
+The qBittorrent bash script fetches the latest tracker list and adds them to all active torrents in your qBittorrent client. This ensures your torrents always have access to the most up-to-date and best-performing trackers.
+
+## Prerequisites
+
+<Info>
+Before you begin, ensure you have:
+- qBittorrent installed and running
+- Bash shell (Linux, macOS, or WSL on Windows)
+- `curl` or `wget` for downloading tracker lists
+- Access to qBittorrent's Web UI (recommended for automation)
+</Info>
+
+## Integration Script
+
+### Available Tools
+
+The community maintains a bash script specifically for qBittorrent:
+
+<Card title="addqbittorrenttrackerssh" icon="github" href="https://github.com/Jorman/Scripts#addqbittorrenttrackerssh">
+  Bash script by Jorman that adds TrackersList trackers to qBittorrent
+</Card>
+
+## Installation
+
+<Steps>
+  <Step title="Download the script">
+    Clone the repository or download the script directly:
+    
+    ```bash
+    git clone https://github.com/Jorman/Scripts.git
+    cd Scripts
+    ```
+    
+    Or download the specific script:
+    
+    ```bash
+    wget https://raw.githubusercontent.com/Jorman/Scripts/master/addqbittorrenttrackerssh
+    chmod +x addqbittorrenttrackerssh
+    ```
+  </Step>
+  
+  <Step title="Configure qBittorrent Web UI">
+    Enable the Web UI in qBittorrent:
+    
+    1. Open qBittorrent
+    2. Go to **Tools** > **Options** > **Web UI**
+    3. Check **Web User Interface (Remote control)**
+    4. Set a username and password
+    5. Note the port (default: 8080)
+    6. Click **OK** to save
+  </Step>
+  
+  <Step title="Edit script configuration">
+    Open the script and configure your qBittorrent connection details:
+    
+    ```bash
+    nano addqbittorrenttrackerssh
+    ```
+    
+    Update the following variables:
+    - qBittorrent Web UI URL
+    - Username and password
+    - Tracker list URL (use TrackersList URL)
+  </Step>
+  
+  <Step title="Run the script">
+    Execute the script to add trackers:
+    
+    ```bash
+    ./addqbittorrenttrackerssh
+    ```
+    
+    The script will fetch the latest tracker list and add them to all torrents in qBittorrent.
+  </Step>
+</Steps>
+
+## Automation
+
+Schedule the script to run automatically using cron for regular tracker updates.
+
+### Setting up a Cron Job
+
+<Steps>
+  <Step title="Open crontab editor">
+    ```bash
+    crontab -e
+    ```
+  </Step>
+  
+  <Step title="Add cron entry">
+    Add a line to run the script daily at 3 AM:
+    
+    ```cron
+    0 3 * * * /path/to/addqbittorrenttrackerssh >> /var/log/qbt-trackers.log 2>&1
+    ```
+    
+    Or run weekly on Sundays:
+    
+    ```cron
+    0 3 * * 0 /path/to/addqbittorrenttrackerssh >> /var/log/qbt-trackers.log 2>&1
+    ```
+  </Step>
+  
+  <Step title="Save and verify">
+    Save the crontab file and verify it's scheduled:
+    
+    ```bash
+    crontab -l
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+Run the script weekly to keep your tracker list fresh without overwhelming the TrackersList servers.
+</Tip>
+
+## Tracker List Selection
+
+Choose which TrackersList to use in your script:
+
+<CodeGroup>
+
+```bash trackers_best (Recommended)
+# Use the top 20 best-performing trackers
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+```
+
+```bash trackers_all
+# Use all 112 available trackers
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt"
+```
+
+```bash trackers_all_udp
+# Use only UDP trackers (51 trackers)
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt"
+```
+
+</CodeGroup>
+
+## Manual Integration
+
+If you prefer not to use scripts, you can manually add trackers:
+
+<Steps>
+  <Step title="Get tracker list">
+    Download a tracker list from TrackersList:
+    - [trackers_best.txt](https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt)
+  </Step>
+  
+  <Step title="Open torrent properties">
+    In qBittorrent:
+    1. Right-click a torrent
+    2. Select **Edit trackers**
+  </Step>
+  
+  <Step title="Add trackers">
+    Paste the tracker URLs into the tracker list, one per line, and click **OK**.
+  </Step>
+  
+  <Step title="Apply to all torrents">
+    Repeat for each torrent, or use the **Category** feature to apply trackers to multiple torrents.
+  </Step>
+</Steps>
+
+<Warning>
+Manual integration requires periodic updates to maintain optimal tracker performance. Consider using the automated script for best results.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Script fails to connect to qBittorrent">
+    - Verify the Web UI is enabled and accessible
+    - Check username, password, and port in the script
+    - Ensure qBittorrent is running
+    - Check firewall settings if running on a remote server
+  </Accordion>
+  
+  <Accordion title="Trackers not being added">
+    - Verify the tracker list URL is accessible
+    - Check script permissions: `chmod +x addqbittorrenttrackerssh`
+    - Review script output for error messages
+    - Ensure qBittorrent API is responding correctly
+  </Accordion>
+  
+  <Accordion title="Duplicate trackers appearing">
+    The script may add trackers that already exist. This is usually harmless as qBittorrent handles duplicates, but you can manually remove duplicates through the Web UI or by modifying the script to check for existing trackers first.
+  </Accordion>
+</AccordionGroup>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="qBittorrent Documentation" icon="book" href="https://github.com/qbittorrent/qBittorrent/wiki">
+    Official qBittorrent documentation and wiki
+  </Card>
+  <Card title="Jorman's Scripts" icon="github" href="https://github.com/Jorman/Scripts">
+    Additional automation scripts for torrent clients
+  </Card>
+  <Card title="TrackersList Repository" icon="github" href="https://github.com/ngosang/trackerslist">
+    View all available tracker lists and formats
+  </Card>
+  <Card title="Web UI Guide" icon="globe" href="https://github.com/qbittorrent/qBittorrent/wiki/WebUI-API-(qBittorrent-4.1)">
+    qBittorrent Web UI API documentation
+  </Card>
+</CardGroup>

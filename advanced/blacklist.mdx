@@ -1,0 +1,463 @@
+---
+title: 'Tracker Blacklist'
+description: 'Understanding why certain trackers are excluded from TrackersList'
+icon: 'ban'
+---
+
+## Overview
+
+TrackersList maintains a blacklist of trackers that are excluded from the public lists. This ensures users only receive reliable, safe, and functional trackers. The blacklist is regularly updated as part of the automated testing process.
+
+<Info>
+  The blacklist helps maintain the quality and reliability of TrackersList by filtering out problematic trackers before they reach users.
+</Info>
+
+## Blacklist Categories
+
+Trackers are blacklisted for several distinct reasons:
+
+<CardGroup cols={2}>
+  <Card title="Antivirus Detection" icon="shield-exclamation">
+    Flagged by antivirus software as potentially malicious
+  </Card>
+  
+  <Card title="Technical Malfunction" icon="circle-exclamation">
+    Not responding or returning errors consistently
+  </Card>
+  
+  <Card title="Fake Seeds" icon="bug">
+    Artificially inflating seed/peer counts
+  </Card>
+  
+  <Card title="Registered Torrents Only" icon="lock">
+    Private trackers requiring registration
+  </Card>
+  
+  <Card title="Administrator Request" icon="user-shield">
+    Removed at the request of the tracker admin
+  </Card>
+  
+  <Card title="Duplicate Trackers" icon="copy">
+    Same tracker accessible via multiple URLs/IPs
+  </Card>
+</CardGroup>
+
+## Blacklist Statistics
+
+As of the latest update, the blacklist contains **343 entries** across various categories.
+
+## Examples by Category
+
+### Detected by Antivirus Software
+
+These trackers are flagged by antivirus software as potentially dangerous:
+
+<Warning>
+  Trackers flagged by antivirus software may contain malware, adware, or engage in malicious activity. They are permanently excluded.
+</Warning>
+
+```text
+https://tr.highstar.shop:443/announce
+http://btracker.top:11451/announce
+https://tr.fuckbitcoin.xyz:443/announce
+https://tracker.jiesen.life:8443/announce
+http://p2p.0g.cx:6969/announce
+```
+
+<Accordion title="Why are these dangerous?" icon="triangle-exclamation">
+  Trackers flagged by antivirus may:
+  - Inject malicious scripts or ads
+  - Harvest user data without consent
+  - Redirect to phishing sites
+  - Distribute malware payloads
+  - Perform man-in-the-middle attacks
+  
+  **Recommendation:** Never manually add these trackers to your client.
+</Accordion>
+
+### Malfunctioning Trackers
+
+Trackers that consistently fail to respond or return errors:
+
+```text
+http://bt-club.ws/announce # error
+http://open.touki.ru/announce.php # malfunction
+udp://anidex.moe:6969/announce # malfunction
+http://torrentsmd.com:8080/announce # malfunction
+http://irrenhaus.dyndns.dk:80/announce.php # malfunction
+http://carbon-bonsai-621.appspot.com/announce # malfunction
+http://data-bg.net:80/announce.php # malfunction
+udp://extracker.dahrkael.net:6969/announce # malfunction
+```
+
+<AccordionGroup>
+  <Accordion title="What causes malfunctions?" icon="wrench">
+    **Common causes:**
+    
+    - **Server down** - Hosting expired or terminated
+    - **Configuration errors** - Tracker software misconfigured
+    - **Network issues** - Unreachable due to ISP blocks
+    - **Abandoned projects** - Maintainer stopped supporting it
+    - **DDoS protection** - Overly aggressive rate limiting
+    - **SSL/TLS errors** - Certificate expired or invalid
+  </Accordion>
+  
+  <Accordion title="Can malfunctioning trackers return?" icon="rotate">
+    Yes! TrackersList's automated bot continuously checks all trackers, including blacklisted ones.
+    
+    If a previously malfunctioning tracker:
+    1. Starts responding correctly
+    2. Passes health checks for multiple days
+    3. Shows stable performance
+    
+    ...it can be automatically removed from the blacklist and re-added to the public lists.
+  </Accordion>
+</AccordionGroup>
+
+### Fake Seeds
+
+Trackers that report false peer/seed counts:
+
+```text
+http://bt.okmp3.ru:2710/announce # fake seeds
+```
+
+<Warning>
+  Fake seed trackers artificially inflate peer counts to appear more popular. This misleads users about torrent availability.
+</Warning>
+
+<Accordion title="How are fake seeds detected?" icon="magnifying-glass">
+  TrackersList's bot detects fake seeds by:
+  
+  1. **Cross-referencing** peer counts across multiple trackers
+  2. **Testing connectivity** to reported peers
+  3. **Analyzing patterns** in reported statistics
+  4. **Community reports** from users and other tracker operators
+  
+  Trackers consistently reporting fake data are permanently blacklisted.
+</Accordion>
+
+### Administrator Requests
+
+Trackers removed at the request of their system administrators:
+
+```text
+udp://tracker.breizh.pm:6969/announce # requested by sysadmin
+http://tracker.breizh.pm:6969/announce # requested by sysadmin
+```
+
+<Info>
+  Tracker administrators may request removal for various legitimate reasons:
+  - Transitioning to a private/invite-only tracker
+  - Server capacity limitations
+  - Legal or policy concerns
+  - Network infrastructure changes
+</Info>
+
+### Registered Torrents Only
+
+Private or semi-private trackers that only work with registered torrents:
+
+<Accordion title="What are registered torrents?" icon="question">
+  Some trackers only accept torrents that were:
+  - Created specifically for that tracker
+  - Registered in their database
+  - Associated with a user account
+  
+  Public trackers, in contrast, accept any torrent using the BitTorrent protocol.
+</Accordion>
+
+```text
+http://tracker2.postman.i2p/announce.php # registered torrents
+http://ehtracker.org:80/1/announce # registered torrents
+http://www.megatorrents.kg:80/announce.php # registered torrents
+http://bt.beatrice-raws.org:80/announce # registered torrents
+http://anidex.moe:6969/announce # registered torrents
+http://bt.nnm-club.info:2710/announce # registered torrents
+http://tracker.xfapi.top:7070/announce # registered torrents
+http://torrents.linuxmint.com:80/announce.php # registered torrents
+http://tracker.ddunlimited.net:6969/announce # registered torrents
+```
+
+<Note>
+  While these are legitimate trackers, they're excluded from public lists because:
+  - They won't work with arbitrary torrents
+  - They require user accounts/registration
+  - They're designed for specific communities
+  - Adding them to random torrents wastes resources
+</Note>
+
+### Sample of Additional Registered Torrent Trackers
+
+```text
+http://bttracker.debian.org:6969/announce # registered torrents
+http://tracker.frozen-layer.net:6969/announce.php # registered torrents
+http://kaztorka.org:80/announce.php # registered torrents
+http://music-torrent.net:2710/announce # registered torrents
+http://www.tvnihon.com:6969/announce # registered torrents
+http://tracker.tricitytorrents.com:2710/announce # registered torrents
+https://torrent.ubuntu.com/announce # registered torrents
+http://tracker.anirena.com:80/announce # registered torrents
+http://nyaa.tracker.wf:7777/announce # registered torrents
+http://bt1.archive.org:6969/announce # registered torrents
+http://tr.bangumi.moe:6969/announce # registered torrents
+http://tracker.gigatorrents.ws:2710/announce # registered torrents
+```
+
+<Tip>
+  If you want to use these trackers, visit their websites directly and follow their registration process.
+</Tip>
+
+### Duplicate Trackers
+
+Multiple URLs pointing to the same tracker:
+
+```text
+udp://tracker.zupix.online:1333/announce # duplicate of udp://tracker.zupix.online:6969/announce
+udp://tracker.zupix.online:1337/announce # duplicate of udp://tracker.zupix.online:6969/announce
+udp://zupix.online:6969/announce # duplicate of udp://tracker.zupix.online:6969/announce
+
+http://opentrackr.org:1337/announce # duplicate of http://tracker.opentrackr.org:1337/announce
+http://www.peckservers.com:9000/announce # duplicate of http://tracker.peckservers.com:9000/announce
+
+http://tracker.internetwarriors.net:1337/announce # duplicate of http://open.tracker.cl:1337/announce
+udp://tracker.internetwarriors.net:1337/announce # duplicate of udp://open.tracker.cl:1337/announce
+```
+
+<AccordionGroup>
+  <Accordion title="How are duplicates identified?" icon="fingerprint">
+    TrackersList's bot identifies duplicates by:
+    
+    1. **IP address matching** - Different domains pointing to same server
+    2. **Response fingerprinting** - Identical tracker software responses
+    3. **Timing correlation** - Same uptime/downtime patterns
+    4. **Administrative verification** - WHOIS and DNS records
+  </Accordion>
+  
+  <Accordion title="Why remove duplicates?" icon="clone">
+    Removing duplicates:
+    
+    - **Reduces list size** - Makes lists more manageable
+    - **Prevents redundant connections** - Clients don't connect to the same tracker multiple times
+    - **Improves performance** - Less overhead in BitTorrent clients
+    - **Cleaner data** - Easier to analyze tracker health
+  </Accordion>
+</AccordionGroup>
+
+### Sample of Duplicate Trackers
+
+Many popular trackers have multiple mirrors or alternate domains:
+
+```text
+# RARBG duplicates (all point to same infrastructure)
+udp://9.rarbg.to:2710/announce # duplicate of udp://9.rarbg.com:2810/announce
+udp://9.rarbg.to:2730/announce # duplicate of udp://9.rarbg.com:2810/announce
+udp://9.rarbg.me:2780/announce # duplicate of udp://9.rarbg.com:2810/announce
+udp://7.rarbg.me:2710/announce # duplicate of udp://9.rarbg.com:2810/announce
+udp://8.rarbg.com:2710/announce # duplicate of udp://9.rarbg.com:2810/announce
+
+# Leech.ie duplicates
+udp://t1.leech.ie:1337/announce # duplicate of udp://tracker.leech.ie:1337/announce
+udp://t2.leech.ie:1337/announce # duplicate of udp://tracker.leech.ie:1337/announce
+udp://t3.leech.ie:1337/announce # duplicate of udp://tracker.leech.ie:1337/announce
+
+# T-1.org duplicates
+udp://y.t-1.org:6969/announce # duplicate of udp://x.t-1.org:6969/announce
+udp://tracker1.t-1.org:6969/announce # duplicate of udp://tracker.t-1.org:6969/announce
+```
+
+## Deprecation and Redirects
+
+Some trackers are deprecated by their owners or redirect to other URLs:
+
+```text
+http://tracker.enitin.xyz:80/announce # redirects to https://tracker.enitin.xyz/announce
+
+https://t1.leech.ie:443/announce # deprecated by owner
+http://t1.leech.ie:80/announce # deprecated by owner
+wss://ws.peer.ooo:443/announce # deprecated by owner
+```
+
+<Info>
+  When a tracker redirects to a new URL, the old URL is blacklisted and the new URL is added to the active lists.
+</Info>
+
+## How the Blacklist is Maintained
+
+<Steps>
+  <Step title="Automated Monitoring">
+    A bot continuously checks all known trackers (including blacklisted ones) for:
+    - Response time and latency
+    - Error rates
+    - Peer counts and statistics
+    - SSL/TLS certificate validity
+  </Step>
+  
+  <Step title="Antivirus Scanning">
+    Tracker URLs are checked against:
+    - Multiple antivirus engines
+    - Malware databases
+    - Community reports
+    - Security research feeds
+  </Step>
+  
+  <Step title="Duplicate Detection">
+    Advanced algorithms identify:
+    - Same IP addresses
+    - Identical responses
+    - Related infrastructure
+    - Known mirror relationships
+  </Step>
+  
+  <Step title="Manual Review">
+    Human moderators review:
+    - Community submissions
+    - Administrator requests
+    - Edge cases and exceptions
+    - Appeals and reinstatement requests
+  </Step>
+  
+  <Step title="Daily Updates">
+    The blacklist is updated daily and synchronized with:
+    - Public tracker lists
+    - GitHub repository
+    - Mirror servers
+  </Step>
+</Steps>
+
+## Requesting Blacklist Changes
+
+<CardGroup cols={2}>
+  <Card title="Report a Bad Tracker" icon="flag">
+    Found a malicious or broken tracker in the lists?
+    
+    [Open an issue on GitHub](https://github.com/ngosang/trackerslist/issues/new)
+  </Card>
+  
+  <Card title="Request Removal" icon="user-shield">
+    Tracker administrator wanting to be removed?
+    
+    [Contact the maintainer](mailto:ngosang@hotmail.es) with proof of ownership
+  </Card>
+  
+  <Card title="Appeal a Blacklisting" icon="scale-balanced">
+    Think your tracker was wrongly blacklisted?
+    
+    [Open an issue](https://github.com/ngosang/trackerslist/issues/new) with evidence it's working correctly
+  </Card>
+  
+  <Card title="Report a Duplicate" icon="clone">
+    Found a duplicate tracker in the lists?
+    
+    [Submit details](https://github.com/ngosang/trackerslist/issues/new) showing they're the same
+  </Card>
+</CardGroup>
+
+## Understanding Blacklist Comments
+
+Each blacklist entry includes a comment explaining why it's excluded:
+
+```text
+# Format: <tracker_url> # <reason>
+
+https://tr.highstar.shop:443/announce # detected by antivirus software
+http://open.touki.ru/announce.php # malfunction
+http://bt.okmp3.ru:2710/announce # fake seeds
+udp://tracker.breizh.pm:6969/announce # requested by sysadmin
+http://anidex.moe:6969/announce # registered torrents
+udp://tracker.zupix.online:1337/announce # duplicate of udp://tracker.zupix.online:6969/announce
+https://t1.leech.ie:443/announce # deprecated by owner
+```
+
+<Accordion title="Blacklist Comment Types" icon="tags">
+  | Comment | Meaning |
+  |---------|----------|
+  | `detected by antivirus software` | Flagged as malicious |
+  | `malfunction` | Not responding or errors |
+  | `error` | Connection or protocol errors |
+  | `fake seeds` | Reporting false statistics |
+  | `requested by sysadmin` | Admin requested removal |
+  | `registered torrents` | Private/semi-private tracker |
+  | `duplicate of <url>` | Same tracker, different URL |
+  | `deprecated by owner` | Owner shut down tracker |
+  | `redirects to <url>` | URL changed permanently |
+  | `detected as suspicious` | Potential security concern |
+</Accordion>
+
+## Impact on Users
+
+<CardGroup cols={2}>
+  <Card title="Better Security" icon="shield-check">
+    Avoiding malicious trackers protects your system and data
+  </Card>
+  
+  <Card title="Improved Performance" icon="gauge-high">
+    No wasted connections to broken or fake trackers
+  </Card>
+  
+  <Card title="Higher Quality" icon="star">
+    Only working, reliable trackers in your client
+  </Card>
+  
+  <Card title="Cleaner Lists" icon="broom">
+    Shorter, more manageable tracker lists
+  </Card>
+</CardGroup>
+
+## Viewing the Full Blacklist
+
+The complete blacklist is publicly available:
+
+<Card title="blacklist.txt" icon="file-lines" href="https://github.com/ngosang/trackerslist/blob/master/blacklist.txt">
+  View the full blacklist on GitHub
+  
+  Updated daily with 343 entries and growing
+</Card>
+
+<Tip>
+  The blacklist is a valuable resource for:
+  - Tracker operators wanting to avoid problematic peers
+  - Security researchers studying malicious trackers
+  - BitTorrent client developers implementing filtering
+  - Users manually curating their tracker lists
+</Tip>
+
+## Best Practices
+
+<Steps>
+  <Step title="Use Official Lists">
+    Always use TrackersList's curated lists instead of random tracker URLs found online
+  </Step>
+  
+  <Step title="Check Blacklist">
+    Before manually adding a tracker, verify it's not on the blacklist
+  </Step>
+  
+  <Step title="Report Issues">
+    If you encounter a problematic tracker, report it to help the community
+  </Step>
+  
+  <Step title="Keep Updated">
+    Use lists that update automatically or refresh them regularly
+  </Step>
+  
+  <Step title="Trust the Process">
+    The automated bot and community review process is thorough and reliable
+  </Step>
+</Steps>
+
+## Related Resources
+
+<CardGroup cols={3}>
+  <Card title="I2P Trackers" icon="shield-halved" href="/advanced/i2p-trackers">
+    Anonymous network trackers
+  </Card>
+  
+  <Card title="Yggdrasil Trackers" icon="diagram-project" href="/advanced/yggdrasil-trackers">
+    Mesh network trackers
+  </Card>
+  
+  <Card title="WebTorrent" icon="wifi" href="/advanced/webtorrent">
+    WebSocket tracker information
+  </Card>
+</CardGroup>

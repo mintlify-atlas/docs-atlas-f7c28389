@@ -1,0 +1,698 @@
+---
+title: 'Mirror Infrastructure'
+description: 'Access tracker lists through multiple mirrors for improved reliability and performance'
+icon: 'clone'
+---
+
+## Overview
+
+TrackersList is available through three different mirror sources to ensure maximum availability and global performance. Each mirror serves identical content updated daily.
+
+<CardGroup cols={3}>
+  <Card title="GitHub Raw" icon="github">
+    Primary source, direct from repository
+  </Card>
+  <Card title="GitHub Pages" icon="browser">
+    Static hosting with global CDN
+  </Card>
+  <Card title="jsDelivr CDN" icon="server">
+    Public CDN with aggressive caching
+  </Card>
+</CardGroup>
+
+---
+
+## Mirror Comparison
+
+<Tabs>
+  <Tab title="GitHub Raw">
+    ### Primary Source
+    
+    **Base URL:**
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/
+    ```
+    
+    <ParamField path="Availability" type="High">
+      Direct access to repository files with GitHub's infrastructure
+    </ParamField>
+    
+    <ParamField path="Rate Limits">
+      - **Authenticated:** 5,000 requests/hour
+      - **Unauthenticated:** 60 requests/hour per IP
+    </ParamField>
+    
+    <ParamField path="Caching" type="Moderate">
+      GitHub CDN caching with standard TTL
+    </ParamField>
+    
+    <ParamField path="Latency" type="Good">
+      Served from GitHub's global CDN
+    </ParamField>
+    
+    **Example:**
+    ```bash
+    curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+    
+    <Tip>
+      **Best for:** Development, testing, and applications with authentication
+    </Tip>
+  </Tab>
+  
+  <Tab title="GitHub Pages">
+    ### Static Hosting Mirror
+    
+    **Base URL:**
+    ```
+    https://ngosang.github.io/trackerslist/
+    ```
+    
+    <ParamField path="Availability" type="Very High">
+      Served from GitHub Pages with dedicated infrastructure
+    </ParamField>
+    
+    <ParamField path="Rate Limits">
+      More generous than raw.githubusercontent.com
+      - Designed for public web traffic
+      - No documented hard limits
+    </ParamField>
+    
+    <ParamField path="Caching" type="Aggressive">
+      Optimized for static content delivery with longer TTL
+    </ParamField>
+    
+    <ParamField path="Latency" type="Excellent">
+      Global CDN with edge caching
+    </ParamField>
+    
+    **Example:**
+    ```bash
+    curl https://ngosang.github.io/trackerslist/trackers_best.txt
+    ```
+    
+    <Tip>
+      **Best for:** Production applications, public-facing services, high-volume requests
+    </Tip>
+  </Tab>
+  
+  <Tab title="jsDelivr CDN">
+    ### Public CDN Mirror
+    
+    **Base URL:**
+    ```
+    https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/
+    ```
+    
+    <ParamField path="Availability" type="Very High">
+      Multi-CDN infrastructure with automatic failover
+    </ParamField>
+    
+    <ParamField path="Rate Limits">
+      Very high limits for open source projects:
+      - No request limits for most use cases
+      - Designed for high-traffic scenarios
+    </ParamField>
+    
+    <ParamField path="Caching" type="Very Aggressive">
+      Optimized for static assets with long-term caching
+    </ParamField>
+    
+    <ParamField path="Latency" type="Best">
+      Multi-CDN with 200+ global edge locations
+    </ParamField>
+    
+    **Example:**
+    ```bash
+    curl https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt
+    ```
+    
+    <Tip>
+      **Best for:** High-availability production services, global distribution, maximum performance
+    </Tip>
+  </Tab>
+</Tabs>
+
+---
+
+## Available Mirrors by Endpoint
+
+### Curated Lists
+
+<Accordion title="trackers_best.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_best.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+### Protocol-Specific Lists
+
+<Accordion title="trackers_all_udp.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_udp.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_udp.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all_http.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_http.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_http.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_http.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all_https.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_https.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_https.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_https.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all_ws.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ws.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_ws.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_ws.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+### Network-Specific Lists
+
+<Accordion title="trackers_all_i2p.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_i2p.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_i2p.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_i2p.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all_yggdrasil.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_yggdrasil.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_yggdrasil.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_yggdrasil.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+### IP-Based Lists
+
+<Accordion title="trackers_best_ip.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_best_ip.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best_ip.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all_ip.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_ip.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_ip.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+<Accordion title="trackers_all_yggdrasil_ip.txt">
+  <CodeGroup>
+  ```bash GitHub Raw
+  https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_yggdrasil_ip.txt
+  ```
+  
+  ```bash GitHub Pages
+  https://ngosang.github.io/trackerslist/trackers_all_yggdrasil_ip.txt
+  ```
+  
+  ```bash jsDelivr CDN
+  https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_yggdrasil_ip.txt
+  ```
+  </CodeGroup>
+</Accordion>
+
+---
+
+## When to Use Each Mirror
+
+<CardGroup cols={2}>
+  <Card title="Development" icon="code">
+    **Use:** GitHub Raw
+    
+    Good for:
+    - Testing and development
+    - Low-volume requests
+    - Latest changes verification
+  </Card>
+  
+  <Card title="Production" icon="rocket">
+    **Use:** GitHub Pages or jsDelivr
+    
+    Good for:
+    - Production applications
+    - High-availability requirements
+    - Public-facing services
+  </Card>
+  
+  <Card title="High Traffic" icon="chart-line">
+    **Use:** jsDelivr CDN
+    
+    Good for:
+    - Very high request volumes
+    - Global user base
+    - Maximum performance needs
+  </Card>
+  
+  <Card title="Fallback Strategy" icon="shield">
+    **Use:** All three with failover
+    
+    Good for:
+    - Mission-critical applications
+    - Maximum reliability
+    - Handling mirror downtime
+  </Card>
+</CardGroup>
+
+---
+
+## Caching Behavior
+
+<Tabs>
+  <Tab title="Cache Headers">
+    ### Response Headers
+    
+    Each mirror returns different caching headers:
+    
+    **GitHub Raw:**
+    ```http
+    Cache-Control: max-age=300
+    ETag: "..."
+    X-Content-Type-Options: nosniff
+    ```
+    
+    **GitHub Pages:**
+    ```http
+    Cache-Control: max-age=600
+    ETag: "..."
+    X-GitHub-Request-Id: ...
+    ```
+    
+    **jsDelivr:**
+    ```http
+    Cache-Control: public, max-age=86400
+    CDN-Cache-Control: public, max-age=31536000
+    ETag: "..."
+    ```
+  </Tab>
+  
+  <Tab title="Update Propagation">
+    ### Time to Propagate
+    
+    After lists update (3 AM UTC daily), propagation times vary:
+    
+    <Steps>
+      <Step title="GitHub Raw: Immediate">
+        Changes appear instantly (< 1 minute)
+      </Step>
+      <Step title="GitHub Pages: 2-10 minutes">
+        Build and deployment time for static site
+      </Step>
+      <Step title="jsDelivr: 5-60 minutes">
+        CDN cache purge and edge propagation
+      </Step>
+    </Steps>
+    
+    <Note>
+      For the freshest data, use GitHub Raw. For performance, accept jsDelivr's delay.
+    </Note>
+  </Tab>
+  
+  <Tab title="Client Caching">
+    ### Recommended Client Strategy
+    
+    <CodeGroup>
+    ```python Python with Caching
+    import requests
+    from datetime import datetime, timedelta
+    import pickle
+    
+    CACHE_FILE = 'trackers_cache.pkl'
+    CACHE_DURATION = timedelta(hours=24)
+    
+    def get_trackers_cached():
+        try:
+            with open(CACHE_FILE, 'rb') as f:
+                cache = pickle.load(f)
+                if datetime.now() - cache['timestamp'] < CACHE_DURATION:
+                    return cache['trackers']
+        except FileNotFoundError:
+            pass
+        
+        # Try mirrors in order of preference
+        mirrors = [
+            'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',
+            'https://ngosang.github.io/trackerslist/trackers_best.txt',
+            'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt'
+        ]
+        
+        for mirror in mirrors:
+            try:
+                response = requests.get(mirror, timeout=10)
+                response.raise_for_status()
+                trackers = [line.strip() for line in response.text.split('\n') if line.strip()]
+                
+                # Cache the result
+                with open(CACHE_FILE, 'wb') as f:
+                    pickle.dump({'timestamp': datetime.now(), 'trackers': trackers}, f)
+                
+                return trackers
+            except requests.RequestException:
+                continue
+        
+        raise Exception('All mirrors failed')
+    ```
+    
+    ```javascript JavaScript with Caching
+    const CACHE_KEY = 'trackerslist_cache';
+    const CACHE_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+    
+    async function getTrackersCached() {
+      // Check localStorage cache
+      const cached = localStorage.getItem(CACHE_KEY);
+      if (cached) {
+        const { timestamp, trackers } = JSON.parse(cached);
+        if (Date.now() - timestamp < CACHE_DURATION) {
+          return trackers;
+        }
+      }
+      
+      // Try mirrors with failover
+      const mirrors = [
+        'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',
+        'https://ngosang.github.io/trackerslist/trackers_best.txt',
+        'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt'
+      ];
+      
+      for (const mirror of mirrors) {
+        try {
+          const response = await fetch(mirror, { signal: AbortSignal.timeout(10000) });
+          const text = await response.text();
+          const trackers = text.split('\n').filter(line => line.trim());
+          
+          // Cache the result
+          localStorage.setItem(CACHE_KEY, JSON.stringify({
+            timestamp: Date.now(),
+            trackers
+          }));
+          
+          return trackers;
+        } catch (error) {
+          continue;
+        }
+      }
+      
+      throw new Error('All mirrors failed');
+    }
+    ```
+    </CodeGroup>
+  </Tab>
+</Tabs>
+
+---
+
+## Failover Implementation
+
+<Steps>
+  <Step title="Define Mirror Priority">
+    List mirrors in order of preference based on your use case:
+    
+    ```javascript
+    const mirrors = [
+      'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',  // Fastest
+      'https://ngosang.github.io/trackerslist/trackers_best.txt',                    // Reliable
+      'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt' // Authoritative
+    ];
+    ```
+  </Step>
+  
+  <Step title="Implement Timeout">
+    Set reasonable timeouts (5-10 seconds) for each request
+  </Step>
+  
+  <Step title="Try Next Mirror on Failure">
+    On timeout or error, immediately try the next mirror
+  </Step>
+  
+  <Step title="Log and Monitor">
+    Track which mirrors are failing to detect infrastructure issues
+  </Step>
+</Steps>
+
+<CodeGroup>
+```go Go Failover Example
+package main
+
+import (
+    "context"
+    "fmt"
+    "io"
+    "net/http"
+    "time"
+)
+
+func fetchWithFailover(endpoint string) (string, error) {
+    mirrors := []string{
+        "https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/",
+        "https://ngosang.github.io/trackerslist/",
+        "https://raw.githubusercontent.com/ngosang/trackerslist/master/",
+    }
+    
+    client := &http.Client{
+        Timeout: 10 * time.Second,
+    }
+    
+    for _, mirror := range mirrors {
+        url := mirror + endpoint
+        ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+        defer cancel()
+        
+        req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+        if err != nil {
+            continue
+        }
+        
+        resp, err := client.Do(req)
+        if err != nil {
+            continue
+        }
+        defer resp.Body.Close()
+        
+        if resp.StatusCode == 200 {
+            body, err := io.ReadAll(resp.Body)
+            if err == nil {
+                return string(body), nil
+            }
+        }
+    }
+    
+    return "", fmt.Errorf("all mirrors failed for %s", endpoint)
+}
+```
+
+```rust Rust Failover Example
+use reqwest;
+use std::time::Duration;
+
+async fn fetch_with_failover(endpoint: &str) -> Result<String, Box<dyn std::error::Error>> {
+    let mirrors = vec![
+        "https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/",
+        "https://ngosang.github.io/trackerslist/",
+        "https://raw.githubusercontent.com/ngosang/trackerslist/master/",
+    ];
+    
+    let client = reqwest::Client::builder()
+        .timeout(Duration::from_secs(10))
+        .build()?;
+    
+    for mirror in mirrors {
+        let url = format!("{}{}", mirror, endpoint);
+        
+        match client.get(&url).send().await {
+            Ok(response) if response.status().is_success() => {
+                match response.text().await {
+                    Ok(text) => return Ok(text),
+                    Err(_) => continue,
+                }
+            }
+            _ => continue,
+        }
+    }
+    
+    Err("All mirrors failed".into())
+}
+```
+</CodeGroup>
+
+---
+
+## Mirror Status Monitoring
+
+<Info>
+  All mirrors are typically highly available (99.9%+ uptime), but implementing failover ensures your application remains resilient during rare outages.
+</Info>
+
+**Recommended Monitoring:**
+
+<Tabs>
+  <Tab title="Application-Level">
+    Track mirror performance within your application:
+    
+    - Response times for each mirror
+    - Failure rates
+    - Which mirror is being used most often
+    - Alert if all mirrors fail
+  </Tab>
+  
+  <Tab title="External Monitoring">
+    Use external services to monitor mirror availability:
+    
+    - [UptimeRobot](https://uptimerobot.com/)
+    - [Pingdom](https://www.pingdom.com/)
+    - [StatusCake](https://www.statuscake.com/)
+    
+    Monitor all three mirror base URLs with 5-minute intervals
+  </Tab>
+</Tabs>
+
+---
+
+## Performance Comparison
+
+<Note>
+  Actual performance varies by geographic location and network conditions. Test from your deployment regions.
+</Note>
+
+**Typical Global Response Times:**
+
+| Mirror | North America | Europe | Asia | Australia |
+|--------|--------------|---------|------|----------|
+| jsDelivr CDN | 20-50ms | 15-40ms | 30-60ms | 40-80ms |
+| GitHub Pages | 40-80ms | 30-70ms | 60-120ms | 80-150ms |
+| GitHub Raw | 50-100ms | 40-90ms | 80-150ms | 100-200ms |
+
+**Throughput:**
+- All mirrors handle 100+ concurrent requests easily
+- jsDelivr scales to thousands of requests/second
+- GitHub Pages handles hundreds of requests/second
+
+---
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="jsDelivr Documentation" icon="book" href="https://www.jsdelivr.com/documentation">
+    Learn more about jsDelivr features and limits
+  </Card>
+  
+  <Card title="GitHub Pages Docs" icon="github" href="https://docs.github.com/en/pages">
+    Understanding GitHub Pages infrastructure
+  </Card>
+  
+  <Card title="Rate Limits" icon="gauge-high" href="https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting">
+    GitHub API and raw content rate limits
+  </Card>
+  
+  <Card title="Best Practices" icon="lightbulb" href="/guides/torrent-clients">
+    Integration patterns and optimization tips
+  </Card>
+</CardGroup>

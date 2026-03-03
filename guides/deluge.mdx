@@ -1,0 +1,329 @@
+---
+title: 'Deluge Integration'
+description: 'Add TrackersList to Deluge using the default-trackers plugin'
+keywords: ['deluge', 'plugin', 'integration', 'automation', 'default-trackers']
+icon: 'd'
+---
+
+Integrate TrackersList with Deluge using the default-trackers plugin, which automatically adds trackers to new and existing torrents.
+
+## Overview
+
+The Deluge default-trackers plugin provides native integration with TrackersList, automatically fetching and adding trackers to your torrents. This is the recommended method for Deluge users as it integrates directly with the Deluge interface.
+
+## Prerequisites
+
+<Info>
+Before you begin, ensure you have:
+- Deluge 2.0 or higher installed
+- Python 3.6 or higher
+- Access to install Deluge plugins
+</Info>
+
+## Plugin Installation
+
+The deluge-default-trackers plugin is maintained by the community and provides automatic tracker management.
+
+<Card title="deluge-default-trackers" icon="github" href="https://github.com/stefantalpalaru/deluge-default-trackers">
+  Official plugin repository by stefantalpalaru
+</Card>
+
+### Installing from GitHub
+
+<Steps>
+  <Step title="Download the plugin">
+    Clone the repository:
+    
+    ```bash
+    git clone https://github.com/stefantalpalaru/deluge-default-trackers.git
+    cd deluge-default-trackers
+    ```
+  </Step>
+  
+  <Step title="Build the plugin">
+    Create the plugin egg file:
+    
+    ```bash
+    python setup.py bdist_egg
+    ```
+    
+    The plugin file will be created in the `dist/` directory with a name like:
+    `DefaultTrackers-0.2-py3.X.egg`
+  </Step>
+  
+  <Step title="Install in Deluge">
+    **Via GUI:**
+    1. Open Deluge
+    2. Go to **Preferences** > **Plugins**
+    3. Click **Install Plugin**
+    4. Navigate to the `dist/` folder and select the `.egg` file
+    5. Enable the **DefaultTrackers** checkbox
+    
+    **Via Command Line:**
+    ```bash
+    # Copy to Deluge plugins directory
+    mkdir -p ~/.config/deluge/plugins
+    cp dist/DefaultTrackers-*.egg ~/.config/deluge/plugins/
+    ```
+  </Step>
+  
+  <Step title="Restart Deluge">
+    Restart Deluge daemon and client:
+    
+    ```bash
+    systemctl restart deluged
+    systemctl restart deluge-web  # if using web UI
+    ```
+    
+    Or restart the GUI application.
+  </Step>
+</Steps>
+
+## Configuration
+
+After installation, configure the plugin to use TrackersList.
+
+<Steps>
+  <Step title="Open plugin preferences">
+    1. Go to **Preferences** > **Plugins**
+    2. Select **DefaultTrackers**
+    3. Click **Configure** or **Preferences**
+  </Step>
+  
+  <Step title="Add tracker list URL">
+    In the plugin settings, add the TrackersList URL:
+    
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+    
+    Or choose another list:
+    - `trackers_all.txt` - All 112 trackers
+    - `trackers_all_udp.txt` - UDP trackers only
+    - `trackers_all_http.txt` - HTTP trackers only
+  </Step>
+  
+  <Step title="Configure update settings">
+    Set how often the plugin should fetch new trackers:
+    - **Update interval**: Daily, Weekly, or Manual
+    - **Add to existing torrents**: Enable to update all torrents
+    - **Add to new torrents**: Enable to automatically add trackers to new downloads
+  </Step>
+  
+  <Step title="Save and apply">
+    Click **OK** or **Apply** to save the configuration. The plugin will immediately fetch the tracker list and begin adding trackers to your torrents.
+  </Step>
+</Steps>
+
+<Tip>
+Enable "Add to existing torrents" to automatically update trackers for all torrents in your library, not just new ones.
+</Tip>
+
+## Plugin Features
+
+The default-trackers plugin provides several useful features:
+
+### Automatic Updates
+
+- Fetches tracker lists on a schedule
+- Updates existing torrents automatically
+- Adds trackers to new torrents when added
+
+### Customization
+
+- Support for multiple tracker list URLs
+- Configurable update intervals
+- Option to add custom trackers manually
+
+### Integration
+
+- Native Deluge UI integration
+- Works with both GTK and Web interfaces
+- Compatible with Deluge daemon mode
+
+## Manual Tracker Addition
+
+If you prefer to manage trackers manually without the plugin:
+
+<Steps>
+  <Step title="Download tracker list">
+    Download a TrackersList file:
+    
+    ```bash
+    curl -o trackers.txt https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+  </Step>
+  
+  <Step title="Open torrent details">
+    In Deluge:
+    1. Right-click a torrent
+    2. Select **Edit Trackers**
+  </Step>
+  
+  <Step title="Add trackers">
+    Copy the tracker URLs from `trackers.txt` and paste them into the tracker list. Each tracker should be on a new line.
+  </Step>
+  
+  <Step title="Apply changes">
+    Click **OK** to save. Deluge will immediately attempt to connect to the new trackers.
+  </Step>
+</Steps>
+
+<Warning>
+Manual tracker management requires repeating this process for each torrent and doesn't receive automatic updates. The plugin method is strongly recommended.
+</Warning>
+
+## Advanced Configuration
+
+### Using Multiple Tracker Lists
+
+The plugin supports adding multiple tracker list URLs:
+
+```
+https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt
+```
+
+This combines trackers from multiple lists for maximum peer discovery.
+
+### Custom Tracker Lists
+
+You can also host your own tracker list:
+
+1. Create a text file with one tracker URL per line
+2. Host it on a web server or local network
+3. Add the URL to the plugin configuration
+
+### Daemon Mode Configuration
+
+For headless servers running Deluge daemon:
+
+<Steps>
+  <Step title="Connect via deluge-console">
+    ```bash
+    deluge-console
+    ```
+  </Step>
+  
+  <Step title="Enable plugin">
+    ```
+    plugin -e DefaultTrackers
+    ```
+  </Step>
+  
+  <Step title="Configure via config file">
+    Edit `~/.config/deluge/plugins/defaulttrackers.conf`:
+    
+    ```json
+    {
+      "trackers_list_url": "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt",
+      "update_interval": 86400,
+      "add_to_new": true,
+      "add_to_existing": true
+    }
+    ```
+  </Step>
+  
+  <Step title="Restart daemon">
+    ```bash
+    systemctl restart deluged
+    ```
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="Plugin not appearing in list">
+    - Verify the .egg file is in `~/.config/deluge/plugins/`
+    - Check Deluge version compatibility (requires Deluge 2.0+)
+    - Ensure Python version matches: `python --version`
+    - Rebuild the plugin with the correct Python version
+    - Check Deluge logs: `~/.config/deluge/deluged.log`
+  </Accordion>
+  
+  <Accordion title="Trackers not being added">
+    - Verify the tracker list URL is accessible
+    - Check plugin configuration and ensure it's enabled
+    - Check update interval settings
+    - Review Deluge logs for error messages
+    - Try manually triggering an update in plugin settings
+  </Accordion>
+  
+  <Accordion title="Plugin fails to install">
+    - Ensure you have the correct Python development packages:
+      ```bash
+      sudo apt-get install python3-dev python3-setuptools
+      ```
+    - Rebuild the plugin egg file
+    - Check for error messages during the build process
+    - Verify file permissions on the plugins directory
+  </Accordion>
+  
+  <Accordion title="Duplicate trackers appearing">
+    The plugin may add trackers that already exist. This is usually harmless as Deluge handles duplicates automatically, but you can:
+    - Manually remove duplicates through the torrent's tracker editor
+    - Modify the plugin configuration to prevent re-adding existing trackers
+  </Accordion>
+</AccordionGroup>
+
+## Tracker List Selection
+
+Choose the appropriate TrackersList for your needs:
+
+<Tabs>
+  <Tab title="trackers_best">
+    **Recommended for most users**
+    
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+    
+    - 20 best-performing trackers
+    - Sorted by popularity and latency
+    - Updated daily
+  </Tab>
+  
+  <Tab title="trackers_all">
+    **Maximum peer discovery**
+    
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+    ```
+    
+    - All 112 working trackers
+    - Best for rare or unpopular torrents
+    - May increase overhead slightly
+  </Tab>
+  
+  <Tab title="Protocol-specific">
+    **Filter by protocol**
+    
+    UDP only:
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt
+    ```
+    
+    HTTP only:
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_http.txt
+    ```
+  </Tab>
+</Tabs>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Deluge Documentation" icon="book" href="https://github.com/deluge-torrent/deluge">
+    Official Deluge repository and documentation
+  </Card>
+  <Card title="Plugin Repository" icon="github" href="https://github.com/stefantalpalaru/deluge-default-trackers">
+    Default-trackers plugin source code and issues
+  </Card>
+  <Card title="TrackersList Repository" icon="github" href="https://github.com/ngosang/trackerslist">
+    View all available tracker lists
+  </Card>
+  <Card title="Deluge Plugins" icon="puzzle-piece" href="https://dev.deluge-torrent.org/wiki/Plugins">
+    Guide to Deluge plugin development and installation
+  </Card>
+</CardGroup>

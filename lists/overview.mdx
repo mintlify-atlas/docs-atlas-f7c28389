@@ -1,0 +1,122 @@
+---
+title: Tracker Lists Overview
+description: Complete overview of all available BitTorrent tracker lists including best, all, protocol-specific, and IP address versions
+icon: list
+---
+
+TrackersList provides curated, automatically-updated collections of public BitTorrent trackers optimized for different use cases. All lists are updated daily and sorted by popularity and latency.
+
+## Available Lists
+
+<CardGroup cols={2}>
+  <Card title="Best Trackers" icon="star" href="/lists/best-trackers">
+    Top 20 most reliable trackers for general use
+  </Card>
+  <Card title="All Trackers" icon="database" href="/lists/all-trackers">
+    Complete list of 112 working public trackers
+  </Card>
+  <Card title="Protocol-Specific" icon="network-wired" href="/lists/protocol-specific">
+    Lists filtered by protocol (UDP, HTTP, HTTPS, WebSocket)
+  </Card>
+  <Card title="IP Addresses" icon="router" href="/lists/ip-addresses">
+    Trackers with IP addresses for DNS-blocked environments
+  </Card>
+</CardGroup>
+
+## List Statistics
+
+<AccordionGroup>
+  <Accordion title="General Lists" icon="list">
+    - **trackers_best.txt**: 20 trackers - Top-performing trackers
+    - **trackers_all.txt**: 112 trackers - Complete public tracker collection
+  </Accordion>
+  
+  <Accordion title="Protocol-Specific Lists" icon="network-wired">
+    - **trackers_all_udp.txt**: 51 UDP trackers
+    - **trackers_all_http.txt**: 47 HTTP trackers
+    - **trackers_all_https.txt**: 14 HTTPS trackers
+    - **trackers_all_ws.txt**: 2 WebSocket trackers
+  </Accordion>
+  
+  <Accordion title="IP Address Lists" icon="router">
+    - **trackers_best_ip.txt**: 20 trackers with IP addresses
+    - **trackers_all_ip.txt**: 61 trackers with IP addresses
+  </Accordion>
+</AccordionGroup>
+
+## How Lists Are Maintained
+
+<Steps>
+  <Step title="Automated Checking">
+    A bot automatically checks all trackers daily for availability and performance
+  </Step>
+  <Step title="Deduplication">
+    Trackers with the same domain or pointing to the same IP address are removed
+  </Step>
+  <Step title="Sorting">
+    Trackers are sorted by popularity and latency (best to worst)
+  </Step>
+  <Step title="Daily Updates">
+    All lists are regenerated and published every day with the latest data
+  </Step>
+</Steps>
+
+## Choosing the Right List
+
+<Warning>
+  For most users, **trackers_best.txt** is recommended. It contains the 20 most reliable trackers and provides excellent performance without overwhelming your torrent client.
+</Warning>
+
+### Decision Guide
+
+| Use Case | Recommended List | Reason |
+|----------|------------------|--------|
+| General torrenting | `trackers_best.txt` | Optimal balance of speed and reliability |
+| Maximum peer discovery | `trackers_all.txt` | Access to all 112 available trackers |
+| Firewall restrictions | Protocol-specific lists | Only use allowed protocols |
+| DNS blocking/censorship | IP address lists | Bypass DNS-level blocking |
+| UDP-only networks | `trackers_all_udp.txt` | Many networks only allow UDP |
+| Corporate/school network | `trackers_all_https.txt` | HTTPS often passes firewalls |
+
+<Note>
+  More trackers doesn't always mean better performance. The `trackers_best.txt` list with 20 carefully selected trackers often performs better than using all 112 trackers.
+</Note>
+
+## Format Specification
+
+All tracker lists use a standardized format:
+
+```text
+protocol://domain:port/announce
+
+protocol://domain:port/announce
+
+protocol://domain:port/announce
+```
+
+<Info>
+  Each tracker URL is followed by a blank line. This format is compatible with most BitTorrent clients including qBittorrent, Transmission, Deluge, and more.
+</Info>
+
+## Download Locations
+
+Each list is available from three locations:
+
+1. **GitHub Raw** - `https://raw.githubusercontent.com/ngosang/trackerslist/master/[filename].txt`
+2. **GitHub Pages Mirror** - `https://ngosang.github.io/trackerslist/[filename].txt`
+3. **jsDelivr CDN** - `https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/[filename].txt`
+
+<Tip>
+  Use the jsDelivr CDN for the fastest downloads with global edge caching. Use GitHub Pages if jsDelivr is blocked in your region.
+</Tip>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Integration Guide" icon="code" href="/guides/torrent-clients">
+    Learn how to add these trackers to your torrent client
+  </Card>
+  <Card title="API Reference" icon="terminal" href="/api/endpoints">
+    Programmatically access tracker lists
+  </Card>
+</CardGroup>

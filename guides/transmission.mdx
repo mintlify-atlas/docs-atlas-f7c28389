@@ -1,0 +1,361 @@
+---
+title: 'Transmission Integration'
+description: 'Add TrackersList to Transmission using Python or Bash scripts'
+keywords: ['transmission', 'integration', 'python', 'bash', 'script', 'automation']
+icon: 't'
+---
+
+Integrate TrackersList with Transmission using community-maintained scripts that automatically update trackers for your torrents. Multiple implementations are available in both Python and Bash.
+
+## Overview
+
+Transmission integration scripts connect to your Transmission daemon via RPC and add the latest TrackersList trackers to all active torrents. Several community-maintained options are available.
+
+## Prerequisites
+
+<Info>
+Before you begin, ensure you have:
+- Transmission daemon running
+- Python 3.x or Bash shell
+- `transmission-remote` CLI tool installed
+- RPC access enabled in Transmission settings
+</Info>
+
+## Available Scripts
+
+Multiple community-maintained tools are available for Transmission integration:
+
+<CardGroup cols={2}>
+  <Card title="Python Script" icon="python" href="https://github.com/blind-oracle/transmission-trackers">
+    Full-featured Python implementation by blind-oracle
+  </Card>
+  <Card title="Bash Script 1" icon="terminal" href="https://github.com/AndrewMarchukov/tracker-add">
+    Lightweight bash script by AndrewMarchukov
+  </Card>
+  <Card title="Bash Script 2" icon="terminal" href="https://github.com/oilervoss/transmission">
+    Alternative bash implementation by oilervoss
+  </Card>
+  <Card title="Bash Script 3" icon="terminal" href="https://github.com/Jorman/Scripts#addtransmissiontrackerssh">
+    Additional bash script by Jorman
+  </Card>
+</CardGroup>
+
+## Python Script Installation
+
+The Python script provides the most features and is actively maintained.
+
+<Steps>
+  <Step title="Install the script">
+    Clone the repository:
+    
+    ```bash
+    git clone https://github.com/blind-oracle/transmission-trackers.git
+    cd transmission-trackers
+    ```
+  </Step>
+  
+  <Step title="Install dependencies">
+    Install required Python packages:
+    
+    ```bash
+    pip install -r requirements.txt
+    ```
+    
+    Or manually install:
+    
+    ```bash
+    pip install transmission-rpc requests
+    ```
+  </Step>
+  
+  <Step title="Configure Transmission RPC">
+    Ensure RPC is enabled in Transmission. Edit `~/.config/transmission-daemon/settings.json`:
+    
+    ```json
+    "rpc-enabled": true,
+    "rpc-username": "your_username",
+    "rpc-password": "your_password",
+    "rpc-port": 9091,
+    "rpc-whitelist-enabled": false
+    ```
+    
+    Restart Transmission daemon after changes:
+    
+    ```bash
+    systemctl restart transmission-daemon
+    ```
+  </Step>
+  
+  <Step title="Run the script">
+    Execute the script with your RPC credentials:
+    
+    ```bash
+    python transmission-trackers.py \
+      --host localhost \
+      --port 9091 \
+      --user your_username \
+      --password your_password
+    ```
+  </Step>
+</Steps>
+
+## Bash Script Installation
+
+For a lightweight solution without Python dependencies, use one of the bash scripts.
+
+### Using AndrewMarchukov's Script
+
+<Steps>
+  <Step title="Download the script">
+    ```bash
+    git clone https://github.com/AndrewMarchukov/tracker-add.git
+    cd tracker-add
+    chmod +x tracker-add.sh
+    ```
+  </Step>
+  
+  <Step title="Configure variables">
+    Edit the script to set your Transmission settings:
+    
+    ```bash
+    nano tracker-add.sh
+    ```
+    
+    Update:
+    - Transmission RPC host and port
+    - Username and password
+    - Tracker list URL (use TrackersList URL)
+  </Step>
+  
+  <Step title="Run the script">
+    ```bash
+    ./tracker-add.sh
+    ```
+  </Step>
+</Steps>
+
+### Using Jorman's Script
+
+<Steps>
+  <Step title="Download the script">
+    ```bash
+    wget https://raw.githubusercontent.com/Jorman/Scripts/master/addtransmissiontrackerssh
+    chmod +x addtransmissiontrackerssh
+    ```
+  </Step>
+  
+  <Step title="Edit configuration">
+    ```bash
+    nano addtransmissiontrackerssh
+    ```
+    
+    Configure Transmission connection details and tracker list URL.
+  </Step>
+  
+  <Step title="Execute">
+    ```bash
+    ./addtransmissiontrackerssh
+    ```
+  </Step>
+</Steps>
+
+## Automation
+
+Schedule automatic tracker updates using cron or systemd timers.
+
+### Cron Setup
+
+<Steps>
+  <Step title="Create a wrapper script">
+    Create a script to run your chosen implementation:
+    
+    ```bash
+    cat > /usr/local/bin/update-transmission-trackers.sh << 'EOF'
+#!/bin/bash
+cd /path/to/transmission-trackers
+python transmission-trackers.py --host localhost --port 9091 --user username --password password
+EOF
+    
+    chmod +x /usr/local/bin/update-transmission-trackers.sh
+    ```
+  </Step>
+  
+  <Step title="Add cron job">
+    ```bash
+    crontab -e
+    ```
+    
+    Add entry to run daily at 2 AM:
+    
+    ```cron
+    0 2 * * * /usr/local/bin/update-transmission-trackers.sh >> /var/log/transmission-trackers.log 2>&1
+    ```
+  </Step>
+</Steps>
+
+### Systemd Timer (Alternative)
+
+<Steps>
+  <Step title="Create service file">
+    Create `/etc/systemd/system/transmission-trackers.service`:
+    
+    ```ini
+    [Unit]
+    Description=Update Transmission Trackers
+    After=transmission-daemon.service
+    
+    [Service]
+    Type=oneshot
+    ExecStart=/usr/local/bin/update-transmission-trackers.sh
+    User=transmission
+    ```
+  </Step>
+  
+  <Step title="Create timer file">
+    Create `/etc/systemd/system/transmission-trackers.timer`:
+    
+    ```ini
+    [Unit]
+    Description=Update Transmission Trackers Daily
+    
+    [Timer]
+    OnCalendar=daily
+    Persistent=true
+    
+    [Install]
+    WantedBy=timers.target
+    ```
+  </Step>
+  
+  <Step title="Enable and start timer">
+    ```bash
+    systemctl daemon-reload
+    systemctl enable transmission-trackers.timer
+    systemctl start transmission-trackers.timer
+    systemctl status transmission-trackers.timer
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+Systemd timers are more reliable than cron and provide better logging and monitoring capabilities.
+</Tip>
+
+## Tracker List Selection
+
+Choose your preferred TrackersList URL in the script configuration:
+
+<CodeGroup>
+
+```bash trackers_best (Recommended)
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+```
+
+```bash trackers_all
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt"
+```
+
+```bash trackers_all_ip (DNS-free)
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt"
+```
+
+</CodeGroup>
+
+## Manual Integration
+
+To manually add trackers using `transmission-remote`:
+
+<Steps>
+  <Step title="List all torrents">
+    ```bash
+    transmission-remote -n 'username:password' -l
+    ```
+  </Step>
+  
+  <Step title="Download tracker list">
+    ```bash
+    curl -o trackers.txt https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+  </Step>
+  
+  <Step title="Add trackers to a torrent">
+    ```bash
+    # For a specific torrent ID (e.g., 1)
+    while read tracker; do
+      transmission-remote -n 'username:password' -t 1 -td "$tracker"
+    done < trackers.txt
+    ```
+  </Step>
+  
+  <Step title="Add to all torrents">
+    ```bash
+    # Get all torrent IDs and add trackers
+    transmission-remote -n 'username:password' -l | sed -e '1d;$d;s/^\s*//' | cut -d ' ' -f1 | while read id; do
+      while read tracker; do
+        transmission-remote -n 'username:password' -t "$id" -td "$tracker"
+      done < trackers.txt
+    done
+    ```
+  </Step>
+</Steps>
+
+<Warning>
+Manual integration must be repeated for new torrents and doesn't receive automatic tracker list updates.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="RPC connection refused">
+    - Verify Transmission daemon is running: `systemctl status transmission-daemon`
+    - Check RPC settings in `settings.json`
+    - Ensure correct host, port, username, and password
+    - Check firewall rules if connecting remotely
+  </Accordion>
+  
+  <Accordion title="Authentication failed">
+    - Verify username and password in Transmission settings
+    - Check that `rpc-authentication-required` is true in `settings.json`
+    - Try resetting the password in Transmission settings
+  </Accordion>
+  
+  <Accordion title="Script can't download tracker list">
+    - Verify internet connectivity
+    - Check if the TrackersList URL is accessible
+    - Try using a mirror URL from the TrackersList repository
+    - Check for proxy or firewall blocking the request
+  </Accordion>
+  
+  <Accordion title="Python module not found">
+    Ensure you've installed the required dependencies:
+    
+    ```bash
+    pip install transmission-rpc requests
+    ```
+    
+    Or use a virtual environment:
+    
+    ```bash
+    python -m venv venv
+    source venv/bin/activate
+    pip install transmission-rpc requests
+    ```
+  </Accordion>
+</AccordionGroup>
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="Transmission Documentation" icon="book" href="https://github.com/transmission/transmission">
+    Official Transmission repository and documentation
+  </Card>
+  <Card title="transmission-rpc Docs" icon="python" href="https://github.com/Trim21/transmission-rpc">
+    Python library documentation for Transmission RPC
+  </Card>
+  <Card title="TrackersList Repository" icon="github" href="https://github.com/ngosang/trackerslist">
+    View all available tracker lists
+  </Card>
+  <Card title="transmission-remote Manual" icon="terminal" href="https://manpages.org/transmission-remote">
+    Command-line reference for transmission-remote
+  </Card>
+</CardGroup>

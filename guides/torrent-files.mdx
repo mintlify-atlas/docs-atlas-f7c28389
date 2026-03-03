@@ -1,0 +1,444 @@
+---
+title: 'Adding Trackers to Torrent Files'
+description: 'Add TrackersList trackers directly to .torrent files using bittorrent-tracker-editor'
+keywords: ['torrent', 'file', 'editor', 'bittorrent-tracker-editor', 'metadata']
+icon: 'file'
+---
+
+Add TrackersList trackers directly to `.torrent` files before adding them to your client using the bittorrent-tracker-editor tool or online editors.
+
+## Overview
+
+Modifying `.torrent` files directly allows you to embed TrackersList trackers into the torrent metadata. This is useful when:
+- Sharing torrents with others who want pre-configured trackers
+- Working with clients that don't support automated tracker scripts
+- Archiving torrents with optimal tracker lists
+- Batch-processing multiple torrent files
+
+## Prerequisites
+
+<Info>
+You'll need:
+- `.torrent` files you want to modify
+- The bittorrent-tracker-editor tool or access to an online editor
+- A TrackersList URL or downloaded tracker list
+</Info>
+
+## Using bittorrent-tracker-editor
+
+The bittorrent-tracker-editor is a command-line tool for batch editing torrent files.
+
+<Card title="bittorrent-tracker-editor" icon="github" href="https://github.com/GerryFerdinandus/bittorrent-tracker-editor">
+  Official repository by GerryFerdinandus - Add trackers to .torrent files
+</Card>
+
+### Installation
+
+<Steps>
+  <Step title="Install Node.js">
+    The tool requires Node.js. Verify installation:
+    
+    ```bash
+    node --version
+    npm --version
+    ```
+    
+    If not installed, download from [nodejs.org](https://nodejs.org/).
+  </Step>
+  
+  <Step title="Install bittorrent-tracker-editor">
+    Install globally via npm:
+    
+    ```bash
+    npm install -g bittorrent-tracker-editor
+    ```
+    
+    Or using npx (no installation required):
+    
+    ```bash
+    npx bittorrent-tracker-editor --help
+    ```
+  </Step>
+  
+  <Step title="Verify installation">
+    ```bash
+    bittorrent-tracker-editor --version
+    ```
+  </Step>
+</Steps>
+
+### Basic Usage
+
+Add trackers to a single torrent file:
+
+<Steps>
+  <Step title="Download tracker list">
+    ```bash
+    curl -o trackers.txt https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+  </Step>
+  
+  <Step title="Add trackers to torrent">
+    ```bash
+    bittorrent-tracker-editor --input my-torrent.torrent --trackers trackers.txt --output my-torrent-updated.torrent
+    ```
+  </Step>
+  
+  <Step title="Verify the changes">
+    Check that trackers were added:
+    
+    ```bash
+    bittorrent-tracker-editor --info my-torrent-updated.torrent
+    ```
+  </Step>
+</Steps>
+
+### Batch Processing
+
+Process multiple torrent files at once:
+
+<Steps>
+  <Step title="Organize torrent files">
+    Place all `.torrent` files in a directory:
+    
+    ```bash
+    mkdir -p ~/torrents/original
+    mkdir -p ~/torrents/updated
+    # Copy your .torrent files to ~/torrents/original/
+    ```
+  </Step>
+  
+  <Step title="Download tracker list">
+    ```bash
+    curl -o ~/trackers.txt https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+  </Step>
+  
+  <Step title="Process all torrents">
+    ```bash
+    for file in ~/torrents/original/*.torrent; do
+      filename=$(basename "$file")
+      bittorrent-tracker-editor \
+        --input "$file" \
+        --trackers ~/trackers.txt \
+        --output "~/torrents/updated/$filename"
+    done
+    ```
+  </Step>
+  
+  <Step title="Verify results">
+    Check that all files were processed:
+    
+    ```bash
+    ls -lh ~/torrents/updated/
+    ```
+  </Step>
+</Steps>
+
+<Tip>
+Create a script to periodically update your torrent files with the latest TrackersList trackers.
+</Tip>
+
+### Command-Line Options
+
+Key options for bittorrent-tracker-editor:
+
+<Fields>
+  <Field name="--input" type="string" required>
+    Path to the input `.torrent` file
+  </Field>
+  <Field name="--output" type="string" required>
+    Path where the modified torrent will be saved
+  </Field>
+  <Field name="--trackers" type="string" required>
+    Path to a text file containing tracker URLs (one per line)
+  </Field>
+  <Field name="--info" type="flag">
+    Display information about a torrent file including current trackers
+  </Field>
+  <Field name="--replace" type="flag">
+    Replace existing trackers instead of appending
+  </Field>
+  <Field name="--remove" type="flag">
+    Remove all trackers from the torrent
+  </Field>
+</Fields>
+
+## Online Torrent Editors
+
+For quick edits without installing software, use web-based torrent editors.
+
+### TorrentEditor.com
+
+<Card title="TorrentEditor" icon="globe" href="http://torrenteditor.com">
+  Web-based torrent editor - no installation required
+</Card>
+
+<Steps>
+  <Step title="Open the website">
+    Navigate to [torrenteditor.com](http://torrenteditor.com) in your browser.
+  </Step>
+  
+  <Step title="Upload torrent file">
+    Click **Choose File** and select your `.torrent` file.
+  </Step>
+  
+  <Step title="Add trackers">
+    In the **Trackers** section:
+    1. Copy trackers from [trackers_best.txt](https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt)
+    2. Paste them into the tracker field (one per line)
+    3. Click **Add** or **Update**
+  </Step>
+  
+  <Step title="Download modified torrent">
+    Click **Save** or **Download** to get your updated `.torrent` file.
+  </Step>
+</Steps>
+
+<Warning>
+Be cautious when uploading private or sensitive torrent files to online services. Use local tools for private torrents.
+</Warning>
+
+## Automated Script
+
+Create a script to automatically fetch TrackersList and update torrent files:
+
+```bash
+#!/bin/bash
+
+# update-torrent-trackers.sh
+# Automatically add TrackersList to torrent files
+
+TRACKER_URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+TRACKERS_FILE="/tmp/trackers.txt"
+INPUT_DIR="$1"
+OUTPUT_DIR="$2"
+
+if [ -z "$INPUT_DIR" ] || [ -z "$OUTPUT_DIR" ]; then
+  echo "Usage: $0 <input-directory> <output-directory>"
+  exit 1
+fi
+
+# Download latest trackers
+echo "Downloading latest tracker list..."
+curl -s "$TRACKER_URL" -o "$TRACKERS_FILE"
+
+if [ ! -s "$TRACKERS_FILE" ]; then
+  echo "Error: Failed to download tracker list"
+  exit 1
+fi
+
+# Create output directory
+mkdir -p "$OUTPUT_DIR"
+
+# Process each torrent file
+count=0
+for file in "$INPUT_DIR"/*.torrent; do
+  if [ -f "$file" ]; then
+    filename=$(basename "$file")
+    echo "Processing: $filename"
+    
+    bittorrent-tracker-editor \
+      --input "$file" \
+      --trackers "$TRACKERS_FILE" \
+      --output "$OUTPUT_DIR/$filename"
+    
+    ((count++))
+  fi
+done
+
+echo "Processed $count torrent files"
+echo "Updated torrents saved to: $OUTPUT_DIR"
+
+# Cleanup
+rm "$TRACKERS_FILE"
+```
+
+### Usage
+
+```bash
+# Make script executable
+chmod +x update-torrent-trackers.sh
+
+# Run the script
+./update-torrent-trackers.sh ~/torrents/original ~/torrents/updated
+```
+
+<Tip>
+Schedule this script with cron to automatically process new torrent files in a watch folder.
+</Tip>
+
+## Tracker List Selection
+
+Choose the appropriate TrackersList for your torrent files:
+
+<Tabs>
+  <Tab title="trackers_best">
+    **Best for general use**
+    
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+    
+    - 20 top-performing trackers
+    - Optimal balance of performance and file size
+    - Updated daily
+  </Tab>
+  
+  <Tab title="trackers_all">
+    **Maximum peer discovery**
+    
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+    ```
+    
+    - All 112 working trackers
+    - Best for rare torrents
+    - Larger torrent file size
+  </Tab>
+  
+  <Tab title="Protocol-specific">
+    **Filter by protocol**
+    
+    UDP trackers (51 trackers):
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt
+    ```
+    
+    HTTP trackers (47 trackers):
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_http.txt
+    ```
+    
+    HTTPS trackers (14 trackers):
+    ```
+    https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_https.txt
+    ```
+  </Tab>
+</Tabs>
+
+## Integration with Magnet Links
+
+For magnet links instead of torrent files, use an online magnet link editor:
+
+<Card title="Magnets Editor" icon="magnet" href="https://madeby.lynx.pink/magnets/">
+  Add trackers to magnet links online
+</Card>
+
+<Steps>
+  <Step title="Copy your magnet link">
+    Copy the complete magnet URI starting with `magnet:?`
+  </Step>
+  
+  <Step title="Open magnets editor">
+    Navigate to [magnets editor](https://madeby.lynx.pink/magnets/)
+  </Step>
+  
+  <Step title="Add trackers">
+    1. Paste your magnet link
+    2. Add tracker URLs from TrackersList
+    3. Click **Update** or **Generate**
+  </Step>
+  
+  <Step title="Use updated magnet">
+    Copy the new magnet link with added trackers and use it in your torrent client.
+  </Step>
+</Steps>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="bittorrent-tracker-editor not found">
+    - Verify Node.js and npm are installed: `node --version && npm --version`
+    - Reinstall globally: `npm install -g bittorrent-tracker-editor`
+    - Use npx instead: `npx bittorrent-tracker-editor`
+    - Check npm global bin path: `npm config get prefix`
+  </Accordion>
+  
+  <Accordion title="Torrent file becomes corrupted">
+    - Always keep a backup of original torrent files
+    - Verify the tracker list file is properly formatted (one URL per line)
+    - Check for special characters or encoding issues in tracker URLs
+    - Use the `--info` flag to validate the torrent before and after editing
+  </Accordion>
+  
+  <Accordion title="Trackers not appearing in client">
+    - Verify the updated torrent was added to the client
+    - Check that the client supports the tracker protocols used
+    - Some clients cache torrent metadata; try removing and re-adding the torrent
+    - Use `--replace` flag if you want to completely replace existing trackers
+  </Accordion>
+  
+  <Accordion title="Permission errors during batch processing">
+    - Check file permissions: `ls -la ~/torrents/`
+    - Ensure write permissions on output directory: `chmod 755 ~/torrents/updated`
+    - Run script with appropriate user permissions
+    - Avoid processing system or protected directories
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Note>
+**Recommendations for torrent file modification:**
+
+- Always keep backups of original `.torrent` files
+- Use `trackers_best.txt` for most cases to balance performance and file size
+- Update torrent files periodically (monthly or quarterly) to maintain fresh tracker lists
+- Test modified torrents before distributing to others
+- Document which tracker list was used for future reference
+- Avoid adding too many trackers (more isn't always better)
+</Note>
+
+## Advanced Usage
+
+### Custom Tracker Lists
+
+Create your own curated tracker list:
+
+```bash
+# Combine multiple TrackersList sources
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt > my-trackers.txt
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt >> my-trackers.txt
+
+# Add custom trackers
+echo "udp://my-tracker.example.com:80/announce" >> my-trackers.txt
+
+# Remove duplicates and sort
+sort -u my-trackers.txt -o my-trackers.txt
+
+# Use in bittorrent-tracker-editor
+bittorrent-tracker-editor --input file.torrent --trackers my-trackers.txt --output file-updated.torrent
+```
+
+### Filtering Trackers
+
+Filter trackers by criteria before adding:
+
+```bash
+# Only HTTPS trackers
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt | grep '^https://' > https-only.txt
+
+# Only UDP trackers
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt | grep '^udp://' > udp-only.txt
+
+# Exclude specific domains
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt | grep -v 'excluded-domain.com' > filtered.txt
+```
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="bittorrent-tracker-editor" icon="github" href="https://github.com/GerryFerdinandus/bittorrent-tracker-editor">
+    Official repository and documentation
+  </Card>
+  <Card title="TorrentEditor.com" icon="globe" href="http://torrenteditor.com">
+    Online torrent file editor
+  </Card>
+  <Card title="Magnets Editor" icon="magnet" href="https://madeby.lynx.pink/magnets/">
+    Add trackers to magnet links
+  </Card>
+  <Card title="TrackersList Repository" icon="github" href="https://github.com/ngosang/trackerslist">
+    View all available tracker lists
+  </Card>
+</CardGroup>

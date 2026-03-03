@@ -1,0 +1,467 @@
+---
+title: 'WebTorrent & WebSocket Trackers'
+description: 'Browser-based torrenting with WebSocket tracker support'
+icon: 'wifi'
+---
+
+## Overview
+
+WebSocket trackers (also known as WebTorrent trackers) enable BitTorrent functionality directly in web browsers using WebRTC technology. These trackers use `ws://` (WebSocket) or `wss://` (WebSocket Secure) protocols instead of traditional HTTP/UDP.
+
+<Warning>
+  WebSocket trackers are supported by very few BitTorrent clients. Check compatibility before relying on these trackers.
+</Warning>
+
+## What is WebTorrent?
+
+WebTorrent brings BitTorrent to the web platform:
+
+<CardGroup cols={2}>
+  <Card title="Browser-Native" icon="browser">
+    Enables torrenting directly in web browsers without plugins
+  </Card>
+  
+  <Card title="WebRTC Technology" icon="satellite-dish">
+    Uses WebRTC for peer-to-peer connections between browsers
+  </Card>
+  
+  <Card title="WebSocket Trackers" icon="wifi">
+    Specialized trackers using WebSocket protocol for browser communication
+  </Card>
+  
+  <Card title="Hybrid Protocol" icon="code-merge">
+    Can bridge between traditional BitTorrent and browser-based peers
+  </Card>
+</CardGroup>
+
+<Info>
+  Learn more about WebTorrent at [webtorrent.io](https://webtorrent.io)
+</Info>
+
+## Available WebSocket Trackers
+
+TrackersList maintains **2 active WebSocket trackers**:
+
+```text
+wss://tracker.files.fm:7073/announce
+
+ws://tracker.files.fm:7072/announce
+```
+
+<Accordion title="Secure vs Insecure WebSocket" icon="lock">
+  **WSS (Secure):**
+  - Encrypted connection using TLS
+  - Required for HTTPS websites
+  - Port 7073 in the example above
+  
+  **WS (Insecure):**
+  - Unencrypted connection
+  - Only works on HTTP websites
+  - Port 7072 in the example above
+  
+  **Recommendation:** Always prefer `wss://` for security and compatibility.
+</Accordion>
+
+## Compatible Clients
+
+WebSocket tracker support is limited to specific clients and platforms:
+
+### Native Support
+
+<CardGroup cols={2}>
+  <Card title="WebTorrent Desktop" icon="desktop" href="https://webtorrent.io/desktop">
+    Official WebTorrent desktop application
+    
+    **Platforms:** Windows, macOS, Linux
+  </Card>
+  
+  <Card title="WebTorrent CLI" icon="terminal" href="https://github.com/webtorrent/webtorrent-cli">
+    Command-line WebTorrent client
+    
+    ```bash
+    npm install -g webtorrent-cli
+    ```
+  </Card>
+</CardGroup>
+
+### Browser-Based Clients
+
+<Card title="Instant.io" icon="bolt" href="https://instant.io">
+  Stream torrents instantly in your browser without installation
+</Card>
+
+<Card title="WebTorrent Library" icon="code" href="https://github.com/webtorrent/webtorrent">
+  JavaScript library for embedding torrenting in web applications
+  
+  ```bash
+  npm install webtorrent
+  ```
+</Card>
+
+### Hybrid Clients (Limited Support)
+
+Some traditional clients have experimental WebTorrent support:
+
+<AccordionGroup>
+  <Accordion title="qBittorrent" icon="q">
+    **Status:** No native WebSocket tracker support
+    
+    qBittorrent can connect to WebTorrent peers using third-party bridges but does not natively support `ws://` or `wss://` tracker protocols.
+  </Accordion>
+  
+  <Accordion title="Transmission" icon="t">
+    **Status:** No WebSocket tracker support
+    
+    Standard builds do not support WebSocket trackers.
+  </Accordion>
+  
+  <Accordion title="BiglyBT" icon="b">
+    **Status:** Partial support via plugin
+    
+    BiglyBT has a WebTorrent plugin that enables limited compatibility.
+  </Accordion>
+</AccordionGroup>
+
+<Warning>
+  **Most traditional BitTorrent clients DO NOT support WebSocket trackers.** They will ignore `ws://` and `wss://` tracker URLs.
+</Warning>
+
+## How WebTorrent Works
+
+<Steps>
+  <Step title="Tracker Connection">
+    Browser or WebTorrent client connects to WebSocket tracker using `ws://` or `wss://` protocol
+  </Step>
+  
+  <Step title="Peer Discovery">
+    Tracker returns list of peers, including both:
+    - WebRTC peers (other browsers)
+    - Traditional BitTorrent peers (via bridges)
+  </Step>
+  
+  <Step title="WebRTC Signaling">
+    WebSocket tracker facilitates WebRTC signaling between browser-based peers
+  </Step>
+  
+  <Step title="P2P Connection">
+    Direct peer-to-peer connection established using WebRTC data channels
+  </Step>
+  
+  <Step title="Data Transfer">
+    Torrent data transfers using standard BitTorrent protocol over WebRTC
+  </Step>
+</Steps>
+
+## Using WebTorrent Desktop
+
+<Tabs>
+  <Tab title="Installation">
+    **Download WebTorrent Desktop:**
+    
+    Visit [webtorrent.io/desktop](https://webtorrent.io/desktop) and download for your platform:
+    
+    - **Windows:** `.exe` installer
+    - **macOS:** `.dmg` disk image
+    - **Linux:** `.deb`, `.rpm`, or AppImage
+    
+    **Features:**
+    - Instant streaming while downloading
+    - Chromecast support
+    - Modern, user-friendly interface
+    - Built-in video player
+  </Tab>
+  
+  <Tab title="Adding Trackers">
+    WebTorrent Desktop includes WebSocket trackers by default, but you can add custom ones:
+    
+    1. Open a torrent file
+    2. No manual tracker configuration needed - WebTorrent automatically uses `ws://` and `wss://` trackers
+    
+    **Default WebSocket Trackers:**
+    WebTorrent Desktop includes these trackers out of the box:
+    - `wss://tracker.files.fm:7073/announce`
+    - `wss://tracker.btorrent.xyz:443/announce`
+    - `wss://tracker.openwebtorrent.com:443/announce`
+  </Tab>
+  
+  <Tab title="Performance Tips">
+    **Optimize WebTorrent Performance:**
+    
+    1. **Use WSS trackers** for better security and connectivity
+    2. **Keep browser tab open** if using web-based clients
+    3. **Allow WebRTC** in browser/firewall settings
+    4. **Mix tracker types** - include both WebSocket and traditional trackers
+    5. **Enable DHT** for additional peer discovery
+  </Tab>
+</Tabs>
+
+## Using WebTorrent in the Browser
+
+### Instant.io
+
+The simplest way to use WebSocket trackers:
+
+<Steps>
+  <Step title="Visit Instant.io">
+    Go to [instant.io](https://instant.io) in any modern browser
+  </Step>
+  
+  <Step title="Add Torrent">
+    Drop a `.torrent` file or paste a magnet link
+  </Step>
+  
+  <Step title="Stream">
+    Instantly start streaming or downloading in your browser
+  </Step>
+</Steps>
+
+### Embedding WebTorrent
+
+For developers building web applications:
+
+```javascript
+import WebTorrent from 'webtorrent'
+
+const client = new WebTorrent()
+
+// Magnet URI with WebSocket tracker
+const magnetURI = 'magnet:?xt=urn:btih:...&tr=wss://tracker.files.fm:7073/announce'
+
+client.add(magnetURI, (torrent) => {
+  // Torrent metadata received
+  console.log('Torrent info:', torrent.name)
+  
+  // Start downloading
+  torrent.files.forEach((file) => {
+    console.log('File:', file.name)
+    
+    // Stream to video element
+    file.appendTo('body')
+  })
+})
+```
+
+<Tip>
+  Check out the [WebTorrent API documentation](https://webtorrent.io/docs) for complete integration guides.
+</Tip>
+
+## WebSocket vs Traditional Trackers
+
+<AccordionGroup>
+  <Accordion title="Protocol Comparison" icon="code-compare">
+    | Feature | WebSocket (ws/wss) | HTTP/HTTPS | UDP |
+    |---------|-------------------|------------|-----|
+    | Browser Support | ✅ Yes | ❌ Limited | ❌ No |
+    | Real-time Updates | ✅ Yes | ❌ Polling | ✅ Yes |
+    | Firewall-Friendly | ✅ Yes | ✅ Yes | ⚠️ Sometimes |
+    | Desktop Client Support | ⚠️ Limited | ✅ Universal | ✅ Universal |
+    | Encryption | ✅ WSS only | ✅ HTTPS only | ❌ No |
+  </Accordion>
+  
+  <Accordion title="Performance" icon="gauge-high">
+    **WebSocket Advantages:**
+    - Persistent connection (no reconnection overhead)
+    - Real-time peer updates
+    - Lower latency for peer discovery
+    
+    **WebSocket Disadvantages:**
+    - Limited client support
+    - Higher server resource usage
+    - WebRTC NAT traversal challenges
+  </Accordion>
+  
+  <Accordion title="Use Cases" icon="bullseye">
+    **Best for WebSocket:**
+    - Browser-based applications
+    - Streaming media players
+    - Real-time collaboration tools
+    - Progressive web apps
+    
+    **Best for Traditional:**
+    - Desktop torrenting
+    - Maximum peer availability
+    - Legacy client support
+    - Server-less operation (DHT/PEX)
+  </Accordion>
+</AccordionGroup>
+
+## Browser Compatibility
+
+<CardGroup cols={2}>
+  <Card title="Chrome/Edge" icon="chrome">
+    ✅ Full WebTorrent support
+    
+    **Requirements:** Version 60+
+  </Card>
+  
+  <Card title="Firefox" icon="firefox">
+    ✅ Full WebTorrent support
+    
+    **Requirements:** Version 60+
+  </Card>
+  
+  <Card title="Safari" icon="safari">
+    ⚠️ Limited support
+    
+    **Issues:** WebRTC restrictions on iOS
+  </Card>
+  
+  <Card title="Opera" icon="opera">
+    ✅ Full WebTorrent support
+    
+    **Requirements:** Version 47+
+  </Card>
+</CardGroup>
+
+<Warning>
+  **iOS Safari:** Apple restricts WebRTC on iOS, making WebTorrent unreliable on iPhone/iPad browsers.
+</Warning>
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="No Peers Found" icon="users-slash">
+    **Solutions:**
+    
+    1. **Add traditional trackers** - Mix `http://`, `udp://`, and `wss://` trackers
+    2. **Enable DHT** - Allows peer discovery without trackers
+    3. **Check firewall** - Ensure WebRTC is not blocked
+    4. **Wait longer** - WebRTC peer discovery takes time
+  </Accordion>
+  
+  <Accordion title="Slow Download Speed" icon="turtle">
+    **Common Causes:**
+    
+    - Limited WebTorrent peer pool
+    - Browser resource constraints
+    - WebRTC NAT traversal issues
+    
+    **Solutions:**
+    
+    - Use WebTorrent Desktop instead of browser
+    - Add more WebSocket trackers
+    - Include traditional trackers for hybrid swarm
+  </Accordion>
+  
+  <Accordion title="Connection Blocked" icon="ban">
+    **Issues:**
+    
+    - Corporate firewall blocking WebSocket
+    - Browser security settings
+    - HTTPS mixed content restrictions
+    
+    **Solutions:**
+    
+    - Use `wss://` (secure WebSocket) on HTTPS sites
+    - Check browser console for errors
+    - Try different network (mobile hotspot)
+  </Accordion>
+  
+  <Accordion title="Client Doesn't Support WebSocket" icon="xmark">
+    **Reality Check:**
+    
+    Most traditional BitTorrent clients (qBittorrent, Transmission, Deluge, etc.) **do not support** WebSocket trackers.
+    
+    **Options:**
+    
+    1. Use WebTorrent Desktop
+    2. Use browser-based WebTorrent
+    3. Accept that WebSocket trackers won't work in traditional clients
+    4. Include traditional trackers alongside WebSocket trackers
+  </Accordion>
+</AccordionGroup>
+
+## Best Practices
+
+<Steps>
+  <Step title="Mix Tracker Types">
+    Always include both WebSocket and traditional trackers for maximum compatibility:
+    
+    ```text
+    wss://tracker.files.fm:7073/announce
+    udp://tracker.opentrackr.org:1337/announce
+    http://tracker.openbittorrent.com:80/announce
+    ```
+  </Step>
+  
+  <Step title="Prefer WSS over WS">
+    Use secure WebSocket (`wss://`) for:
+    - Better security
+    - HTTPS website compatibility
+    - Future-proofing
+  </Step>
+  
+  <Step title="Enable DHT">
+    WebTorrent supports DHT - enable it for tracker-less peer discovery
+  </Step>
+  
+  <Step title="Test in Target Environment">
+    If building a web app, test on actual browsers and devices, not just WebTorrent Desktop
+  </Step>
+</Steps>
+
+## Why So Few WebSocket Trackers?
+
+<AccordionGroup>
+  <Accordion title="Limited Adoption" icon="chart-line">
+    WebTorrent is still a niche technology. Most BitTorrent usage happens on desktop clients that don't support WebSocket trackers.
+  </Accordion>
+  
+  <Accordion title="Server Costs" icon="server">
+    WebSocket connections are more expensive to maintain than HTTP/UDP:
+    - Persistent connections consume server resources
+    - Requires more sophisticated infrastructure
+    - Higher bandwidth costs
+  </Accordion>
+  
+  <Accordion title="Separate Swarms" icon="layer-group">
+    WebTorrent peers often form separate swarms from traditional BitTorrent peers, fragmenting the network.
+  </Accordion>
+</AccordionGroup>
+
+<Info>
+  Despite limited tracker availability, WebTorrent remains valuable for browser-based applications and streaming use cases.
+</Info>
+
+## Future of WebSocket Trackers
+
+<CardGroup cols={2}>
+  <Card title="Growing Adoption" icon="arrow-trend-up">
+    More web applications are adopting WebTorrent for:
+    - Decentralized file sharing
+    - Live streaming
+    - CDN alternatives
+  </Card>
+  
+  <Card title="Protocol Evolution" icon="rotate">
+    WebTransport and other modern protocols may replace WebSocket in the future
+  </Card>
+  
+  <Card title="Hybrid Bridges" icon="bridge">
+    Better bridges between traditional BitTorrent and WebTorrent networks
+  </Card>
+  
+  <Card title="Desktop Integration" icon="puzzle-piece">
+    More desktop clients adding WebSocket tracker support
+  </Card>
+</CardGroup>
+
+## Related Resources
+
+<CardGroup cols={3}>
+  <Card title="I2P Trackers" icon="shield-halved" href="/advanced/i2p-trackers">
+    Anonymous network trackers
+  </Card>
+  
+  <Card title="Yggdrasil Trackers" icon="diagram-project" href="/advanced/yggdrasil-trackers">
+    Mesh network trackers
+  </Card>
+  
+  <Card title="Tracker Blacklist" icon="ban" href="/advanced/blacklist">
+    Why some trackers are excluded
+  </Card>
+</CardGroup>
+
+<Tip>
+  Want to run your own WebSocket tracker? Check out [bittorrent-tracker](https://github.com/webtorrent/bittorrent-tracker) - an open-source tracker server with WebSocket support.
+</Tip>

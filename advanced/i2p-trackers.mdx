@@ -1,0 +1,237 @@
+---
+title: 'I2P Trackers'
+description: 'Using BitTorrent trackers on the I2P anonymous network'
+icon: 'shield-halved'
+---
+
+## Overview
+
+I2P (Invisible Internet Project) trackers operate on an anonymous, encrypted network layer that provides enhanced privacy for BitTorrent users. These trackers use `.i2p` domains and require special setup to access.
+
+<Note>
+  I2P trackers provide anonymity but may have slower speeds compared to clearnet trackers due to the encryption and routing overhead.
+</Note>
+
+## Requirements
+
+<CardGroup cols={2}>
+  <Card title="I2P Router" icon="network-wired">
+    Download and install the [I2P Router](https://geti2p.net/) to access the I2P network
+  </Card>
+  <Card title="Compatible Client" icon="download">
+    Use a BitTorrent client with I2P support built-in
+  </Card>
+</CardGroup>
+
+### I2P Router Setup
+
+The I2P Router creates a virtual network adapter that allows your BitTorrent client to connect to `.i2p` addresses. It must be running whenever you want to use I2P trackers.
+
+<Steps>
+  <Step title="Download I2P">
+    Visit [geti2p.net](https://geti2p.net/) and download the installer for your operating system
+  </Step>
+  
+  <Step title="Install and Start">
+    Run the installer and start the I2P Router. Wait for it to integrate into the network (10-15 minutes)
+  </Step>
+  
+  <Step title="Configure Client">
+    Configure your BitTorrent client to use I2P proxy settings (typically localhost:4444 for HTTP proxy)
+  </Step>
+  
+  <Step title="Verify Connection">
+    Check the I2P Router console to ensure your client is connected to the network
+  </Step>
+</Steps>
+
+## Compatible BitTorrent Clients
+
+These clients have native I2P support:
+
+<CardGroup cols={2}>
+  <Card title="qBittorrent" icon="q" href="https://github.com/qbittorrent/qBittorrent">
+    Cross-platform client with built-in I2P support
+  </Card>
+  
+  <Card title="BiglyBT" icon="b" href="https://github.com/BiglySoftware/BiglyBT">
+    Feature-rich client with advanced I2P integration
+  </Card>
+  
+  <Card title="Tixati" icon="t" href="https://tixati.com/news">
+    Lightweight client with I2P tracker support
+  </Card>
+  
+  <Card title="I2PSnark" icon="i" href="https://i2pplus.github.io/#download">
+    Native I2P BitTorrent client bundled with I2P Router
+  </Card>
+</CardGroup>
+
+<Card title="libtorrent" icon="code" href="https://github.com/arvidn/libtorrent">
+  Library-level support for clients built on libtorrent
+</Card>
+
+<Info>
+  For more information on I2P BitTorrent, see the [official I2P documentation](https://geti2p.net/en/docs/applications/bittorrent).
+</Info>
+
+## Available I2P Trackers
+
+TrackersList maintains **12 active I2P trackers**. These trackers use either HTTP or UDP protocols over the I2P network.
+
+### HTTP I2P Trackers
+
+```text
+http://4olv65sj4ifeak26wqiifr3q2vjv5d44x733ncqhtd7cmjwoinpa.b32.i2p:80/announce
+
+http://6wbrmd4wodeewdykfw362gmlbeo26njc5zmtuxdvtomehpozzjja.b32.i2p:80/announce
+
+http://opentracker.dg2.i2p:80/a
+
+http://opentracker.eeptorrent.i2p:80/a
+
+http://opentracker.fattydove.i2p:80/a
+
+http://opentracker.r4sas.i2p:80/a
+
+http://opentracker.simp.i2p:80/a
+
+http://opentracker.skank.i2p:80/a
+
+http://qimlze77z7w32lx2ntnwkuqslrzlsqy7774v3urueuarafyqik5a.b32.i2p:80/a
+
+http://sigmatracker.i2p:80/a
+```
+
+### UDP I2P Trackers
+
+```text
+udp://opentracker.simp.i2p:6969/a
+
+udp://opentracker.skank.i2p:6969/a
+```
+
+<Warning>
+  I2P addresses use `.b32.i2p` (base32) or human-readable `.i2p` domains. Both formats are valid and resolve through the I2P network.
+</Warning>
+
+## Adding I2P Trackers to Torrents
+
+<Tabs>
+  <Tab title="qBittorrent">
+    1. Right-click on a torrent
+    2. Select **Edit trackers**
+    3. Paste I2P tracker URLs (one per line)
+    4. Click **OK**
+    
+    Ensure I2P is enabled in **Options > Advanced > Network Interface** and set to your I2P router's proxy.
+  </Tab>
+  
+  <Tab title="BiglyBT">
+    1. Select the torrent
+    2. Go to **Trackers** tab at the bottom
+    3. Right-click and select **Add Tracker**
+    4. Enter I2P tracker URL
+    
+    BiglyBT auto-detects I2P trackers and routes them through the I2P network.
+  </Tab>
+  
+  <Tab title="I2PSnark">
+    I2PSnark automatically recognizes I2P trackers. Simply:
+    1. Add the torrent file
+    2. I2P trackers will be used automatically if present
+    
+    No additional configuration needed.
+  </Tab>
+</Tabs>
+
+## Performance Considerations
+
+<AccordionGroup>
+  <Accordion title="Connection Speed" icon="gauge-high">
+    I2P connections are typically slower than clearnet due to:
+    - Multi-hop encrypted routing (similar to Tor)
+    - Volunteer-run infrastructure
+    - Network integration time
+    
+    Expected speeds: 100-500 KB/s for most users
+  </Accordion>
+  
+  <Accordion title="Anonymity vs Speed" icon="scale-balanced">
+    I2P prioritizes anonymity over speed. If you need:
+    - **Maximum privacy**: Use I2P trackers exclusively
+    - **Best performance**: Use clearnet trackers
+    - **Balanced approach**: Mix both types
+  </Accordion>
+  
+  <Accordion title="Network Integration" icon="clock">
+    Your I2P Router needs time to integrate into the network:
+    - **First 15 minutes**: Limited connectivity
+    - **After 30 minutes**: Better peer discovery
+    - **After 1 hour**: Optimal performance
+    
+    Leave your I2P Router running continuously for best results.
+  </Accordion>
+</AccordionGroup>
+
+## Troubleshooting
+
+<Steps>
+  <Step title="Verify I2P Router is Running">
+    Check that the I2P Router console is accessible at `http://127.0.0.1:7657`
+  </Step>
+  
+  <Step title="Check Client Proxy Settings">
+    Ensure your BitTorrent client is configured to use:
+    - HTTP Proxy: `127.0.0.1:4444`
+    - HTTPS Proxy: `127.0.0.1:4445`
+  </Step>
+  
+  <Step title="Wait for Network Integration">
+    Give the I2P Router at least 15-30 minutes to integrate into the network after starting
+  </Step>
+  
+  <Step title="Test with Known Working Tracker">
+    Try `http://opentracker.r4sas.i2p:80/a` which is one of the most stable I2P trackers
+  </Step>
+</Steps>
+
+<Warning>
+  Some BitTorrent clients may not support UDP over I2P. Stick to HTTP I2P trackers if you experience connection issues.
+</Warning>
+
+## Security Best Practices
+
+<CardGroup cols={2}>
+  <Card title="No DNS Leaks" icon="lock">
+    I2P handles all name resolution internally - no DNS queries leak to your ISP
+  </Card>
+  
+  <Card title="Encrypted Routing" icon="shield">
+    All traffic is encrypted through multiple hops, similar to Tor but optimized for P2P
+  </Card>
+  
+  <Card title="No Exit Nodes" icon="circle-nodes">
+    I2P traffic stays within the I2P network - no exit node vulnerabilities
+  </Card>
+  
+  <Card title="Separate from Clearnet" icon="split">
+    I2P and clearnet torrents use separate peer pools for isolation
+  </Card>
+</CardGroup>
+
+<Tip>
+  For maximum anonymity, use I2P trackers exclusively and avoid mixing clearnet and I2P trackers on the same torrent.
+</Tip>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="Yggdrasil Trackers" icon="diagram-project" href="/advanced/yggdrasil-trackers">
+    Another anonymous network option
+  </Card>
+  
+  <Card title="WebTorrent" icon="wifi" href="/advanced/webtorrent">
+    Browser-based torrenting with WebSocket trackers
+  </Card>
+</CardGroup>

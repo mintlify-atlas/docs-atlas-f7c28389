@@ -1,0 +1,366 @@
+---
+title: 'Yggdrasil Network Trackers'
+description: 'Using BitTorrent trackers on the Yggdrasil mesh network'
+icon: 'diagram-project'
+---
+
+## Overview
+
+Yggdrasil is an experimental end-to-end encrypted IPv6 mesh network that provides an alternative routing layer for BitTorrent traffic. Unlike traditional internet routing, Yggdrasil creates a decentralized network with built-in encryption and privacy features.
+
+<Info>
+  Yggdrasil trackers are currently limited in number but provide an interesting alternative for privacy-conscious users who want decentralized networking.
+</Info>
+
+## What is Yggdrasil?
+
+Yggdrasil Network is a modern, experimental approach to internet routing:
+
+<CardGroup cols={2}>
+  <Card title="Mesh Topology" icon="diagram-project">
+    Creates an overlay network that routes traffic efficiently between peers
+  </Card>
+  
+  <Card title="End-to-End Encryption" icon="lock">
+    All traffic is encrypted by default, with automatic key exchange
+  </Card>
+  
+  <Card title="IPv6 Addresses" icon="hashtag">
+    Uses self-generated IPv6 addresses derived from public keys
+  </Card>
+  
+  <Card title="Decentralized" icon="circle-nodes">
+    No central authority - peers connect and route traffic cooperatively
+  </Card>
+</CardGroup>
+
+## Requirements
+
+<Steps>
+  <Step title="Install Yggdrasil Router">
+    Download and install the [Yggdrasil Network Router](https://yggdrasil-network.github.io/) for your platform
+    
+    **Supported platforms:**
+    - Linux (all distributions)
+    - macOS
+    - Windows
+    - FreeBSD, OpenBSD, NetBSD
+    - iOS and Android
+  </Step>
+  
+  <Step title="Configure Peering">
+    Edit your Yggdrasil configuration file to add peers. Find public peers at:
+    - [Public Peers List](https://github.com/yggdrasil-network/public-peers)
+    
+    Example configuration:
+    ```yaml
+    Peers:
+      - tls://[2a07:e340::a]:31337
+      - tls://[2001:470:1f13:e56::64]:39565
+    ```
+  </Step>
+  
+  <Step title="Start Yggdrasil Service">
+    Start the Yggdrasil service:
+    
+    **Linux/macOS:**
+    ```bash
+    sudo systemctl start yggdrasil
+    # or
+    sudo yggdrasil -useconffile /etc/yggdrasil.conf
+    ```
+    
+    **Windows:**
+    Start the Yggdrasil service from the Services panel
+  </Step>
+  
+  <Step title="Verify Connection">
+    Check your Yggdrasil IPv6 address:
+    ```bash
+    yggdrasilctl getSelf
+    ```
+    
+    You should see an IPv6 address starting with `200:` or `300:`
+  </Step>
+</Steps>
+
+<Warning>
+  Your BitTorrent client must support IPv6 for Yggdrasil trackers to work. Most modern clients do, but verify in your client's network settings.
+</Warning>
+
+## Available Yggdrasil Trackers
+
+TrackersList currently maintains **1 active Yggdrasil tracker**:
+
+```text
+http://yggtracker.i2p.rocks:80/announce
+```
+
+<Note>
+  Despite the `.i2p` in the domain name, this is a Yggdrasil tracker, not an I2P tracker. The domain is simply hosted on both networks.
+</Note>
+
+### IP-Based Yggdrasil Trackers
+
+For users with DNS resolution issues, TrackersList also provides an IP-based list with **3 Yggdrasil trackers** using direct IPv6 addresses.
+
+<Tip>
+  If you can't resolve `.rocks` domains through Yggdrasil, use the IP-based list: `trackers_all_yggdrasil_ip.txt`
+</Tip>
+
+## Compatible BitTorrent Clients
+
+Any BitTorrent client with IPv6 support can use Yggdrasil trackers:
+
+<CardGroup cols={3}>
+  <Card title="qBittorrent" icon="q">
+    Excellent IPv6 support
+  </Card>
+  
+  <Card title="Transmission" icon="t">
+    Native IPv6 compatibility
+  </Card>
+  
+  <Card title="Deluge" icon="d">
+    Full IPv6 support
+  </Card>
+  
+  <Card title="rTorrent" icon="r">
+    CLI client with IPv6
+  </Card>
+  
+  <Card title="BiglyBT" icon="b">
+    Advanced IPv6 features
+  </Card>
+  
+  <Card title="libtorrent" icon="code">
+    Library-level support
+  </Card>
+</CardGroup>
+
+## Client Configuration
+
+<Tabs>
+  <Tab title="qBittorrent">
+    **Enable IPv6 Support:**
+    
+    1. Go to **Options > Advanced**
+    2. Set **Network Interface** to your Yggdrasil interface (usually `tun0` or `ygg0`)
+    3. Under **Connection**, ensure **IPv6** is enabled
+    4. Disable DHT and PeX for maximum privacy (optional)
+    
+    **Add Yggdrasil Tracker:**
+    
+    1. Right-click torrent > **Edit trackers**
+    2. Add: `http://yggtracker.i2p.rocks:80/announce`
+  </Tab>
+  
+  <Tab title="Transmission">
+    **Enable IPv6:**
+    
+    Edit `settings.json`:
+    ```json
+    {
+      "bind-address-ipv6": "::",
+      "peer-port-random-on-start": true,
+      "port-forwarding-enabled": false
+    }
+    ```
+    
+    **Add Tracker:**
+    
+    Use `transmission-remote`:
+    ```bash
+    transmission-remote -t 1 -td "http://yggtracker.i2p.rocks:80/announce"
+    ```
+  </Tab>
+  
+  <Tab title="Deluge">
+    **Enable IPv6:**
+    
+    1. **Preferences > Network**
+    2. Check **Enable IPv6**
+    3. Set **Network Interface** to Yggdrasil interface
+    
+    **Add Tracker:**
+    
+    1. Right-click torrent > **Edit Trackers**
+    2. Click **Add** and enter tracker URL
+  </Tab>
+</Tabs>
+
+## How Yggdrasil Differs from I2P
+
+<AccordionGroup>
+  <Accordion title="Network Architecture" icon="network-wired">
+    **Yggdrasil:**
+    - Mesh network with direct peer-to-peer routing
+    - Lower latency due to efficient routing algorithms
+    - IPv6-based addressing
+    
+    **I2P:**
+    - Layered network with garlic routing (multi-hop)
+    - Higher latency but stronger anonymity
+    - Internal addressing system (.i2p domains)
+  </Accordion>
+  
+  <Accordion title="Performance" icon="gauge-high">
+    **Yggdrasil:**
+    - Generally faster than I2P
+    - Near-clearnet speeds possible
+    - Lower overhead encryption
+    
+    **I2P:**
+    - Slower due to multi-hop routing
+    - Focus on anonymity over speed
+    - Higher encryption overhead
+  </Accordion>
+  
+  <Accordion title="Privacy Model" icon="shield">
+    **Yggdrasil:**
+    - End-to-end encryption
+    - IP addresses derived from public keys
+    - Network topology is partially visible
+    
+    **I2P:**
+    - Layered encryption (garlic routing)
+    - Hidden service model
+    - Network topology is hidden
+  </Accordion>
+  
+  <Accordion title="Use Case" icon="bullseye">
+    **Yggdrasil:**
+    - Better for performance-sensitive applications
+    - Good for building private networks
+    - Experimental cutting-edge technology
+    
+    **I2P:**
+    - Better for maximum anonymity
+    - Mature, well-tested network
+    - Larger existing ecosystem
+  </Accordion>
+</AccordionGroup>
+
+## Network Performance
+
+<CardGroup cols={2}>
+  <Card title="Speed" icon="rocket">
+    **Expected Performance:**
+    - Download: 1-5 MB/s typical
+    - Upload: 500 KB/s - 3 MB/s
+    - Latency: 50-200ms to peers
+    
+    Performance depends heavily on your peer connections and network topology.
+  </Card>
+  
+  <Card title="Optimization" icon="sliders">
+    **Improve Performance:**
+    - Connect to multiple public peers
+    - Use peers geographically close to you
+    - Keep Yggdrasil running continuously
+    - Forward UDP ports if possible
+  </Card>
+</CardGroup>
+
+## Troubleshooting
+
+<Steps>
+  <Step title="Check Yggdrasil is Running">
+    Verify the Yggdrasil service is active:
+    ```bash
+    # Linux/macOS
+    sudo systemctl status yggdrasil
+    
+    # Check if you have an IPv6 address
+    ip -6 addr show | grep ygg
+    ```
+  </Step>
+  
+  <Step title="Verify IPv6 Connectivity">
+    Test connectivity to another Yggdrasil node:
+    ```bash
+    ping6 200:1234:5678:9abc::1
+    ```
+    (Use a real Yggdrasil address from a peer)
+  </Step>
+  
+  <Step title="Check Peer Connections">
+    Ensure you're connected to peers:
+    ```bash
+    yggdrasilctl getPeers
+    ```
+    You should see at least 1-2 active peers.
+  </Step>
+  
+  <Step title="Enable IPv6 in BitTorrent Client">
+    Double-check your client has IPv6 enabled and is bound to the Yggdrasil interface
+  </Step>
+  
+  <Step title="Test Tracker Manually">
+    Visit the tracker in a browser that supports Yggdrasil:
+    ```
+    http://yggtracker.i2p.rocks:80/
+    ```
+    You should see a tracker information page or announce endpoint.
+  </Step>
+</Steps>
+
+<Warning>
+  If your ISP or network blocks IPv6, Yggdrasil trackers will not work. Ensure IPv6 connectivity at the system level.
+</Warning>
+
+## Security Considerations
+
+<CardGroup cols={2}>
+  <Card title="Encryption" icon="lock">
+    All Yggdrasil traffic is encrypted end-to-end using modern cryptography (Curve25519, etc.)
+  </Card>
+  
+  <Card title="Identity" icon="fingerprint">
+    Your Yggdrasil address is derived from your public key. Generate new keys for privacy.
+  </Card>
+  
+  <Card title="Traffic Analysis" icon="chart-line">
+    While encrypted, network topology can reveal connection patterns. Not as private as I2P.
+  </Card>
+  
+  <Card title="Experimental" icon="flask">
+    Yggdrasil is still experimental. Don't rely on it for critical privacy needs.
+  </Card>
+</CardGroup>
+
+<Info>
+  For more technical details, read the [Yggdrasil whitepaper](https://yggdrasil-network.github.io/about.html) and [network documentation](https://yggdrasil-network.github.io/configuration.html).
+</Info>
+
+## Why Use Yggdrasil Trackers?
+
+<AccordionGroup>
+  <Accordion title="Censorship Resistance" icon="ban">
+    Yggdrasil's mesh architecture makes it difficult to censor or block specific services. The network automatically routes around failures.
+  </Accordion>
+  
+  <Accordion title="Privacy Enhanced" icon="eye-slash">
+    Your real IP address is not exposed to peers or trackers - only your Yggdrasil address is visible.
+  </Accordion>
+  
+  <Accordion title="Decentralized Infrastructure" icon="circle-nodes">
+    No reliance on central servers or authorities. The network is maintained by participants.
+  </Accordion>
+  
+  <Accordion title="Future-Proof" icon="forward">
+    IPv6-native design prepares for the future of internet addressing and routing.
+  </Accordion>
+</AccordionGroup>
+
+## Related Resources
+
+<CardGroup cols={2}>
+  <Card title="I2P Trackers" icon="shield-halved" href="/advanced/i2p-trackers">
+    Alternative anonymous network with stronger anonymity
+  </Card>
+  
+  <Card title="Tracker Blacklist" icon="ban" href="/advanced/blacklist">
+    Learn why some trackers are excluded
+  </Card>
+</CardGroup>

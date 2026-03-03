@@ -1,0 +1,433 @@
+---
+title: 'List Endpoints'
+description: 'Access updated public BitTorrent tracker lists via HTTP GET requests'
+icon: 'list'
+---
+
+## Overview
+
+TrackersList provides multiple endpoint variants to fetch public BitTorrent trackers. All lists are automatically updated daily and return newline-separated tracker URLs in plain text format.
+
+<Info>
+  **Last Update:** 2026/03/03  
+  **Total Public Trackers:** 112
+</Info>
+
+## Endpoint Categories
+
+<CardGroup cols={2}>
+  <Card title="Protocol-Filtered Lists" icon="filter" href="#protocol-filtered">
+    Get trackers by specific protocol (UDP, HTTP, HTTPS, WebSocket)
+  </Card>
+  <Card title="Network-Specific Lists" icon="network-wired" href="#network-specific">
+    Access trackers for I2P and Yggdrasil networks
+  </Card>
+  <Card title="IP-Based Lists" icon="hashtag" href="#ip-based">
+    Bypass DNS issues with IP address variants
+  </Card>
+  <Card title="Curated Lists" icon="star" href="#curated">
+    Get the best performing trackers
+  </Card>
+</CardGroup>
+
+---
+
+## Curated Lists
+
+### Best Trackers
+
+<ParamField path="/trackers_best.txt" type="GET">
+  The top 20 most reliable and fastest public trackers, sorted by popularity and latency.
+</ParamField>
+
+<Tabs>
+  <Tab title="Request">
+    ```bash
+    curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+    ```
+  </Tab>
+  <Tab title="Response">
+    ```
+    udp://tracker.opentrackr.org:1337/announce
+
+    udp://open.demonii.com:1337/announce
+
+    udp://open.stealth.si:80/announce
+
+    udp://exodus.desync.com:6969/announce
+
+    https://torrent.tracker.durukanbal.com:443/announce
+    ```
+    <Note>Trackers are separated by blank lines for easy parsing</Note>
+  </Tab>
+  <Tab title="Metadata">
+    **Tracker Count:** 20  
+    **Update Frequency:** Daily  
+    **Sorting:** By popularity and latency (best to worst)
+  </Tab>
+</Tabs>
+
+### All Trackers
+
+<ParamField path="/trackers_all.txt" type="GET">
+  Complete list of all 112 working public trackers across all protocols.
+</ParamField>
+
+<Tabs>
+  <Tab title="Request">
+    ```bash
+    curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt
+    ```
+  </Tab>
+  <Tab title="Metadata">
+    **Tracker Count:** 112  
+    **Protocols:** UDP, HTTP, HTTPS, WebSocket, I2P, Yggdrasil  
+    **Deduplication:** Same domain/IP trackers removed
+  </Tab>
+</Tabs>
+
+---
+
+## Protocol-Filtered
+
+### UDP Trackers
+
+<ParamField path="/trackers_all_udp.txt" type="GET">
+  Only UDP protocol trackers (51 trackers). Most widely supported by BitTorrent clients.
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_udp.txt
+```
+
+**Tracker Count:** 51  
+**Example:** `udp://tracker.opentrackr.org:1337/announce`
+
+### HTTP Trackers
+
+<ParamField path="/trackers_all_http.txt" type="GET">
+  Only HTTP protocol trackers (47 trackers). Compatible with clients that don't support UDP.
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_http.txt
+```
+
+**Tracker Count:** 47  
+**Example:** `http://tracker.example.com:80/announce`
+
+### HTTPS Trackers
+
+<ParamField path="/trackers_all_https.txt" type="GET">
+  Only HTTPS protocol trackers (14 trackers). Encrypted tracker connections.
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_https.txt
+```
+
+**Tracker Count:** 14  
+**Example:** `https://torrent.tracker.durukanbal.com:443/announce`
+
+### WebSocket Trackers
+
+<ParamField path="/trackers_all_ws.txt" type="GET">
+  Only WebSocket protocol trackers (2 trackers). For WebTorrent clients.
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ws.txt
+```
+
+<Warning>
+  **Limited Support:** WebSocket trackers (ws/wss) are only supported by few clients. See [WebTorrent documentation](https://webtorrent.io) for compatibility.
+</Warning>
+
+**Tracker Count:** 2
+
+---
+
+## Network-Specific
+
+### I2P Trackers
+
+<ParamField path="/trackers_all_i2p.txt" type="GET">
+  Trackers for the I2P anonymous network (12 trackers).
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_i2p.txt
+```
+
+<Info>
+  **Requirements:**
+  - [I2P Router](https://geti2p.net/) installed and running
+  - Compatible BitTorrent client: qBittorrent, BiglyBT, Tixati, I2PSnark, or libtorrent
+  
+  [Learn more about I2P torrenting](https://geti2p.net/en/docs/applications/bittorrent)
+</Info>
+
+**Tracker Count:** 12
+
+### Yggdrasil Trackers
+
+<ParamField path="/trackers_all_yggdrasil.txt" type="GET">
+  Trackers for the Yggdrasil overlay network (1 tracker).
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_yggdrasil.txt
+```
+
+<Info>
+  **Requirements:**
+  - [Yggdrasil Network Router](https://yggdrasil-network.github.io/) installed and configured
+</Info>
+
+**Tracker Count:** 1
+
+---
+
+## IP-Based
+
+<Note>
+  These lists contain the same trackers but with IP addresses instead of domain names. Use these if you're experiencing DNS resolution issues.
+</Note>
+
+### Best Trackers (IP)
+
+<ParamField path="/trackers_best_ip.txt" type="GET">
+  Top 20 trackers with IP addresses instead of domains.
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt
+```
+
+**Tracker Count:** 20  
+**Note:** Cloudflare IPs are excluded
+
+### All Trackers (IP)
+
+<ParamField path="/trackers_all_ip.txt" type="GET">
+  All trackers with IP addresses (61 trackers).
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt
+```
+
+**Tracker Count:** 61  
+**Note:** Lists with IPs are shorter because Cloudflare IPs are removed
+
+### Yggdrasil Trackers (IP)
+
+<ParamField path="/trackers_all_yggdrasil_ip.txt" type="GET">
+  Yggdrasil trackers with IP addresses (3 trackers).
+</ParamField>
+
+```bash Example Request
+curl https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_yggdrasil_ip.txt
+```
+
+**Tracker Count:** 3
+
+---
+
+## Response Format
+
+All endpoints return plain text with the following characteristics:
+
+<CodeGroup>
+```txt Response Structure
+tracker_url_1
+
+tracker_url_2
+
+tracker_url_3
+```
+
+```bash Parsing Example
+# Download and parse into array
+curl -s https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt | \
+  grep -v '^$' > trackers.txt
+
+# Count trackers
+grep -c . trackers.txt
+```
+</CodeGroup>
+
+**Format Details:**
+- Content-Type: `text/plain`
+- Encoding: UTF-8
+- Line endings: LF (`\n`)
+- Separator: Single blank line between tracker URLs
+- No header or footer
+
+---
+
+## Rate Limits & Caching
+
+<Tabs>
+  <Tab title="GitHub Raw">
+    **Base URL:** `https://raw.githubusercontent.com/ngosang/trackerslist/master/`
+    
+    <ParamField path="Rate Limits">
+      GitHub enforces rate limits on raw content:
+      - **Authenticated:** 5,000 requests/hour
+      - **Unauthenticated:** 60 requests/hour per IP
+    </ParamField>
+    
+    <ParamField path="Caching">
+      - Responses may be cached by GitHub's CDN
+      - Use `Cache-Control` headers for optimization
+      - Lists update once daily (3 AM UTC)
+    </ParamField>
+  </Tab>
+  
+  <Tab title="Best Practices">
+    <Steps>
+      <Step title="Cache locally">
+        Store fetched lists locally and refresh only once per day
+      </Step>
+      <Step title="Use mirrors">
+        Switch to [GitHub Pages or jsDelivr mirrors](/api/mirrors) for higher availability
+      </Step>
+      <Step title="Handle errors gracefully">
+        Implement exponential backoff for failed requests
+      </Step>
+      <Step title="Respect rate limits">
+        Don't fetch lists more frequently than they update (daily)
+      </Step>
+    </Steps>
+  </Tab>
+</Tabs>
+
+---
+
+## Integration Examples
+
+<CodeGroup>
+```python Python
+import requests
+
+def get_trackers(list_name='trackers_best'):
+    url = f'https://raw.githubusercontent.com/ngosang/trackerslist/master/{list_name}.txt'
+    response = requests.get(url)
+    response.raise_for_status()
+    
+    # Split by blank lines and filter empty strings
+    trackers = [line.strip() for line in response.text.split('\n') if line.strip()]
+    return trackers
+
+trackers = get_trackers()
+print(f"Found {len(trackers)} trackers")
+```
+
+```javascript JavaScript
+async function getTrackers(listName = 'trackers_best') {
+  const url = `https://raw.githubusercontent.com/ngosang/trackerslist/master/${listName}.txt`;
+  const response = await fetch(url);
+  const text = await response.text();
+  
+  // Split by lines and filter empty strings
+  const trackers = text.split('\n').filter(line => line.trim());
+  return trackers;
+}
+
+getTrackers().then(trackers => {
+  console.log(`Found ${trackers.length} trackers`);
+});
+```
+
+```bash Bash
+#!/bin/bash
+
+# Download best trackers
+LIST="trackers_best"
+URL="https://raw.githubusercontent.com/ngosang/trackerslist/master/${LIST}.txt"
+
+curl -s "$URL" | grep -v '^$' > /tmp/trackers.txt
+
+echo "Downloaded $(wc -l < /tmp/trackers.txt) trackers"
+```
+
+```go Go
+package main
+
+import (
+    "bufio"
+    "fmt"
+    "net/http"
+    "strings"
+)
+
+func getTrackers(listName string) ([]string, error) {
+    url := fmt.Sprintf("https://raw.githubusercontent.com/ngosang/trackerslist/master/%s.txt", listName)
+    resp, err := http.Get(url)
+    if err != nil {
+        return nil, err
+    }
+    defer resp.Body.Close()
+    
+    var trackers []string
+    scanner := bufio.NewScanner(resp.Body)
+    for scanner.Scan() {
+        line := strings.TrimSpace(scanner.Text())
+        if line != "" {
+            trackers = append(trackers, line)
+        }
+    }
+    return trackers, scanner.Err()
+}
+```
+</CodeGroup>
+
+---
+
+## Tracker Sorting
+
+All lists are automatically sorted using the following criteria:
+
+<AccordionGroup>
+  <Accordion title="1. Popularity" icon="fire">
+    Trackers are ranked by the number of successful peer connections and swarm participation across monitored torrents.
+  </Accordion>
+  
+  <Accordion title="2. Latency" icon="gauge-high">
+    Response time for tracker announces is measured. Lower latency trackers rank higher.
+  </Accordion>
+  
+  <Accordion title="3. Uptime" icon="clock">
+    Trackers with consistent availability over the past 7 days are prioritized.
+  </Accordion>
+  
+  <Accordion title="4. Deduplication" icon="filter-circle-xmark">
+    Trackers with the same domain or pointing to the same IP address are removed. Check the [blacklist](https://github.com/ngosang/trackerslist/blob/master/blacklist.txt) for excluded trackers.
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Automatic Updates
+
+<Info>
+  A bot automatically checks all trackers daily and updates the lists at **3:00 AM UTC**.
+</Info>
+
+**Update Process:**
+1. Bot tests each known public tracker
+2. Measures latency and availability
+3. Removes dead or unresponsive trackers
+4. Adds newly discovered trackers
+5. Sorts by performance metrics
+6. Publishes updated lists
+
+**Monitoring:**
+- Each tracker is tested with real announce requests
+- Trackers failing for 7+ consecutive days are removed
+- Same-domain and same-IP duplicates are filtered
+
+<Tip>
+  Check the repository's [README](https://github.com/ngosang/trackerslist) for the latest tracker count and update timestamp.
+</Tip>

@@ -1,0 +1,135 @@
+---
+title: Introduction
+description: Automatically updated lists of public BitTorrent trackers, validated daily for optimal performance
+---
+
+# TrackersList
+
+TrackersList provides automatically updated lists of public BitTorrent trackers that are validated daily to ensure reliability and performance. With over 112 public trackers monitored continuously, you can easily integrate high-quality tracker lists into your BitTorrent applications.
+
+<CardGroup cols={2}>
+  <Card title="Daily updates" icon="calendar-check">
+    All tracker lists are automatically updated every day with the latest working trackers
+  </Card>
+  <Card title="Automated validation" icon="shield-check">
+    A bot continuously checks tracker availability and removes non-functional entries
+  </Card>
+  <Card title="Multiple formats" icon="list">
+    Access trackers filtered by protocol (UDP, HTTP, HTTPS, WebSocket, I2P, Yggdrasil) or get all trackers at once
+  </Card>
+  <Card title="Smart deduplication" icon="filter">
+    Trackers with the same domain or IP address are automatically removed to optimize your tracker list
+  </Card>
+</CardGroup>
+
+## How it works
+
+TrackersList uses an automated system to maintain high-quality tracker lists:
+
+1. **Continuous monitoring** - A bot checks all trackers for availability and performance
+2. **Smart filtering** - Removes duplicates, dead trackers, and those with malfunction issues
+3. **Popularity ranking** - Trackers are sorted by popularity and latency from best to worst
+4. **Daily updates** - All lists are refreshed daily to ensure you always have working trackers
+
+<Note>
+  Last update: **March 3, 2026** | Currently tracking: **112 public trackers**
+</Note>
+
+## Available tracker lists
+
+Choose the list that best fits your needs:
+
+<CardGroup cols={2}>
+  <Card title="trackers_best" icon="star" href="/lists/best-trackers">
+    **20 trackers** - Top-performing trackers recommended for most users
+  </Card>
+  <Card title="trackers_all" icon="globe" href="/lists/all-trackers">
+    **112 trackers** - Complete list of all working public trackers
+  </Card>
+  <Card title="Protocol-specific lists" icon="network-wired" href="/lists/protocol-specific">
+    Filter by UDP, HTTP, HTTPS, WebSocket, I2P, or Yggdrasil
+  </Card>
+  <Card title="IP address lists" icon="hashtag" href="/lists/ip-addresses">
+    Avoid DNS issues with direct IP address lists
+  </Card>
+</CardGroup>
+
+## Quick example
+
+Get started in seconds by fetching the best trackers:
+
+```bash
+curl -L https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+```
+
+Example trackers you'll receive:
+
+```
+udp://tracker.opentrackr.org:1337/announce
+udp://open.demonii.com:1337/announce
+udp://open.stealth.si:80/announce
+udp://exodus.desync.com:6969/announce
+https://torrent.tracker.durukanbal.com:443/announce
+```
+
+## Key features
+
+### Multiple access points
+
+Every list is available through three mirrors for redundancy:
+- GitHub raw content (primary)
+- GitHub Pages (mirror)
+- jsDelivr CDN (mirror 2)
+
+### Blacklist management
+
+The project maintains a [blacklist](https://github.com/ngosang/trackerslist/blob/master/blacklist.txt) to filter out:
+- Trackers detected by antivirus software
+- Malfunctioning trackers
+- Fake seed providers
+- Duplicate trackers
+- Registered-only torrent trackers
+
+### DNS-free options
+
+If you're experiencing DNS problems, IP address versions are available:
+- `trackers_best_ip` (20 trackers)
+- `trackers_all_ip` (61 trackers)
+- `trackers_all_yggdrasil_ip` (3 trackers)
+
+<Note>
+  Lists with IP addresses can be shorter because Cloudflare IPs are removed for security reasons.
+</Note>
+
+## Special tracker types
+
+<AccordionGroup>
+  <Accordion title="WebSocket trackers (WebTorrent)">
+    WebSocket trackers are supported by few clients. These enable browser-based torrent clients and real-time communication. Learn more at [webtorrent.io](https://webtorrent.io).
+  </Accordion>
+  
+  <Accordion title="I2P trackers">
+    I2P trackers require an [I2P Router](https://geti2p.net/) and a compatible BitTorrent client like qBittorrent, BiglyBT, Tixati, I2PSnark, or libtorrent. [More info](https://geti2p.net/en/docs/applications/bittorrent).
+  </Accordion>
+  
+  <Accordion title="Yggdrasil trackers">
+    Yggdrasil trackers require the [Yggdrasil Network Router](https://yggdrasil-network.github.io/) for end-to-end encrypted networking.
+  </Accordion>
+</AccordionGroup>
+
+## Get started
+
+<CardGroup cols={2}>
+  <Card title="Quick start" icon="rocket" href="/quickstart">
+    Fetch your first tracker list in under 1 minute
+  </Card>
+  <Card title="Integration guides" icon="code" href="/guides/torrent-clients">
+    Add trackers to qBittorrent, Transmission, Deluge, and more
+  </Card>
+  <Card title="API reference" icon="book" href="/api/endpoints">
+    Explore all available endpoints and list formats
+  </Card>
+  <Card title="Contribute" icon="github" href="https://github.com/ngosang/trackerslist">
+    Report issues or suggest new public trackers
+  </Card>
+</CardGroup>

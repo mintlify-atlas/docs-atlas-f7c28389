@@ -1,80 +1,328 @@
 ---
-title: "Quickstart"
-description: "Start building awesome documentation in minutes"
+title: Quick start
+description: Get started with TrackersList in minutes - fetch and integrate public BitTorrent trackers into your client
 ---
 
-## Get started in three steps
+Get your BitTorrent client connected to public trackers in minutes. This guide walks you through fetching your first tracker list and integrating it into your setup.
 
-Get your documentation site running locally and make your first customization.
+## Get your first tracker list
 
-### Step 1: Set up your local environment
+The fastest way to improve your torrent connectivity is to start with the best performing trackers.
 
-<AccordionGroup>
-  <Accordion icon="copy" title="Clone your docs locally">
-    During the onboarding process, you created a GitHub repository with your docs content if you didn't already have one. You can find a link to this repository in your [dashboard](https://dashboard.mintlify.com).
+<Steps>
+  <Step title="Choose your tracker list">
+    Start with **trackers_best.txt** - a curated list of the 20 highest performing trackers, automatically updated daily.
     
-    To clone the repository locally so that you can make and preview changes to your docs, follow the [Cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository) guide in the GitHub docs.
-  </Accordion>
-  <Accordion icon="rectangle-terminal" title="Start the preview server">
-    1. Install the Mintlify CLI: `npm i -g mint`
-    2. Navigate to your docs directory and run: `mint dev`
-    3. Open `http://localhost:3000` to see your docs live!
-    
-    <Tip>Your preview updates automatically as you edit files.</Tip>
-  </Accordion>
-</AccordionGroup>
+    <Tip>
+      The best list includes only the fastest, most reliable trackers sorted by popularity and latency. Perfect for getting started.
+    </Tip>
+  </Step>
 
-### Step 2: Deploy your changes
+  <Step title="Fetch the tracker list">
+    Download the list using any of these three mirror URLs:
 
-<AccordionGroup>
-  <Accordion icon="github" title="Install our GitHub app">
-    Install the Mintlify GitHub app from your [dashboard](https://dashboard.mintlify.com/settings/organization/github-app).
-    
-    Our GitHub app automatically deploys your changes to your docs site, so you don't need to manage deployments yourself.
+    <CodeGroup>
+      ```bash curl - GitHub raw
+      curl -O https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+      ```
+
+      ```bash wget - GitHub raw
+      wget https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt
+      ```
+
+      ```bash curl - GitHub Pages mirror
+      curl -O https://ngosang.github.io/trackerslist/trackers_best.txt
+      ```
+
+      ```bash curl - jsDelivr CDN
+      curl -O https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt
+      ```
+    </CodeGroup>
+
+    <Note>
+      All three URLs provide the same content. Use the jsDelivr CDN for faster global access, or the GitHub Pages mirror if raw.githubusercontent.com is blocked in your region.
+    </Note>
+  </Step>
+
+  <Step title="Verify the content">
+    Check that you received a valid tracker list:
+
+    ```bash
+    head -n 5 trackers_best.txt
+    ```
+
+    You should see tracker URLs in this format:
+
+    ```
+    udp://tracker.opentrackr.org:1337/announce
+
+    udp://open.demonii.com:1337/announce
+
+    udp://open.stealth.si:80/announce
+    ```
+
+    <Note>
+      Each tracker URL is separated by a blank line. This format is compatible with most BitTorrent clients.
+    </Note>
+  </Step>
+</Steps>
+
+## Quick integration examples
+
+Once you have the tracker list file, here's how to quickly test it:
+
+<Tabs>
+  <Tab title="Command line">
+    Download the list and display it ready for copying:
+
+    ```bash
+    curl -s https://ngosang.github.io/trackerslist/trackers_best.txt | grep -v '^$'
+    ```
+
+    This removes blank lines, making it easy to copy all trackers at once.
+  </Tab>
+
+  <Tab title="Python script">
+    Fetch and parse trackers programmatically:
+
+    ```python
+    import requests
+
+    response = requests.get('https://ngosang.github.io/trackerslist/trackers_best.txt')
+    trackers = [line for line in response.text.split('\n') if line.strip()]
+
+    print(f"Found {len(trackers)} trackers")
+    for tracker in trackers[:5]:
+        print(tracker)
+    ```
+  </Tab>
+
+  <Tab title="Shell script">
+    Automate tracker updates with a simple script:
+
+    ```bash
+    #!/bin/bash
+    TRACKER_URL="https://ngosang.github.io/trackerslist/trackers_best.txt"
+    OUTPUT_FILE="trackers.txt"
+
+    curl -s "$TRACKER_URL" -o "$OUTPUT_FILE"
+    echo "Downloaded $(grep -c '^[^[:space:]]' $OUTPUT_FILE) trackers"
+    ```
+  </Tab>
+</Tabs>
+
+## Understanding tracker formats
+
+TrackersList uses standard BitTorrent tracker announce URLs. Here's what different protocols look like:
+
+<Accordion title="UDP trackers (most common)">
+  ```
+  udp://tracker.opentrackr.org:1337/announce
+  udp://open.demonii.com:1337/announce
+  udp://exodus.desync.com:6969/announce
+  ```
+
+  UDP trackers are the most widely used protocol. They offer low latency and work with all major BitTorrent clients.
 </Accordion>
-<Accordion icon="palette" title="Update your site name and colors">
-    For a first change, let's update the name and colors of your docs site.
 
-    1. Open `docs.json` in your editor.
-    2. Change the `"name"` field to your project name.
-    3. Update the `"colors"` to match your brand.
-    4. Save and see your changes instantly at `http://localhost:3000`.
+<Accordion title="HTTP/HTTPS trackers">
+  ```
+  http://tracker.opentrackr.org:1337/announce
+  https://torrent.tracker.durukanbal.com:443/announce
+  ```
 
-    <Tip>Try changing the primary color to see an immediate difference!</Tip>
-  </Accordion>
-</AccordionGroup>
-
-### Step 3: Go live
-
-<Accordion icon="rocket" title="Publish your docs">
-  1. Commit and push your changes.
-  2. Your docs will update and be live in moments!
+  HTTP(S) trackers work through standard web protocols. They're useful when UDP is blocked by firewalls.
 </Accordion>
+
+<Accordion title="WebSocket trackers">
+  ```
+  wss://tracker.files.fm:7073/announce
+  ws://tracker.files.fm:7072/announce
+  ```
+
+  <Warning>
+    WebSocket trackers (WebTorrent) are only supported by clients like WebTorrent Desktop, Instant.io, and some modern web-based clients.
+  </Warning>
+</Accordion>
+
+<Accordion title="I2P trackers">
+  ```
+  http://4olv65sj4ifeak26wqiifr3q2vjv5d44x733ncqhtd7cmjwoinpa.b32.i2p:80/announce
+  ```
+
+  <Note>
+    I2P trackers require an [I2P Router](https://geti2p.net/) and compatible clients like qBittorrent, BiglyBT, or Tixati for anonymous torrenting.
+  </Note>
+</Accordion>
+
+## Integration methods for different clients
+
+Choose the integration guide that matches your BitTorrent client:
+
+<CardGroup cols={2}>
+  <Card title="qBittorrent" icon="download" href="/guides/qbittorrent">
+    Automatic tracker updates via settings or manual addition to torrents
+  </Card>
+
+  <Card title="Transmission" icon="download" href="/guides/transmission">
+    Add trackers globally or per-torrent using the web UI or CLI scripts
+  </Card>
+
+  <Card title="Deluge" icon="download" href="/guides/deluge">
+    Use plugins or console commands to configure default trackers
+  </Card>
+
+  <Card title="aria2" icon="terminal" href="/guides/aria2">
+    Configure bt-tracker option in aria2.conf for command-line downloading
+  </Card>
+
+  <Card title="rTorrent" icon="terminal" href="/guides/torrent-clients">
+    Add trackers via .rtorrent.rc configuration file
+  </Card>
+
+  <Card title="Torrent files" icon="file" href="/guides/torrent-files">
+    Edit .torrent files directly to embed tracker lists
+  </Card>
+</CardGroup>
+
+## Protocol-specific lists
+
+Need trackers for a specific protocol? Use these specialized lists:
+
+<CardGroup cols={2}>
+  <Card title="UDP only" icon="network-wired">
+    **51 trackers** - Low latency UDP protocol
+    
+    ```bash
+    curl -O https://ngosang.github.io/trackerslist/trackers_all_udp.txt
+    ```
+  </Card>
+
+  <Card title="HTTP only" icon="globe">
+    **47 trackers** - Firewall-friendly HTTP protocol
+    
+    ```bash
+    curl -O https://ngosang.github.io/trackerslist/trackers_all_http.txt
+    ```
+  </Card>
+
+  <Card title="HTTPS only" icon="lock">
+    **14 trackers** - Encrypted HTTPS connections
+    
+    ```bash
+    curl -O https://ngosang.github.io/trackerslist/trackers_all_https.txt
+    ```
+  </Card>
+
+  <Card title="WebSocket" icon="bolt">
+    **2 trackers** - WebTorrent compatible (ws/wss)
+    
+    ```bash
+    curl -O https://ngosang.github.io/trackerslist/trackers_all_ws.txt
+    ```
+  </Card>
+</CardGroup>
+
+## DNS troubleshooting
+
+If you're experiencing DNS resolution issues, use IP-based tracker lists:
+
+<Steps>
+  <Step title="Identify DNS issues">
+    DNS problems typically manifest as:
+    - Trackers showing as "Not contacted" or timing out
+    - Torrents unable to find peers despite healthy seeders
+    - Inconsistent connectivity across different networks
+  </Step>
+
+  <Step title="Switch to IP-based lists">
+    Use these lists that contain IP addresses instead of domain names:
+
+    <CodeGroup>
+      ```bash Best trackers with IPs
+      curl -O https://ngosang.github.io/trackerslist/trackers_best_ip.txt
+      ```
+
+      ```bash All trackers with IPs
+      curl -O https://ngosang.github.io/trackerslist/trackers_all_ip.txt
+      ```
+    </CodeGroup>
+
+    <Tip>
+      IP lists are shorter than domain lists because Cloudflare-protected trackers are excluded (Cloudflare IPs are shared and would require DNS anyway).
+    </Tip>
+  </Step>
+
+  <Step title="Example IP-based trackers">
+    IP lists look like this:
+
+    ```
+    udp://93.158.213.92:1337/announce
+    udp://185.121.168.96:1337/announce
+    udp://185.243.218.213:80/announce
+    ```
+
+    These bypass DNS entirely, connecting directly to tracker IP addresses.
+  </Step>
+</Steps>
+
+<Warning>
+  IP addresses may change over time. The lists are updated daily, but you should periodically refresh your tracker lists to maintain optimal connectivity.
+</Warning>
+
+## Verify your setup
+
+After integrating trackers, confirm they're working:
+
+<Steps>
+  <Step title="Check tracker status">
+    In your BitTorrent client, look at a torrent's tracker list. You should see:
+    - Status: "Working" or "Announcing"
+    - Seeds/peers numbers updating
+    - Last announce time within the last few minutes
+  </Step>
+
+  <Step title="Monitor peer discovery">
+    Open a healthy torrent with known seeders:
+    - Peers should start appearing within 1-2 minutes
+    - Multiple trackers should report working status
+    - Seed/peer counts should increase
+  </Step>
+
+  <Step title="Test download speed">
+    Start a popular torrent:
+    - Initial peer discovery: 30-60 seconds
+    - Download should begin once peers connect
+    - More trackers = faster peer discovery = better speeds
+
+    <Tip>
+      If you're not seeing improvements, ensure your port forwarding is configured correctly in your client and router.
+    </Tip>
+  </Step>
+</Steps>
 
 ## Next steps
 
-Now that you have your docs running, explore these key features:
+Now that you have trackers working, explore advanced integration:
 
 <CardGroup cols={2}>
+  <Card title="Client integration guides" icon="book" href="/guides/torrent-clients">
+    Detailed setup instructions for every major BitTorrent client
+  </Card>
 
-<Card title="Write Content" icon="pen-to-square" href="/essentials/markdown">
-  Learn MDX syntax and start writing your documentation.
-</Card>
+  <Card title="Automation scripts" icon="code" href="/guides/torrent-clients">
+    Automate tracker updates with cron jobs and scripts
+  </Card>
 
-<Card title="Customize style" icon="palette" href="/essentials/settings">
-  Make your docs match your brand perfectly.
-</Card>
+  <Card title="API reference" icon="plug" href="/api/endpoints">
+    Integrate TrackersList into your applications programmatically
+  </Card>
 
-<Card title="Add code examples" icon="square-code" href="/essentials/code">
-  Include syntax-highlighted code blocks.
-</Card>
-
-<Card title="API documentation" icon="code" href="/api-reference/introduction">
-  Auto-generate API docs from OpenAPI specs.
-</Card>
-
+  <Card title="Advanced usage" icon="graduation-cap" href="/advanced/i2p-trackers">
+    Protocol selection, private networks (I2P, Yggdrasil), and optimization
+  </Card>
 </CardGroup>
 
 <Note>
-  **Need help?** See our [full documentation](https://mintlify.com/docs) or join our [community](https://mintlify.com/community).
+  All tracker lists are automatically updated daily to ensure you always have access to working, high-performance trackers.
 </Note>

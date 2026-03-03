@@ -1,0 +1,832 @@
+---
+title: 'Third-Party Tools'
+description: 'Community-built tools and integrations for TrackersList'
+icon: 'puzzle-piece'
+---
+
+## Overview
+
+The BitTorrent community has built various tools to integrate TrackersList with popular clients and workflows. These tools automatically fetch and add trackers to your torrents or client configurations.
+
+<Info>
+  These are **third-party projects** maintained by their respective authors, not by the TrackersList maintainer.
+</Info>
+
+---
+
+## BitTorrent Client Integrations
+
+Tools designed to automatically add TrackersList trackers to specific BitTorrent clients.
+
+### Deluge
+
+<Card title="deluge-default-trackers" icon="python" href="https://github.com/stefantalpalaru/deluge-default-trackers">
+  **Plugin for Deluge**
+  
+  Automatically adds TrackersList trackers to all new torrents in Deluge.
+  
+  <ParamField path="Author" type="string">
+    stefantalpalaru
+  </ParamField>
+  
+  <ParamField path="Client" type="string">
+    [Deluge](https://github.com/deluge-torrent/deluge)
+  </ParamField>
+  
+  <ParamField path="Platform" type="string">
+    Linux, Windows, macOS
+  </ParamField>
+  
+  <ParamField path="Language" type="string">
+    Python
+  </ParamField>
+</Card>
+
+**Installation:**
+```bash
+git clone https://github.com/stefantalpalaru/deluge-default-trackers.git
+cd deluge-default-trackers
+python setup.py install
+```
+
+---
+
+### Transmission
+
+Multiple community scripts for adding trackers to Transmission:
+
+<AccordionGroup>
+  <Accordion title="transmission-trackers (Python)" icon="python">
+    <Card title="transmission-trackers" icon="github" href="https://github.com/blind-oracle/transmission-trackers">
+      **Python script for Transmission**
+      
+      Fetches TrackersList and adds trackers to all active torrents via RPC.
+      
+      <ParamField path="Author" type="string">
+        blind-oracle
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [Transmission](https://github.com/transmission/transmission)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Python
+      </ParamField>
+      
+      <ParamField path="Features">
+        - Automatic RPC connection
+        - Configurable update intervals
+        - Daemon mode support
+      </ParamField>
+    </Card>
+    
+    **Usage:**
+    ```bash
+    python transmission-trackers.py --host localhost --port 9091
+    ```
+  </Accordion>
+  
+  <Accordion title="tracker-add (Bash Script 1)" icon="terminal">
+    <Card title="tracker-add" icon="github" href="https://github.com/AndrewMarchukov/tracker-add">
+      **Bash script for Transmission**
+      
+      Simple bash script to add TrackersList trackers to Transmission.
+      
+      <ParamField path="Author" type="string">
+        AndrewMarchukov
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [Transmission](https://github.com/transmission/transmission)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Bash
+      </ParamField>
+      
+      <ParamField path="Platform" type="string">
+        Linux, macOS
+      </ParamField>
+    </Card>
+    
+    **Usage:**
+    ```bash
+    ./tracker-add.sh
+    ```
+  </Accordion>
+  
+  <Accordion title="transmission (Bash Script 2)" icon="terminal">
+    <Card title="transmission tracker updater" icon="github" href="https://github.com/oilervoss/transmission">
+      **Alternative bash script for Transmission**
+      
+      Another bash-based approach to adding trackers to Transmission.
+      
+      <ParamField path="Author" type="string">
+        oilervoss
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [Transmission](https://github.com/transmission/transmission)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Bash
+      </ParamField>
+    </Card>
+    
+    **Usage:**
+    ```bash
+    bash update-trackers.sh
+    ```
+  </Accordion>
+  
+  <Accordion title="Scripts by Jorman (Bash Script 3)" icon="terminal">
+    <Card title="add-transmission-trackers.sh" icon="github" href="https://github.com/Jorman/Scripts#addtransmissiontrackerssh">
+      **Comprehensive bash script for Transmission**
+      
+      Part of a larger scripts collection, includes robust error handling.
+      
+      <ParamField path="Author" type="string">
+        Jorman
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [Transmission](https://github.com/transmission/transmission)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Bash
+      </ParamField>
+      
+      <ParamField path="Features">
+        - Configurable list selection
+        - Backup existing trackers
+        - Verbose logging
+      </ParamField>
+    </Card>
+    
+    **Usage:**
+    ```bash
+    ./add-transmission-trackers.sh
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+### qBittorrent
+
+<Card title="add-qbittorrent-trackers.sh" icon="terminal" href="https://github.com/Jorman/Scripts#addqbittorrenttrackerssh">
+  **Bash script for qBittorrent**
+  
+  Adds TrackersList trackers to qBittorrent via Web UI API.
+  
+  <ParamField path="Author" type="string">
+    Jorman
+  </ParamField>
+  
+  <ParamField path="Client" type="string">
+    [qBittorrent](https://github.com/qbittorrent/qBittorrent)
+  </ParamField>
+  
+  <ParamField path="Language" type="string">
+    Bash
+  </ParamField>
+  
+  <ParamField path="Platform" type="string">
+    Linux, macOS
+  </ParamField>
+  
+  <ParamField path="Requirements">
+    qBittorrent Web UI enabled
+  </ParamField>
+</Card>
+
+**Usage:**
+```bash
+# Configure credentials first
+export QB_USER="admin"
+export QB_PASS="adminpass"
+./add-qbittorrent-trackers.sh
+```
+
+---
+
+### aria2
+
+Multiple tools for integrating TrackersList with aria2:
+
+<AccordionGroup>
+  <Accordion title="aria2-trackers (Go)" icon="golang">
+    <Card title="aria2-trackers" icon="github" href="https://github.com/rocket049/aria2-trackers">
+      **Go script for aria2**
+      
+      Automatically updates aria2 configuration with TrackersList trackers.
+      
+      <ParamField path="Author" type="string">
+        rocket049
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [aria2](https://github.com/aria2/aria2)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Go
+      </ParamField>
+      
+      <ParamField path="Features">
+        - Automatic configuration updates
+        - RPC support
+        - Scheduled updates
+      </ParamField>
+    </Card>
+    
+    **Installation:**
+    ```bash
+    go install github.com/rocket049/aria2-trackers@latest
+    ```
+    
+    **Usage:**
+    ```bash
+    aria2-trackers --config ~/.aria2/aria2.conf
+    ```
+  </Accordion>
+  
+  <Accordion title="aria2 tracker updater (Bash Script 1)" icon="terminal">
+    <Card title="aria2 tracker Gist" icon="github" href="https://gist.github.com/HaleTom/fe873dc2f3c5bd14f7418efefc2b91a8">
+      **Bash script for aria2**
+      
+      Simple bash script that updates bt-tracker setting in aria2.conf.
+      
+      <ParamField path="Author" type="string">
+        HaleTom
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [aria2](https://github.com/aria2/aria2)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Bash
+      </ParamField>
+    </Card>
+    
+    **Usage:**
+    ```bash
+    bash update-aria2-trackers.sh /path/to/aria2.conf
+    ```
+  </Accordion>
+  
+  <Accordion title="aria2c_TrackersList (Bash Script 2)" icon="terminal">
+    <Card title="aria2c_TrackersList" icon="github" href="https://github.com/wuyuansushen/aria2c_TrackersList">
+      **Alternative bash script for aria2**
+      
+      Another implementation with additional features.
+      
+      <ParamField path="Author" type="string">
+        wuyuansushen
+      </ParamField>
+      
+      <ParamField path="Client" type="string">
+        [aria2](https://github.com/aria2/aria2)
+      </ParamField>
+      
+      <ParamField path="Language" type="string">
+        Bash
+      </ParamField>
+      
+      <ParamField path="Features">
+        - Backup old configuration
+        - List selection (best/all)
+        - Auto-restart aria2
+      </ParamField>
+    </Card>
+    
+    **Usage:**
+    ```bash
+    ./update_tracker.sh
+    ```
+  </Accordion>
+</AccordionGroup>
+
+---
+
+## Torrent File Editors
+
+Tools to add TrackersList trackers directly to .torrent files.
+
+### bittorrent-tracker-editor
+
+<Card title="bittorrent-tracker-editor" icon="file-code" href="https://github.com/GerryFerdinandus/bittorrent-tracker-editor">
+  **Standalone .torrent file editor**
+  
+  Desktop application to add, remove, or modify tracker lists in .torrent files.
+  
+  <ParamField path="Author" type="string">
+    GerryFerdinandus
+  </ParamField>
+  
+  <ParamField path="Type" type="string">
+    Desktop Application
+  </ParamField>
+  
+  <ParamField path="Platform" type="string">
+    Windows, Linux, macOS
+  </ParamField>
+  
+  <ParamField path="Features">
+    - Drag-and-drop interface
+    - Batch editing
+    - TrackersList integration
+    - Preview changes before saving
+  </ParamField>
+</Card>
+
+**Features:**
+- Load TrackersList directly into torrent files
+- Remove duplicate or dead trackers
+- Batch process multiple .torrent files
+- Preserve torrent file structure
+
+**Installation:**
+```bash
+git clone https://github.com/GerryFerdinandus/bittorrent-tracker-editor.git
+cd bittorrent-tracker-editor
+npm install
+npm start
+```
+
+---
+
+## Online Tools
+
+Web-based tools that don't require installation.
+
+<CardGroup cols={2}>
+  <Card title="TorrentEditor" icon="globe" href="http://torrenteditor.com">
+    **Online .torrent file editor**
+    
+    Web-based tool to edit .torrent files in your browser.
+    
+    <ParamField path="Type" type="string">
+      Web Application
+    </ParamField>
+    
+    <ParamField path="Features">
+      - No installation required
+      - Add TrackersList trackers
+      - Edit torrent metadata
+      - Private flag toggle
+      - Client-side processing (files never uploaded)
+    </ParamField>
+    
+    **How to Use:**
+    1. Visit [torrenteditor.com](http://torrenteditor.com)
+    2. Upload your .torrent file
+    3. Add TrackersList URL in the tracker field
+    4. Download modified .torrent file
+    
+    <Note>
+      Files are processed locally in your browser - nothing is uploaded to servers
+    </Note>
+  </Card>
+  
+  <Card title="Magnets" icon="magnet" href="https://madeby.lynx.pink/magnets/">
+    **Magnet link editor**
+    
+    Add trackers to magnet links directly in your browser.
+    
+    <ParamField path="Type" type="string">
+      Web Application
+    </ParamField>
+    
+    <ParamField path="Features">
+      - Paste magnet link
+      - Add TrackersList trackers
+      - Clean up duplicate trackers
+      - Copy enhanced magnet link
+    </ParamField>
+    
+    **How to Use:**
+    1. Visit [madeby.lynx.pink/magnets](https://madeby.lynx.pink/magnets/)
+    2. Paste your magnet link
+    3. Select TrackersList preset
+    4. Copy the enhanced magnet link
+    
+    **Example:**
+    ```
+    Original:
+    magnet:?xt=urn:btih:ABC123...
+    
+    Enhanced:
+    magnet:?xt=urn:btih:ABC123...&tr=udp://tracker.opentrackr.org:1337&tr=...
+    ```
+  </Card>
+</CardGroup>
+
+---
+
+## Tools by Category
+
+### By Language
+
+<Tabs>
+  <Tab title="Python">
+    <CardGroup cols={1}>
+      <Card title="deluge-default-trackers" href="https://github.com/stefantalpalaru/deluge-default-trackers">
+        Plugin for Deluge - automatically adds trackers
+      </Card>
+      <Card title="transmission-trackers" href="https://github.com/blind-oracle/transmission-trackers">
+        Transmission RPC integration script
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="Bash">
+    <CardGroup cols={1}>
+      <Card title="tracker-add" href="https://github.com/AndrewMarchukov/tracker-add">
+        Transmission bash script by AndrewMarchukov
+      </Card>
+      <Card title="transmission updater" href="https://github.com/oilervoss/transmission">
+        Alternative Transmission bash script by oilervoss
+      </Card>
+      <Card title="Jorman Scripts" href="https://github.com/Jorman/Scripts">
+        Collection including Transmission and qBittorrent scripts
+      </Card>
+      <Card title="aria2 updater (Gist)" href="https://gist.github.com/HaleTom/fe873dc2f3c5bd14f7418efefc2b91a8">
+        aria2 configuration updater
+      </Card>
+      <Card title="aria2c_TrackersList" href="https://github.com/wuyuansushen/aria2c_TrackersList">
+        aria2 with advanced features
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="Go">
+    <CardGroup cols={1}>
+      <Card title="aria2-trackers" href="https://github.com/rocket049/aria2-trackers">
+        Go script for aria2 with RPC support
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="Web (JavaScript)">
+    <CardGroup cols={1}>
+      <Card title="TorrentEditor" href="http://torrenteditor.com">
+        Online .torrent file editor
+      </Card>
+      <Card title="Magnets" href="https://madeby.lynx.pink/magnets/">
+        Magnet link editor
+      </Card>
+      <Card title="bittorrent-tracker-editor" href="https://github.com/GerryFerdinandus/bittorrent-tracker-editor">
+        Desktop application (Electron)
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+### By Client
+
+<Tabs>
+  <Tab title="Deluge">
+    <Card title="deluge-default-trackers" icon="python" href="https://github.com/stefantalpalaru/deluge-default-trackers">
+      **Official plugin for Deluge**
+      
+      - Automatic tracker addition
+      - Configurable list selection
+      - Works with all Deluge versions 2.0+
+    </Card>
+  </Tab>
+  
+  <Tab title="Transmission">
+    <CardGroup cols={1}>
+      <Card title="transmission-trackers (Python)" href="https://github.com/blind-oracle/transmission-trackers">
+        Python script with RPC support
+      </Card>
+      <Card title="tracker-add (Bash)" href="https://github.com/AndrewMarchukov/tracker-add">
+        Simple bash implementation
+      </Card>
+      <Card title="transmission (Bash)" href="https://github.com/oilervoss/transmission">
+        Alternative bash script
+      </Card>
+      <Card title="Jorman Script (Bash)" href="https://github.com/Jorman/Scripts#addtransmissiontrackerssh">
+        Full-featured bash script
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="qBittorrent">
+    <Card title="add-qbittorrent-trackers.sh" icon="terminal" href="https://github.com/Jorman/Scripts#addqbittorrenttrackerssh">
+      **Bash script for qBittorrent**
+      
+      - Web UI API integration
+      - Batch torrent updates
+      - Authentication support
+    </Card>
+  </Tab>
+  
+  <Tab title="aria2">
+    <CardGroup cols={1}>
+      <Card title="aria2-trackers (Go)" href="https://github.com/rocket049/aria2-trackers">
+        Go implementation with RPC
+      </Card>
+      <Card title="aria2 updater (Bash)" href="https://gist.github.com/HaleTom/fe873dc2f3c5bd14f7418efefc2b91a8">
+        Simple bash script
+      </Card>
+      <Card title="aria2c_TrackersList (Bash)" href="https://github.com/wuyuansushen/aria2c_TrackersList">
+        Advanced bash implementation
+      </Card>
+    </CardGroup>
+  </Tab>
+  
+  <Tab title="Client-Agnostic">
+    <CardGroup cols={1}>
+      <Card title="bittorrent-tracker-editor" href="https://github.com/GerryFerdinandus/bittorrent-tracker-editor">
+        Edit .torrent files directly
+      </Card>
+      <Card title="TorrentEditor" href="http://torrenteditor.com">
+        Online .torrent editor
+      </Card>
+      <Card title="Magnets" href="https://madeby.lynx.pink/magnets/">
+        Magnet link editor
+      </Card>
+    </CardGroup>
+  </Tab>
+</Tabs>
+
+---
+
+## Building Your Own Tool
+
+### Quick Integration Guide
+
+Want to build your own TrackersList integration? Here's how:
+
+<Steps>
+  <Step title="Choose a Mirror">
+    Select the most appropriate mirror for your use case:
+    
+    ```javascript
+    const MIRRORS = [
+      'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',
+      'https://ngosang.github.io/trackerslist/trackers_best.txt',
+      'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt'
+    ];
+    ```
+  </Step>
+  
+  <Step title="Fetch the List">
+    Download and parse the tracker list:
+    
+    ```python Python Example
+    import requests
+    
+    def fetch_trackers():
+        url = 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt'
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Split by blank lines
+        trackers = [line.strip() for line in response.text.split('\n') if line.strip()]
+        return trackers
+    ```
+  </Step>
+  
+  <Step title="Integrate with Your Client">
+    Add trackers using your client's API or configuration format
+  </Step>
+  
+  <Step title="Implement Caching">
+    Cache locally and refresh daily to respect rate limits
+  </Step>
+  
+  <Step title="Handle Errors">
+    Implement failover and graceful degradation
+  </Step>
+</Steps>
+
+### Code Examples
+
+<CodeGroup>
+```python Python Client Integration
+import requests
+import json
+from datetime import datetime, timedelta
+
+class TrackersListClient:
+    def __init__(self, cache_file='trackers_cache.json'):
+        self.cache_file = cache_file
+        self.mirrors = [
+            'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',
+            'https://ngosang.github.io/trackerslist/trackers_best.txt',
+            'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt'
+        ]
+    
+    def get_trackers(self, list_name='trackers_best', force_refresh=False):
+        # Check cache
+        if not force_refresh:
+            cached = self._load_cache()
+            if cached:
+                return cached
+        
+        # Fetch from mirrors with failover
+        for mirror in self.mirrors:
+            try:
+                url = mirror.replace('trackers_best.txt', f'{list_name}.txt')
+                response = requests.get(url, timeout=10)
+                response.raise_for_status()
+                
+                trackers = [line.strip() for line in response.text.split('\n') if line.strip()]
+                self._save_cache(trackers)
+                return trackers
+            except requests.RequestException:
+                continue
+        
+        raise Exception('All mirrors failed')
+    
+    def _load_cache(self):
+        try:
+            with open(self.cache_file, 'r') as f:
+                data = json.load(f)
+                timestamp = datetime.fromisoformat(data['timestamp'])
+                if datetime.now() - timestamp < timedelta(hours=24):
+                    return data['trackers']
+        except (FileNotFoundError, KeyError, ValueError):
+            pass
+        return None
+    
+    def _save_cache(self, trackers):
+        with open(self.cache_file, 'w') as f:
+            json.dump({
+                'timestamp': datetime.now().isoformat(),
+                'trackers': trackers
+            }, f)
+
+# Usage
+client = TrackersListClient()
+trackers = client.get_trackers()
+print(f'Fetched {len(trackers)} trackers')
+```
+
+```javascript Node.js Client Integration
+const fs = require('fs').promises;
+const path = require('path');
+
+class TrackersListClient {
+  constructor(cacheFile = 'trackers_cache.json') {
+    this.cacheFile = cacheFile;
+    this.mirrors = [
+      'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',
+      'https://ngosang.github.io/trackerslist/trackers_best.txt',
+      'https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt'
+    ];
+  }
+  
+  async getTrackers(listName = 'trackers_best', forceRefresh = false) {
+    // Check cache
+    if (!forceRefresh) {
+      const cached = await this._loadCache();
+      if (cached) return cached;
+    }
+    
+    // Fetch from mirrors with failover
+    for (const mirror of this.mirrors) {
+      try {
+        const url = mirror.replace('trackers_best.txt', `${listName}.txt`);
+        const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+        
+        if (!response.ok) continue;
+        
+        const text = await response.text();
+        const trackers = text.split('\n').filter(line => line.trim());
+        
+        await this._saveCache(trackers);
+        return trackers;
+      } catch (error) {
+        continue;
+      }
+    }
+    
+    throw new Error('All mirrors failed');
+  }
+  
+  async _loadCache() {
+    try {
+      const data = JSON.parse(await fs.readFile(this.cacheFile, 'utf8'));
+      const timestamp = new Date(data.timestamp);
+      const age = Date.now() - timestamp.getTime();
+      
+      if (age < 24 * 60 * 60 * 1000) {
+        return data.trackers;
+      }
+    } catch (error) {
+      // Cache doesn't exist or is invalid
+    }
+    return null;
+  }
+  
+  async _saveCache(trackers) {
+    await fs.writeFile(this.cacheFile, JSON.stringify({
+      timestamp: new Date().toISOString(),
+      trackers
+    }));
+  }
+}
+
+// Usage
+const client = new TrackersListClient();
+client.getTrackers().then(trackers => {
+  console.log(`Fetched ${trackers.length} trackers`);
+});
+```
+
+```bash Bash Integration
+#!/bin/bash
+
+# Simple bash function to fetch trackers
+fetch_trackers() {
+    local list_name="${1:-trackers_best}"
+    local cache_file="/tmp/trackerslist_${list_name}.txt"
+    local cache_age_hours=24
+    
+    # Check if cache exists and is fresh
+    if [ -f "$cache_file" ]; then
+        local cache_age=$(($(date +%s) - $(stat -f %m "$cache_file" 2>/dev/null || stat -c %Y "$cache_file")))
+        if [ $cache_age -lt $((cache_age_hours * 3600)) ]; then
+            cat "$cache_file"
+            return 0
+        fi
+    fi
+    
+    # Try mirrors with failover
+    local mirrors=(
+        "https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/${list_name}.txt"
+        "https://ngosang.github.io/trackerslist/${list_name}.txt"
+        "https://raw.githubusercontent.com/ngosang/trackerslist/master/${list_name}.txt"
+    )
+    
+    for mirror in "${mirrors[@]}"; do
+        if curl -sf --max-time 10 "$mirror" -o "$cache_file"; then
+            cat "$cache_file"
+            return 0
+        fi
+    done
+    
+    echo "Error: All mirrors failed" >&2
+    return 1
+}
+
+# Usage
+fetch_trackers "trackers_best" | grep -v '^$'
+```
+</CodeGroup>
+
+---
+
+## Contributing Your Tool
+
+Built a TrackersList integration? Share it with the community!
+
+<Steps>
+  <Step title="Open a GitHub Issue">
+    Submit your tool to the [TrackersList repository](https://github.com/ngosang/trackerslist/issues/new)
+  </Step>
+  
+  <Step title="Include Details">
+    Provide:
+    - Tool name and description
+    - GitHub repository link
+    - Language/platform
+    - Which client(s) it supports
+    - Installation/usage instructions
+  </Step>
+  
+  <Step title="Get Listed">
+    If approved, your tool will be added to the README and this documentation
+  </Step>
+</Steps>
+
+<Tip>
+  Make sure your tool respects [rate limits](/api/mirrors#rate-limits--caching) and implements proper caching!
+</Tip>
+
+---
+
+## Additional Resources
+
+<CardGroup cols={2}>
+  <Card title="API Endpoints" icon="list" href="/api/endpoints">
+    Learn about all available tracker lists
+  </Card>
+  <Card title="Mirror Infrastructure" icon="clone" href="/api/mirrors">
+    Choose the best mirror for your tool
+  </Card>
+  <Card title="Integration Guide" icon="code" href="/guides/torrent-clients">
+    Step-by-step client integration
+  </Card>
+  <Card title="Contributing" icon="hands-helping" href="/api/contributing">
+    Submit your own tool
+  </Card>
+</CardGroup>

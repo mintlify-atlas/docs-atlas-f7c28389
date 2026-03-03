@@ -1,0 +1,104 @@
+---
+title: 'Torrent Client Integration'
+description: 'Overview of integration methods for adding TrackersList to popular torrent clients'
+keywords: ['torrent', 'client', 'integration', 'qbittorrent', 'transmission', 'deluge', 'aria2']
+icon: 'download'
+---
+
+TrackersList can be integrated with torrent clients through automated scripts, plugins, or manual updates. Choose the integration method that works best for your setup.
+
+## Supported Clients
+
+The following torrent clients have community-maintained integration tools:
+
+<CardGroup cols={2}>
+  <Card title="qBittorrent" icon="q" href="/guides/qbittorrent">
+    Bash script for automated tracker updates
+  </Card>
+  <Card title="Transmission" icon="t" href="/guides/transmission">
+    Multiple scripts: Python and Bash implementations
+  </Card>
+  <Card title="Deluge" icon="d" href="/guides/deluge">
+    Plugin for automatic tracker management
+  </Card>
+  <Card title="aria2" icon="a" href="/guides/aria2">
+    Go and Bash scripts for configuration updates
+  </Card>
+</CardGroup>
+
+## Integration Methods
+
+### Automated Scripts
+
+Most clients support automated tracker updates through scripts that:
+- Fetch the latest tracker list from TrackersList
+- Update the client configuration or active torrents
+- Can be scheduled to run periodically via cron or systemd timers
+
+<Tip>
+Automated scripts are the recommended approach for keeping tracker lists up-to-date without manual intervention.
+</Tip>
+
+### Plugins
+
+Some clients like Deluge support plugins that integrate directly with the client's interface:
+- Native integration with client UI
+- Automatic updates on schedule
+- No external dependencies required
+
+### Manual Updates
+
+For clients without automated tools, you can:
+1. Download a tracker list from TrackersList
+2. Manually add trackers through the client interface
+3. Update periodically to maintain optimal performance
+
+## Torrent File Integration
+
+If you need to add trackers directly to `.torrent` files before adding them to your client, see the [Torrent Files guide](/guides/torrent-files).
+
+## Choosing a Tracker List
+
+TrackersList provides several curated lists for different needs:
+
+<AccordionGroup>
+  <Accordion title="trackers_best (20 trackers)">
+    The top-performing trackers sorted by popularity and latency. Recommended for most users.
+    
+    - **URL**: `https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt`
+  </Accordion>
+  
+  <Accordion title="trackers_all (112 trackers)">
+    Complete list of all working trackers. Use when you want maximum peer discovery.
+    
+    - **URL**: `https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all.txt`
+  </Accordion>
+  
+  <Accordion title="Protocol-specific lists">
+    Lists filtered by protocol type:
+    - `trackers_all_udp.txt` - UDP trackers only (51 trackers)
+    - `trackers_all_http.txt` - HTTP trackers only (47 trackers)
+    - `trackers_all_https.txt` - HTTPS trackers only (14 trackers)
+    - `trackers_all_ws.txt` - WebSocket trackers (2 trackers)
+  </Accordion>
+  
+  <Accordion title="IP-based lists (DNS-free)">
+    Lists with IP addresses instead of domains, useful for DNS issues:
+    - `trackers_best_ip.txt` - Top trackers with IPs (20 trackers)
+    - `trackers_all_ip.txt` - All trackers with IPs (61 trackers)
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+All tracker lists are automatically updated daily and sorted by popularity and latency from best to worst.
+</Note>
+
+## Next Steps
+
+Select your torrent client to view detailed integration instructions:
+
+- [qBittorrent Integration](/guides/qbittorrent)
+- [Transmission Integration](/guides/transmission)
+- [Deluge Integration](/guides/deluge)
+- [aria2 Integration](/guides/aria2)
+- [Torrent Files Integration](/guides/torrent-files)
